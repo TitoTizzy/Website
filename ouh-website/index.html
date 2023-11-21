@@ -1,23 +1,66 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Organisation de l'Union Haïtienne</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organisation de l'Union Haitienne | Website Officiel </title>
 </head>
 <body>
     <div id="content">
         <header>
-            <img class="logo" src="images/logo_entete.png"  href="index.html">
-            <nav class="main-nav">
-                    <a href="index.html">Accueil</a>
-                    <a href="#actualites">Actualités</a>
-                    <a href="#a-propos">A Propos</a>
-                    <a href="#projets">Nos Projets</a>  
-                    <a href="#contact">Contactez Nous</a>
-                    <a class='button-box' href="#dons">Faites un Don!</a>          
+            <a id="logo_link" href="index.html">
+                <img class="logo" src="images/logo_entete.png" alt="OUH logo">
+            </a>
+            <input type="checkbox" id="check">
+            <label for="check" class="menu">
+                <i class="bx bx-menu" id="icon-menu"></i>
+                <i class="bx bx-x" id="close-menu"></i>
+            </label>
+            <nav>
+                <ul>
+                    <li id="accueil"><a href="index.html">Accueil</a></li>
+                    <li class="has-submenu">
+                        <div id="actualites"><a href="#">Actualités</a></div>
+                        <span class="icon-toggle"><i class="fa fa-angle-right"></i></span>
+                        <ul class="sub-menu">
+                            <li><a href="actualites-nouvelles.html">Nouvelles</a></li>
+                            <li><a href="actualites-evenements.html">Événements</a></li>
+                            <!-- Ajoutez d'autres sous-pages au besoin -->
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#a-propos">À Propos</a>
+                        <span class="icon-toggle"><i class="fa fa-angle-right"></i></span>
+                        <ul class="sub-menu">
+                            <li><a href="a-propos-histoire.html">Histoire</a></li>
+                            <li><a href="a-propos-equipe.html">Équipe</a></li>
+                            <!-- Ajoutez d'autres sous-pages au besoin -->
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#projets">Nos Projets</a>
+                        <span class="icon-toggle"><i class="fa fa-angle-right"></i></span>
+                        <ul class="sub-menu">
+                            <li><a href="education.html">Education</a></li>
+                            <li><a href="sante.html">Santé</a></li>
+                            <!-- Ajoutez d'autres sous-pages au besoin -->
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#contact">Contactez Nous</a>
+                        <span class="icon-toggle"><i class="fa fa-angle-right"></i></span>
+                        <ul class="sub-menu">
+                            <li><a href="contact-formulaire.html">Formulaire de Contact</a></li>
+                            <li><a href="contact-coordonnees.html">Coordonnées</a></li>
+                            <!-- Ajoutez d'autres sous-pages au besoin -->
+                        </ul>
+                    </li>
+                </ul>
             </nav>
+            <a class='button-box' href="#dons">Faites un Don!</a> 
         </header>
         <div id="hero">
             <div id="hero-box">
@@ -25,26 +68,55 @@
             </div>
             <section id="hero-msg">
                 <h1 class="home-title">Bienvenue sur le site officiel de l'Organisation de l'Union Haitienne</h1>
-                <h4>OUH, au service des opprimés</h4>
-                <div class='don-button'>
-                    <a class='don-button' href="#dons">Faites un Don!</a> 
-                </div>
+                <h4>Ensemble, cultivons le savoir, préservons la santé, façonnons l'avenir.</h4>
             </section>
         </div>
 
         <section id="a-propos">
             <!-- À propos de l'Organisation -->
             <h2>À Propos de l'Organisation</h2>
-            <p>Breve description de l'Organisation de l'Union Haïtienne et de ses missions.</p>
+            <p>L'Organisation de l'Union Haïtienne (OUH) se positionne comme un acteur humanitaire clé en Haïti, fondé en 1995 par M. Emmanuel Herly Petit. Son engagement indéfectible se concentre sur deux piliers fondamentaux : l'éducation et la santé. En tant qu'organisme à but non lucratif, légalement enregistré selon les lois haïtiennes et québécoises, l'OUH s'est donné pour mission de répondre aux besoins essentiels des populations défavorisées. En partenariat avec l'État haïtien, l'organisation gère des centres de santé, réouvre des dispensaires inactifs depuis des années, et s'engage dans des programmes éducatifs, favorisant notamment la création d'emplois dans le secteur de la santé. La coopération internationale constitue également un aspect essentiel de son action, mobilisant l'expertise des professionnels de la santé du Canada et du Québec. L'OUH joue un rôle prépondérant dans la réponse humanitaire, réagissant aux catastrophes naturelles, tout en mettant en œuvre des initiatives préventives pour renforcer la santé des communautés haïtiennes.</p>
         </section>
 
         <section id="projets">
             <!-- Projets en Cours -->
-            <h2>Projets en Cours</h2>
-            <p>Explorez nos projets actuels et découvrez comment vous pouvez contribuer.</p>
+            <h2>Synthèse des Projets de l'Organisation</h2>
+            <p>L'Organisation de l'Union Haitienne (OUH) se positionne en tant qu'organisme humanitaire à but non lucratif, œuvrant en Haïti pour répondre aux besoins essentiels de soins de santé primaires et de développement communautaire. Fondée en 1995 par M. Emmanuel Herly Petit, la mission de l'OUH s'articule autour de la contribution au développement durable des structures de santé communautaire en Haïti. Voici une synthèse des projets de l'OUH basée sur les informations fournies :
+            <p>1. Construction et Gestion d'Hôpital de Niveau II :
+                Projet de construction d'un Hôpital de niveau II à Cabaret-Arcahaie.
+                Comprend les départements de médecine générale, chirurgie mineure, gynécologie-obstétrique, pédiatrie, et dermatologie.</p>
+            <p>2. Revitalisation des Centres de Santé Dysfonctionnels :
+                Partenariat avec l'État haïtien pour soutenir des centres de santé défaillants.
+                Siège à la Clinique de l'OUH à Carrefour Poy pour apporter une assistance médicale.</p>
+            <p>3. Laboratoire Spécialisé en Maladies Parasitaires Tropicales :
+                Construction d'un laboratoire rattaché à la Clinique de l'OUH à Carrefour Poy.
+                Mission de recherche pharmaceutique et analyse des échantillons médicaux.</p>
+            <p>4. Clinique Mobile et Campagnes de Vaccination :
+                Équipe de Clinique mobile pour fournir des soins de santé et des informations médicales.
+                Participation à des campagnes de vaccination, en particulier pour les jeunes enfants.</p>
+            <p>5. Campagnes d'Information et Accompagnement :
+                Campagnes sur l'anémie falciforme avec des rencontres médicales et distribution de kits d'information.
+                Accompagnement des grossesses pour les futures mères vivant dans des régions éloignées.</p>
+            <p>6. Distribution de Médicaments, Équipements et Nourritures :
+                Fourniture de médicaments et produits pharmaceutiques aux circuits hospitaliers en Haïti.
+                Dotation des centres de santé de matériels médicaux offerts par des institutions canadiennes et québécoises.
+                Participation à des campagnes de distribution de nourritures pour lutter contre la faim.</p>
+            <p>7. Distribution de Vêtements et Fournitures Scolaires :
+                Distribution de vêtements aux enfants de familles défavorisées.
+                Distribution de fournitures scolaires lors des rentrées pour les enfants de familles désœuvrées.</p>
+            <p>8. Formation et Échanges :
+                Formation des travailleurs humanitaires et infirmières.
+                Programmes d'échanges et stages universitaires et professionnels entre Haïti, Canada, et Québec.</p>
+            <p>9. Projet Agriculture pour Lutter contre la Malnutrition :
+                Initiative de projets agricoles en collaboration avec des organisations paysannes pour lutter contre la malnutrition.
+                L'OUH a établi des partenariats solides avec des professionnels de la santé, des institutions nationales et internationales, ainsi que des organisations humanitaires. Ses actions couvrent un large spectre, de la construction d'infrastructures médicales à la sensibilisation communautaire, démontrant un engagement profond envers le bien-être de la population haïtienne.</p>
             <!-- Ajoutez des éléments spécifiques à vos projets ici -->
         </section>
 
+
+        <div class='don-button'>
+            <a  href="#dons">Faites un Don!</a> 
+        </div>
         
 
         <section id="blog">
