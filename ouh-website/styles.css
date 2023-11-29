@@ -51,14 +51,10 @@ body {
     height: auto;
 }
 
-h4 {
-    color: white;
-}
-
 #hero-msg h1,
 #hero-msg h4 {
     text-align: center;
-    color: white;
+    color: black;
 }
 
 .button-box,
@@ -67,10 +63,9 @@ h4 {
 }
 
 #hero {
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    display:block;
     margin-top: -150px;
-    
+    background: paleturquoise
 }
 
 #hero-box {
@@ -82,7 +77,6 @@ h4 {
 #hero-msg {
     grid-column: 2/3;
     grid-row: 1/2;
-    margin-top: 200px;
 }
 
 nav {
@@ -463,18 +457,15 @@ aside h3{
         display: none;
     }
     #hero {
+        margin: 0px;
+        padding: 0px;
+        background: paleturquoise;
+    }
+    #hero-img{
         margin-top: 0;
+        margin-bottom: 0;
     }
-    #hero-msg {
-        margin-top: 200px;
-        width: 100%;
-    }
-    #hero-msg h4 {
-        display: none;
-    }
-    #hero-msg h1 {
-        color: white;
-    }
+    
     .references-partenaires{
         display: block;
         
