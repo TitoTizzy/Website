@@ -442,4 +442,14 @@ aside h3{
     nav ul ul li{
         display: none;
     }
+    #hero-box {
+        height: 500px;
+        z-index: -1;
+    }
+    
+    #hero-msg {
+        grid-column: 2/3;
+        grid-row: 1/2;
+        margin-top: 100px;
+    }
 }
