@@ -322,6 +322,8 @@ aside h3 {
 .evenements{
     grid-column: 2/3;
     grid-row: 2/3;
+    text-align: justify;
+    color: black;
 }
 
 .references-partenaires{
@@ -351,17 +353,64 @@ aside h3 {
         text-align: justify;
     }
 
+footer{
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr 1fr 1fr;
+    background: lightgrey;
+    height: 150px;
+}
 
+.article-1{
+    grid-column:1/2 ;
+    grid-row:1/5;
+    background: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
 
+.article-1 p{
+    text-align: justify;
+    padding: 10px;
+}
+.resume-article-1{
+    grid-column:1/2 ;
+    grid-row:1/5;
+    background: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+.resume-article-1 p{
+    text-align: justify;
+    padding: 10px;
+}
 
+.resume-evenement-1{
+    grid-column:1/2 ;
+    grid-row:1/5;
+    background: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+.resume-evenement-1 p{
+    text-align: justify;
+    padding: 10px;
+}
 
-
-
-
-
-
-
-
+.page-actualites{
+    grid-column:1/2 ;
+    grid-row:1/5;
+    background: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+.page-actualites p{
+    text-align: justify;
+    padding: 10px;
+}
 
 
 
