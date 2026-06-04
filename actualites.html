@@ -71,77 +71,138 @@
       line-height: 1.65;
     }
 
-    /* Barre de filtres */
-    .actu-filter-bar {
-      background: #fff;
-      border-bottom: 1px solid var(--color-border);
-      position: sticky;
-      top: var(--navbar-height, 72px);
-      z-index: 40;
-    }
-    .actu-filter-inner {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      padding: 1rem 0;
-    }
-    .actu-filter-label {
-      font-family: var(--font-ui);
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--color-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-right: 0.25rem;
-      flex-shrink: 0;
-    }
-    .actu-filter {
-      font-family: var(--font-ui);
-      font-size: 0.82rem;
-      font-weight: 500;
-      padding: 0.4rem 1rem;
-      border-radius: var(--radius-full);
-      border: 1.5px solid var(--color-border);
-      background: transparent;
-      color: var(--color-muted);
-      cursor: pointer;
-      transition: all 0.18s ease;
-      line-height: 1;
-      white-space: nowrap;
-    }
-    .actu-filter:hover {
-      border-color: var(--color-accent);
-      color: var(--color-accent);
-      background: rgba(65,105,225,0.06);
-    }
-    .actu-filter.active {
-      background: var(--color-accent);
-      border-color: var(--color-accent);
-      color: #fff;
-      font-weight: 600;
-    }
-    .actu-count {
-      font-family: var(--font-ui);
-      font-size: 0.78rem;
-      color: var(--color-muted);
-      margin-left: auto;
-      flex-shrink: 0;
-    }
-
-    /* Grille articles */
+    /* Layout sidebar + grille */
     .actu-section {
       padding: 4rem 0 6rem;
       background: var(--color-light);
       min-height: 50vh;
     }
+    .actu-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .actu-layout { grid-template-columns: 1fr; }
+      .actu-sidebar { position: static !important; }
+    }
+
+    /* Sidebar filtres */
+    .actu-sidebar {
+      position: sticky;
+      top: calc(var(--navbar-height, 72px) + 1.5rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .actu-filter-block {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      padding: 1.25rem 1.25rem 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,122,0.05);
+    }
+    .actu-filter-title {
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-muted);
+      margin-bottom: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .actu-filter-title svg { opacity: 0.6; }
+    .actu-filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .actu-filter {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-ui);
+      font-size: 0.83rem;
+      font-weight: 500;
+      padding: 0.45rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+      width: 100%;
+    }
+    .actu-filter:hover {
+      background: rgba(65,105,225,0.07);
+      color: var(--color-accent);
+    }
+    .actu-filter.active {
+      background: rgba(65,105,225,0.12);
+      color: var(--color-accent);
+      font-weight: 700;
+    }
+    .actu-filter-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .actu-filter-count {
+      margin-left: auto;
+      font-size: 0.72rem;
+      background: rgba(65,105,225,0.1);
+      color: var(--color-accent);
+      border-radius: 99px;
+      padding: 0.1rem 0.45rem;
+      font-weight: 600;
+    }
+
+    /* Grille articles */
+    .actu-main { min-width: 0; }
+    .actu-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .actu-count {
+      font-family: var(--font-ui);
+      font-size: 0.83rem;
+      color: var(--color-muted);
+    }
+    .actu-active-filters {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .actu-active-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.65rem;
+      border-radius: 99px;
+      background: rgba(65,105,225,0.12);
+      color: var(--color-accent);
+      cursor: pointer;
+      border: none;
+    }
+    .actu-active-tag:hover { background: rgba(65,105,225,0.2); }
     .actu-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
     }
-    @media (max-width: 1024px) { .actu-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 640px)  { .actu-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 1200px) { .actu-grid { grid-template-columns: 1fr; } }
 
     /* Article card */
     .actu-card {
@@ -368,27 +429,85 @@
     </div>
   </section>
 
-  <!-- BARRE DE FILTRES -->
-  <div class="actu-filter-bar" role="navigation" aria-label="Filtrer les actualités">
-    <div class="container">
-      <div class="actu-filter-inner">
-        <span class="actu-filter-label">Filtrer&nbsp;:</span>
-        <button class="actu-filter active" data-cat="tous" aria-pressed="true">Tous</button>
-        <button class="actu-filter" data-cat="sante" aria-pressed="false">Santé</button>
-        <button class="actu-filter" data-cat="education" aria-pressed="false">Éducation</button>
-        <button class="actu-filter" data-cat="humanitaire" aria-pressed="false">Humanitaire</button>
-        <button class="actu-filter" data-cat="evenements" aria-pressed="false">Événements</button>
-        <span class="actu-count" id="actu-count" aria-live="polite"></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- GRILLE D'ARTICLES -->
+  <!-- SECTION PRINCIPALE : sidebar + grille -->
   <section class="actu-section" aria-labelledby="actu-grid-title">
     <div class="container">
-      <h2 id="actu-grid-title" class="sr-only">Liste des actualités</h2>
-      <div class="actu-grid" id="actu-grid" role="list">
-        <!-- Rempli dynamiquement par JS -->
+      <div class="actu-layout">
+
+        <!-- ── SIDEBAR FILTRES ── -->
+        <aside class="actu-sidebar" aria-label="Filtrer les actualités">
+
+          <!-- Catégories -->
+          <div class="actu-filter-block">
+            <div class="actu-filter-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Catégories
+            </div>
+            <div class="actu-filter-list" id="filter-cats">
+              <button class="actu-filter active" data-filter-type="cat" data-value="tous">
+                <span class="actu-filter-dot" style="background:#94A3B8;"></span>
+                Toutes
+                <span class="actu-filter-count" id="count-tous"></span>
+              </button>
+              <button class="actu-filter" data-filter-type="cat" data-value="sante">
+                <span class="actu-filter-dot" style="background:#0e7490;"></span>
+                Santé
+                <span class="actu-filter-count" id="count-sante"></span>
+              </button>
+              <button class="actu-filter" data-filter-type="cat" data-value="education">
+                <span class="actu-filter-dot" style="background:#4169E1;"></span>
+                Éducation
+                <span class="actu-filter-count" id="count-education"></span>
+              </button>
+              <button class="actu-filter" data-filter-type="cat" data-value="humanitaire">
+                <span class="actu-filter-dot" style="background:#16a34a;"></span>
+                Humanitaire
+                <span class="actu-filter-count" id="count-humanitaire"></span>
+              </button>
+              <button class="actu-filter" data-filter-type="cat" data-value="evenements">
+                <span class="actu-filter-dot" style="background:#6366f1;"></span>
+                Événements
+                <span class="actu-filter-count" id="count-evenements"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Année -->
+          <div class="actu-filter-block">
+            <div class="actu-filter-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Année
+            </div>
+            <div class="actu-filter-list" id="filter-years">
+              <!-- Rempli dynamiquement -->
+            </div>
+          </div>
+
+          <!-- Mois -->
+          <div class="actu-filter-block" id="block-months" style="display:none;">
+            <div class="actu-filter-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Mois
+            </div>
+            <div class="actu-filter-list" id="filter-months">
+              <!-- Rempli dynamiquement -->
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- ── CONTENU PRINCIPAL ── -->
+        <div class="actu-main">
+          <div class="actu-toolbar">
+            <span class="actu-count" id="actu-count" aria-live="polite"></span>
+            <div class="actu-active-filters" id="active-tags"></div>
+          </div>
+          <h2 id="actu-grid-title" class="sr-only">Liste des actualités</h2>
+          <div class="actu-grid" id="actu-grid" role="list">
+            <!-- Rempli dynamiquement par JS -->
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -475,80 +594,43 @@
 <div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
-/* ── Articles par défaut (affichés si la base de données est vide) ── */
+'use strict';
+
+/* ── Seul vrai article publié sur ouhhaiti.org ── */
 const SEED_ARTICLES = [
   {
-    id: 'seed-1',
-    title: "Mission médicale à Carrefour-Poy : plus de 500 patients consultés",
-    category: 'sante',
-    publishedAt: '2025-03-15',
-    excerpt: "L'équipe médicale de l'OUH a mené une mission intensive de trois jours dans la région de Carrefour-Poy, offrant des consultations gratuites, des médicaments et des soins préventifs à plus de 500 habitants des communautés les plus vulnérables.",
-    image: 'assets/images/placeholder.svg',
-    alt: 'Mission médicale OUH à Carrefour-Poy'
-  },
-  {
-    id: 'seed-2',
-    title: "Formation des professionnels de santé : nouvelle session intensive",
-    category: 'education',
-    publishedAt: '2025-02-10',
-    excerpt: "Dans le cadre de son programme de renforcement des capacités locales, l'OUH a organisé une formation intensive de deux semaines destinée aux agents de santé communautaires de la région métropolitaine de Port-au-Prince.",
-    image: 'assets/images/placeholder.svg',
-    alt: 'Formation des agents de santé OUH'
-  },
-  {
-    id: 'seed-3',
-    title: "Distribution d'aide d'urgence suite aux inondations du Grand-Anse",
+    id: 'louh-au-service-des-desherites',
+    slug: 'louh-au-service-des-desherites',
+    title: "L'OUH au service des déshérités",
     category: 'humanitaire',
-    publishedAt: '2024-11-28',
-    excerpt: "Suite aux inondations dévastatrices qui ont frappé le département du Grand-Anse, l'OUH a mobilisé ses équipes pour distribuer vivres, médicaments et matériel d'hygiène à plus de 800 familles sinistrées dans les zones les plus touchées.",
+    publishedAt: '2024-12-08',
+    author: 'Joël Asher Lévy-Cohen',
+    excerpt: "De l'art d'aider Haïti — Quand l'humanitaire est une véritable vocation sacerdotale. L'Organisation de l'Union haïtienne (OUH), fondée en 1995, est un organisme à but non lucratif dûment enregistré selon les lois haïtiennes et québécoises.",
     image: 'assets/images/placeholder.svg',
-    alt: 'Distribution humanitaire OUH Grand-Anse'
-  },
-  {
-    id: 'seed-4',
-    title: "Séminaire scientifique sur la santé communautaire en Haïti",
-    category: 'education',
-    publishedAt: '2024-10-05',
-    excerpt: "L'OUH a organisé un séminaire réunissant des experts haïtiens et internationaux autour des enjeux de santé publique, de développement durable et de renforcement des systèmes de santé locaux. Cet événement a permis de partager les dernières avancées et bonnes pratiques.",
-    image: 'assets/images/placeholder.svg',
-    alt: 'Séminaire scientifique OUH santé communautaire'
-  },
-  {
-    id: 'seed-5',
-    title: "Campagne de vaccination contre le choléra dans l'Artibonite",
-    category: 'sante',
-    publishedAt: '2024-09-20',
-    excerpt: "En partenariat avec des organisations internationales de santé, l'OUH a mené une campagne de vaccination d'urgence dans plusieurs communes de l'Artibonite, permettant de vacciner plus de 2 000 personnes contre le choléra et d'autres maladies évitables.",
-    image: 'assets/images/placeholder.svg',
-    alt: 'Campagne vaccination OUH Artibonite'
-  },
-  {
-    id: 'seed-6',
-    title: "Assemblée générale annuelle de l'OUH : bilan 2024 et perspectives",
-    category: 'evenements',
-    publishedAt: '2024-08-15',
-    excerpt: "L'OUH a tenu son assemblée générale annuelle, réunissant membres, partenaires et donateurs pour faire le bilan des activités de l'année écoulée et définir les priorités stratégiques pour 2025. Un moment fort de cohésion et d'engagement collectif.",
-    image: 'assets/images/placeholder.svg',
-    alt: 'Assemblée générale OUH 2024'
+    alt: "L'OUH au service des déshérités"
   }
 ];
 
-/* ── Labels et classes par catégorie ── */
 const CAT_META = {
-  sante:       { label: 'Santé',       cls: 'cat-sante' },
-  education:   { label: 'Éducation',   cls: 'cat-education' },
-  humanitaire: { label: 'Humanitaire', cls: 'cat-humanitaire' },
-  evenements:  { label: 'Événements',  cls: 'cat-evenements' }
+  sante:       { label: 'Santé',       cls: 'cat-sante',       color: '#0e7490' },
+  education:   { label: 'Éducation',   cls: 'cat-education',   color: '#4169E1' },
+  humanitaire: { label: 'Humanitaire', cls: 'cat-humanitaire', color: '#16a34a' },
+  evenements:  { label: 'Événements',  cls: 'cat-evenements',  color: '#6366f1' }
 };
 
+const MOIS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
 function formatDate(iso) {
-  const d = new Date(iso);
+  const d = new Date(iso + 'T12:00:00Z');
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
+function getYear(iso)  { return new Date(iso + 'T12:00:00Z').getFullYear(); }
+function getMonth(iso) { return new Date(iso + 'T12:00:00Z').getMonth(); } // 0-indexed
+
 function buildCard(art) {
-  const meta = CAT_META[art.category] || { label: art.category, cls: 'cat-education' };
-  const url  = `article.html?id=${encodeURIComponent(art.id)}`;
+  const meta = CAT_META[art.category] || { label: art.category, cls: 'cat-humanitaire' };
+  const url  = `article.html?id=${encodeURIComponent(art.slug || art.id)}`;
   return `
     <article class="actu-card animate-on-scroll" role="listitem">
       <a href="${url}" class="actu-card-img-wrap" tabindex="-1" aria-hidden="true">
@@ -568,43 +650,93 @@ function buildCard(art) {
     </article>`;
 }
 
-function renderGrid(articles, cat) {
-  const grid    = document.getElementById('actu-grid');
-  const counter = document.getElementById('actu-count');
-  const filtered = cat === 'tous' ? articles : articles.filter(a => a.category === cat);
+function applyFilters(articles, cat, year, month) {
+  return articles.filter(a => {
+    if (cat  !== 'tous' && a.category !== cat)               return false;
+    if (year !== null   && getYear(a.publishedAt)  !== year) return false;
+    if (month !== null  && getMonth(a.publishedAt) !== month) return false;
+    return true;
+  }).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+}
 
-  counter.textContent = filtered.length + ' article' + (filtered.length !== 1 ? 's' : '');
+function renderGrid(filtered) {
+  const grid = document.getElementById('actu-grid');
+  document.getElementById('actu-count').textContent =
+    filtered.length + ' article' + (filtered.length !== 1 ? 's' : '');
 
   if (!filtered.length) {
     grid.innerHTML = `
-      <div class="actu-empty">
+      <div class="actu-empty" style="grid-column:1/-1;">
         <div class="actu-empty-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4169E1" stroke-width="1.5">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
         </div>
-        <h3>Aucun article dans cette catégorie</h3>
-        <p>Revenez bientôt ou consultez toutes nos actualités.</p>
+        <h3>Aucun article pour ces filtres</h3>
+        <p>Essayez de modifier vos critères ou revenez bientôt.</p>
       </div>`;
     return;
   }
-
-  grid.innerHTML = filtered
-    .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-    .map(buildCard)
-    .join('');
-
-  /* Réactive les animations pour les nouvelles cartes */
-  if (window.OUH && typeof window.OUH.initScrollAnimations === 'function') {
+  grid.innerHTML = filtered.map(buildCard).join('');
+  if (window.OUH && typeof window.OUH.initScrollAnimations === 'function')
     window.OUH.initScrollAnimations();
+}
+
+function buildYearFilters(articles, currentYear, onSelect) {
+  const years = [...new Set(articles.map(a => getYear(a.publishedAt)))].sort((a,b) => b-a);
+  const el = document.getElementById('filter-years');
+  el.innerHTML = `<button class="actu-filter${currentYear===null?' active':''}" data-filter-type="year" data-value="all">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Toutes les années
+    </button>` +
+    years.map(y => `<button class="actu-filter${currentYear===y?' active':''}" data-filter-type="year" data-value="${y}">${y}
+        <span class="actu-filter-count">${articles.filter(a=>getYear(a.publishedAt)===y).length}</span>
+      </button>`).join('');
+  el.querySelectorAll('[data-filter-type="year"]').forEach(b => b.addEventListener('click', () => onSelect(b.dataset.value)));
+}
+
+function buildMonthFilters(articles, selectedYear, currentMonth, onSelect) {
+  const block = document.getElementById('block-months');
+  if (selectedYear === null) { block.style.display = 'none'; return; }
+  const months = [...new Set(
+    articles.filter(a => getYear(a.publishedAt) === selectedYear).map(a => getMonth(a.publishedAt))
+  )].sort((a,b) => a-b);
+  if (!months.length) { block.style.display = 'none'; return; }
+  block.style.display = 'block';
+  const el = document.getElementById('filter-months');
+  el.innerHTML = `<button class="actu-filter${currentMonth===null?' active':''}" data-filter-type="month" data-value="all">Tous les mois</button>` +
+    months.map(m => `<button class="actu-filter${currentMonth===m?' active':''}" data-filter-type="month" data-value="${m}">${MOIS_FR[m]}
+        <span class="actu-filter-count">${articles.filter(a=>getYear(a.publishedAt)===selectedYear&&getMonth(a.publishedAt)===m).length}</span>
+      </button>`).join('');
+  el.querySelectorAll('[data-filter-type="month"]').forEach(b => b.addEventListener('click', () => onSelect(b.dataset.value)));
+}
+
+function updateActiveTags(cat, year, month) {
+  const tags = document.getElementById('active-tags');
+  const items = [];
+  if (cat !== 'tous') {
+    const m = CAT_META[cat];
+    items.push(`<button class="actu-active-tag" data-clear="cat">
+      <span style="width:7px;height:7px;border-radius:50%;background:${m?.color||'#4169E1'};display:inline-block;"></span>
+      ${m?.label||cat} ×</button>`);
   }
+  if (year !== null) items.push(`<button class="actu-active-tag" data-clear="year">${year} ×</button>`);
+  if (month !== null) items.push(`<button class="actu-active-tag" data-clear="month">${MOIS_FR[month]} ×</button>`);
+  tags.innerHTML = items.join('');
+}
+
+function updateCatCounts(articles) {
+  ['sante','education','humanitaire','evenements'].forEach(c => {
+    const el = document.getElementById('count-' + c);
+    if (el) el.textContent = articles.filter(a => a.category === c).length || '';
+  });
+  const el = document.getElementById('count-tous');
+  if (el) el.textContent = articles.length;
 }
 
 (async function init() {
   let articles = SEED_ARTICLES;
-  let currentCat = 'tous';
 
-  /* Tentative de chargement depuis IndexedDB */
   try {
     if (typeof DataStore !== 'undefined') {
       await DataStore.init();
@@ -612,23 +744,57 @@ function renderGrid(articles, cat) {
       const published = stored.filter(a => a.status === 'published');
       if (published.length > 0) articles = published;
     }
-  } catch (_) { /* Utiliser les articles par défaut */ }
+  } catch (_) { /* repli sur SEED */ }
 
-  /* Premier rendu */
-  renderGrid(articles, currentCat);
+  let currentCat   = 'tous';
+  let currentYear  = null;
+  let currentMonth = null;
 
-  /* Filtres */
-  document.querySelectorAll('.actu-filter').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.actu-filter').forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-pressed', 'false');
-      });
-      btn.classList.add('active');
-      btn.setAttribute('aria-pressed', 'true');
-      currentCat = btn.dataset.cat;
-      renderGrid(articles, currentCat);
+  function refresh() {
+    const filtered = applyFilters(articles, currentCat, currentYear, currentMonth);
+    renderGrid(filtered);
+    updateActiveTags(currentCat, currentYear, currentMonth);
+    buildYearFilters(articles, currentYear, val => {
+      currentYear  = val === 'all' ? null : parseInt(val);
+      currentMonth = null;
+      refresh();
     });
+    buildMonthFilters(articles, currentYear, currentMonth, val => {
+      currentMonth = val === 'all' ? null : parseInt(val);
+      refresh();
+    });
+    /* Met à jour les boutons catégories actifs */
+    document.querySelectorAll('[data-filter-type="cat"]').forEach(b => {
+      b.classList.toggle('active', b.dataset.value === currentCat);
+    });
+  }
+
+  updateCatCounts(articles);
+  buildYearFilters(articles, currentYear, val => {
+    currentYear  = val === 'all' ? null : parseInt(val);
+    currentMonth = null;
+    refresh();
+  });
+  buildMonthFilters(articles, currentYear, currentMonth, () => {});
+  refresh();
+
+  /* Filtres catégories */
+  document.querySelectorAll('[data-filter-type="cat"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentCat   = btn.dataset.value;
+      currentMonth = null;
+      refresh();
+    });
+  });
+
+  /* Clic sur les tags actifs pour effacer */
+  document.getElementById('active-tags').addEventListener('click', e => {
+    const btn = e.target.closest('[data-clear]');
+    if (!btn) return;
+    if (btn.dataset.clear === 'cat')   { currentCat   = 'tous'; }
+    if (btn.dataset.clear === 'year')  { currentYear  = null; currentMonth = null; }
+    if (btn.dataset.clear === 'month') { currentMonth = null; }
+    refresh();
   });
 })();
 </script>
