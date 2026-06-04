@@ -37,13 +37,26 @@ insert into public.medecins (nom, specialite, initiales, couleur_debut, couleur_
   ('Dr THOME',      'Orthopédiste',              'TO', '#4169E1', '#60A5FA', 18, true)
 on conflict do nothing;
 
--- ── Articles de démonstration (optionnel — supprime ce bloc si non voulu) ──
+-- ── Article réel (texte exact de ouhhaiti.org, publié le 08 décembre 2024) ──
 insert into public.articles (title, slug, excerpt, category, status, author, published_at, content) values
-  ('Mission médicale à Carrefour-Poy : plus de 500 patients consultés',
-   'mission-medicale-carrefour-poy-500-patients',
-   'L''équipe médicale de l''OUH a mené une mission intensive de trois jours dans la région de Carrefour-Poy.',
-   'sante', 'published', 'Équipe OUH', now(),
-   '<p>Du 12 au 14 mars 2025, l''équipe médicale de l''OUH a déployé ses forces dans la région de Carrefour-Poy.</p>')
+  ('L''OUH au service des déshérités',
+   'louh-au-service-des-desherites',
+   'De l''art d''aider Haïti — Quand l''humanitaire est une véritable vocation sacerdotale. L''Organisation de l''Union haïtienne (OUH) est légalement et juridiquement un organisme à but non lucratif dûment enregistré selon les lois haïtiennes et québécoises.',
+   'humanitaire',
+   'published',
+   'Joël Asher Lévy-Cohen',
+   '2024-12-08T00:00:00Z',
+   '<h2>De l''art d''aider Haïti</h2>
+<h3>Quand l''humanitaire est une véritable vocation sacerdotale</h3>
+<blockquote>« Il ne faut jamais attendre une minute pour commencer à changer le monde. » — Anne Frank</blockquote>
+<p>L''Organisation de l''Union haïtienne (OUH) est légalement et juridiquement un organisme à but non lucratif dûment enregistré selon les lois haïtiennes et québécoises. Celle-ci est, en réalité, fondée en 1995 par M. Emmanuel Herly Petit, un Haïtien de la diaspora installé au Québec et au Canada depuis trois décennies. Évoluant dans le secteur hospitalier de son pays d''accueil que sont le Québec et le Canada, il a eu l''idée de répondre à certains besoins essentiels qui se posent crûment dans son pays d''origine, Haïti, en termes d''intégration des populations défavorisées ou déshéritées, lesquelles peinent à accéder aux soins de santé primaires.</p>
+<p>Il y a lieu de mentionner que cette idée d''Emmanuel Herly Petit de participer activement et, surtout, positivement à l''insertion de ses Concitoyens les plus démunis date réellement de l''époque où il œuvrait d''antan en Haïti en tant que moniteur au sein de la Croix-Rouge.</p>
+<p>Dans la pratique courante, l''OUH est à vrai dire un organisme d''utilité publique. Elle se veut un « partenaire » stratégique de l''État haïtien dans l''accomplissement de ses missions de souveraineté. À cet effet, l''OUH a conclu, au mois d''octobre 1997, un accord de partenariat avec l''État haïtien en vue de la redynamisation de divers centres de santé jugés dysfonctionnels. Dans le cadre de ladite convention, l''OUH a obtenu du Ministère de la Santé publique la gestion du Centre de santé de Carrefour-Poy.</p>
+<p>Depuis mars 2003, l''OUH bénéficie de la qualité spécifique d''ONG reconnue administrativement par les autorités haïtiennes. Elle a su mobiliser l''expertise des professionnels de la santé du Canada et du Québec pour les mettre au service du Centre de santé de Carrefour-Poy et autres institutions médicales d''Haïti.</p>
+<p>Parmi les professionnels de la santé canadiens qui ont participé au projet « Haïti Santé et Développement » piloté par l''OUH : le Dr Selim Rashed (pédiatre, hôpital Montréal pour enfants), la Dre Yvette Bony (hématologue, hôpital Maisonneuve-Rosemont), le Dr Serge Raphaël (psychiatre, hôpitaux Jean-Talon et Marie-Enfant), le Dr Carlos Vanisschott (gynécologue) et le Dr André Arcelin (généraliste).</p>
+<p>En Haïti, l''OUH est partenaire de Médecins sans Frontières (MSF), le CECI, OXFAM-Québec, l''hôpital de Cité Soleil, l''hôpital Général de Port-au-Prince et l''hôpital Chancerel.</p>
+<p>Entre autres activités, l''OUH distribue l''eau potable dans la région de Carrefour-Poy et participe aux campagnes de sensibilisation sur la tuberculose, le VIH/Sida, la malaria et le tétanos.</p>
+<p>Lors du séisme du <strong>12 janvier 2010</strong>, l''OUH a distribué des fils de suture, des médicaments et des pansements, et a procédé à des chirurgies mineures.</p>')
 on conflict (slug) do nothing;
 
 -- ============================================================
