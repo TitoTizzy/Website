@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestion Admins | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;}
+    .modal-box{background:#fff;border-radius:var(--radius-xl);padding:2rem;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,.2);}
+    .modal-title{font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--color-primary);margin-bottom:1.25rem;}
+    .role-badge{display:inline-block;padding:.18rem .55rem;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+    .role-superadmin{background:rgba(99,102,241,.12);color:#4338ca;}
+    .role-admin_general{background:rgba(65,105,225,.12);color:#1d4ed8;}
+    .role-admin_blog{background:rgba(16,185,129,.12);color:#065f46;}
+    .role-admin_gallery{background:rgba(245,158,11,.12);color:#92400e;}
+    .modal-box.lg{max-width:560px;}
+    .admin-row-clickable{cursor:pointer;}
+    .admin-row-clickable:hover td{background:rgba(0,0,122,.03);}
+    /* Panneau permissions */
+    .perm-head{display:flex;align-items:center;gap:.875rem;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--color-border);}
+    .perm-avatar{width:48px;height:48px;border-radius:50%;background:var(--color-primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;color:#fff;flex-shrink:0;}
+    .perm-name{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--color-dark);}
+    .perm-sub{font-size:.78rem;color:var(--color-muted);}
+    .perm-section-title{font-family:var(--font-ui);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-muted);margin:1.25rem 0 .5rem;}
+    .perm-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem .875rem;border:1px solid var(--color-border);border-radius:var(--radius-md);margin-bottom:.5rem;transition:border-color .15s,background .15s;}
+    .perm-row:hover{border-color:rgba(65,105,225,.3);}
+    .perm-row-info{display:flex;align-items:center;gap:.7rem;min-width:0;}
+    .perm-row-icon{width:32px;height:32px;border-radius:8px;background:rgba(65,105,225,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-accent);}
+    .perm-row-text strong{display:block;font-size:.85rem;font-weight:600;color:var(--color-dark);}
+    .perm-row-text span{font-size:.72rem;color:var(--color-muted);}
+    /* Interrupteur (toggle switch) */
+    .toggle{position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0;}
+    .toggle input{opacity:0;width:0;height:0;}
+    .toggle-slider{position:absolute;inset:0;cursor:pointer;background:var(--color-border);border-radius:999px;transition:background .2s;}
+    .toggle-slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+    .toggle input:checked + .toggle-slider{background:var(--color-success);}
+    .toggle input:checked + .toggle-slider::before{transform:translateX(18px);}
+    .toggle input:disabled + .toggle-slider{opacity:.5;cursor:not-allowed;}
+    .perm-note{background:rgba(65,105,225,.06);border:1px solid rgba(65,105,225,.15);border-radius:var(--radius-md);padding:.7rem .875rem;font-size:.78rem;color:var(--color-dark);line-height:1.55;margin-top:1rem;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Gestion des Admins</h1>
+        <div class="admin-breadcrumb"><span>SuperAdmin</span><span>/</span><span>Admins</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <button class="btn btn-primary btn-sm" id="btn-new-admin">+ Nouvel admin</button>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+    <div class="admin-content">
+      <div class="admin-card" style="padding:0;">
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="admins-table">
+            <thead>
+              <tr>
+                <th>Admin</th><th>Rôle</th><th>Statut</th><th>Dernière connexion</th><th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admins-tbody">
+              <tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--color-muted);">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal nouvel admin -->
+<div class="modal-overlay" id="modal-new" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <h2 class="modal-title" id="modal-title">Créer un administrateur</h2>
+    <form id="new-admin-form" novalidate>
+      <div class="admin-form-group">
+        <label class="admin-form-label" for="na-name">Nom complet <span class="required">*</span></label>
+        <input id="na-name" type="text" class="admin-form-input" placeholder="Prénom Nom" required />
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label" for="na-username">Nom d'utilisateur <span class="required">*</span></label>
+        <input id="na-username" type="text" class="admin-form-input" placeholder="prenom.nom" required autocomplete="off" />
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label" for="na-email">Email <span class="required">*</span></label>
+        <input id="na-email" type="email" class="admin-form-input" placeholder="admin@ouhhaiti.org" required autocomplete="off" />
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label" for="na-password">Mot de passe provisoire <span class="required">*</span></label>
+        <input id="na-password" type="text" class="admin-form-input" placeholder="min. 8 caractères" required minlength="8" autocomplete="off" />
+        <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">L'administrateur pourra le changer plus tard. Communiquez-le-lui de façon sûre.</p>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label" for="na-role">Rôle <span class="required">*</span></label>
+        <select id="na-role" class="admin-form-input admin-form-select" required>
+          <option value="">— Choisir —</option>
+          <option value="admin_blog">Admin Blog</option>
+          <option value="admin_gallery">Admin Galerie</option>
+          <option value="admin_general">Admin Général</option>
+          <option value="superadmin">SuperAdmin</option>
+        </select>
+      </div>
+      <p style="font-size:.75rem;color:var(--color-muted);background:var(--color-light);padding:.6rem .875rem;border-radius:8px;margin-bottom:1rem;">
+        Le compte de connexion <strong>et</strong> le profil sont créés automatiquement. L'administrateur pourra se connecter immédiatement.
+      </p>
+      <div id="modal-error" style="display:none;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.55rem .8rem;font-size:.78rem;color:#991b1b;margin-bottom:.75rem;"></div>
+      <div style="display:flex;gap:.75rem;justify-content:flex-end;">
+        <button type="button" id="btn-cancel-modal" class="btn btn-ghost btn-sm">Annuler</button>
+        <button type="submit" class="btn btn-primary btn-sm" id="btn-create-admin">Créer l'administrateur</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal permissions / accès -->
+<div class="modal-overlay" id="modal-perms" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="perm-title">
+  <div class="modal-box lg">
+    <h2 class="modal-title" id="perm-title">Accès &amp; permissions</h2>
+
+    <div class="perm-head">
+      <div class="perm-avatar" id="perm-avatar">AD</div>
+      <div>
+        <div class="perm-name" id="perm-name">—</div>
+        <div class="perm-sub" id="perm-sub">—</div>
+      </div>
+    </div>
+
+    <div id="perm-superadmin-note" style="display:none;" class="perm-note">
+      Cet administrateur est <strong>SuperAdmin</strong> : il dispose automatiquement de l'accès complet à tous les modules. Les permissions ne sont pas modifiables.
+    </div>
+
+    <div id="perm-toggles">
+      <div class="perm-section-title">Contenu du site</div>
+      <div class="perm-row">
+        <div class="perm-row-info">
+          <div class="perm-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="perm-row-text"><strong>Articles (Blog)</strong><span>Créer, modifier et publier des articles</span></div>
+        </div>
+        <label class="toggle"><input type="checkbox" data-perm="blog.*"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="perm-row">
+        <div class="perm-row-info">
+          <div class="perm-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <div class="perm-row-text"><strong>Galeries</strong><span>Gérer les photos de la galerie</span></div>
+        </div>
+        <label class="toggle"><input type="checkbox" data-perm="gallery.*"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="perm-row">
+        <div class="perm-row-info">
+          <div class="perm-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <div class="perm-row-text"><strong>Médecins</strong><span>Gérer la liste des médecins collaborateurs</span></div>
+        </div>
+        <label class="toggle"><input type="checkbox" data-perm="medecins.*"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="perm-row">
+        <div class="perm-row-info">
+          <div class="perm-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <div class="perm-row-text"><strong>Images du site</strong><span>Remplacer photos et descriptions des pages</span></div>
+        </div>
+        <label class="toggle"><input type="checkbox" data-perm="site_images.*"><span class="toggle-slider"></span></label>
+      </div>
+
+      <div class="perm-section-title">Administration (réservé)</div>
+      <div class="perm-row">
+        <div class="perm-row-info">
+          <div class="perm-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="perm-row-text"><strong>Gestion des admins</strong><span>Créer et gérer les comptes administrateurs</span></div>
+        </div>
+        <label class="toggle"><input type="checkbox" data-perm="admins.*"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="perm-row">
+        <div class="perm-row-info">
+          <div class="perm-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+          <div class="perm-row-text"><strong>Paramètres du site</strong><span>Coordonnées, réseaux sociaux, options</span></div>
+        </div>
+        <label class="toggle"><input type="checkbox" data-perm="settings.*"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="perm-row">
+        <div class="perm-row-info">
+          <div class="perm-row-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="perm-row-text"><strong>Journaux d'activité</strong><span>Consulter l'historique des actions</span></div>
+        </div>
+        <label class="toggle"><input type="checkbox" data-perm="logs.*"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div id="perm-error" style="display:none;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.55rem .8rem;font-size:.78rem;color:#991b1b;margin-top:1rem;"></div>
+
+    <div style="display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem;">
+      <button type="button" id="btn-cancel-perms" class="btn btn-ghost btn-sm">Fermer</button>
+      <button type="button" id="btn-save-perms" class="btn btn-primary btn-sm">Enregistrer les accès</button>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script><script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script><script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AdminUI.init({ page:'admins', roles:['superadmin'] });
+  await DataStore.init();
+  await DataStore.importFromJSON('admins', '/data/admins.json');
+
+  let admins = [];
+  async function load() {
+    try { admins = await DataStore.getAll('admins'); } catch { admins=[]; }
+    render();
+  }
+
+  const ROLE_LABELS = { superadmin:'SuperAdmin', admin_general:'Admin Général', admin_blog:'Admin Blog', admin_gallery:'Admin Galerie' };
+
+  function render() {
+    const tbody = document.getElementById('admins-tbody');
+    if (!admins.length) { tbody.innerHTML=AdminUI.emptyRow(5,'Aucun administrateur.'); return; }
+    tbody.innerHTML = admins.map(a => `
+      <tr>
+        <td>
+          <div class="admin-row-clickable" data-action="perms" data-id="${a.id}" style="display:flex;align-items:center;gap:.75rem;padding:.25rem;margin:-.25rem;border-radius:var(--radius-md);" title="Gérer les accès de ${(a.displayName||a.username||'').replace(/"/g,'')}">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--color-primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0;">
+              ${(a.displayName||a.username||'?').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)}
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:.85rem;color:var(--color-primary);">${a.displayName||a.username}</div>
+              <div style="font-size:.72rem;color:var(--color-muted);">${a.email||''}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="role-badge role-${a.role}">${ROLE_LABELS[a.role]||a.role}</span></td>
+        <td>${a.active===false ? '<span class="badge badge-red">Inactif</span>' : '<span class="badge badge-green">Actif</span>'}</td>
+        <td style="font-size:.78rem;color:var(--color-muted);">${AdminUI.formatDate(a.lastLogin) || 'Jamais'}</td>
+        <td>
+          <div class="admin-table-actions" style="justify-content:flex-end;">
+            <button class="admin-action-btn" data-action="perms" data-id="${a.id}" title="Gérer les accès">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+            <button class="admin-action-btn" data-action="toggle" data-id="${a.id}" data-active="${a.active!==false}" title="${a.active===false?'Activer':'Désactiver'} le compte">
+              ${a.active===false
+                ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`
+                : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>`}
+            </button>
+            <button class="admin-action-btn danger" data-action="delete" data-id="${a.id}" data-name="${(a.displayName||a.username||'').replace(/"/g,'')}" title="Supprimer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  /* ── Helper : appeler la fonction serveur "admin-users" ──
+     Transmet le jeton de session pour que le serveur vérifie
+     que l'appelant est bien superadmin. */
+  async function callAdminFn(payload) {
+    const cfg = window.SUPABASE_CONFIG;
+    const { data: { session } } = await window.sb.auth.getSession();
+    if (!session) throw new Error('Session expirée. Reconnectez-vous.');
+    const res = await fetch(cfg.url + '/functions/v1/admin-users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.access_token,
+        'apikey': cfg.anonKey
+      },
+      body: JSON.stringify(payload)
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(out.error || ('Erreur serveur (' + res.status + ')'));
+    return out;
+  }
+
+  document.getElementById('admins-table').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const { action, id, active, name } = btn.dataset;
+    const currentUser = window.Auth?.getCurrentUser();
+
+    if (action === 'perms') { openPerms(id); return; }
+
+    if (action === 'toggle') {
+      if (id === currentUser?.id) { AdminUI.toast('Impossible de modifier votre propre statut.','warning'); return; }
+      const newActive = active === 'true' ? false : true;
+      try { await DataStore.update('admins',id,{active:newActive}); const a=admins.find(x=>x.id===id); if(a)a.active=newActive; render(); AdminUI.toast(newActive?'Compte activé.':'Compte désactivé.','success'); }
+      catch { AdminUI.toast('Erreur.','error'); }
+    }
+
+    if (action === 'delete') {
+      if (id === currentUser?.id) { AdminUI.toast('Impossible de supprimer votre propre compte.','warning'); return; }
+      if (!AdminUI.confirm(`Supprimer « ${name} » ? Le compte de connexion ET le profil seront supprimés. Action irréversible.`)) return;
+      try {
+        await callAdminFn({ action: 'delete', adminId: id });
+        admins = admins.filter(a => a.id !== id); render();
+        AdminUI.toast('Administrateur supprimé (compte + profil).','success');
+      } catch(ex) { AdminUI.toast('Erreur : ' + ex.message, 'error'); }
+    }
+  });
+
+  /* ── Modal nouvel admin ── */
+  document.getElementById('btn-new-admin').addEventListener('click', () => document.getElementById('modal-new').style.display='flex');
+  document.getElementById('btn-cancel-modal').addEventListener('click', () => closeNewAdmin());
+  document.getElementById('modal-new').addEventListener('click', e => { if(e.target===e.currentTarget) closeNewAdmin(); });
+
+  const ROLE_DEFAULT_PERMS = {
+    superadmin:    null,
+    admin_general: ['blog.*','gallery.*','medecins.*','site_images.*'],
+    admin_blog:    ['blog.*'],
+    admin_gallery: ['gallery.*']
+  };
+
+  /* Création complète (compte + profil) via la fonction serveur */
+  document.getElementById('new-admin-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('modal-error'); err.style.display='none';
+    const g = id => document.getElementById(id).value.trim();
+    const name=g('na-name'), username=g('na-username'), email=g('na-email'),
+          password=document.getElementById('na-password').value, role=g('na-role');
+
+    if(!name||!username||!email||!password||!role){ err.style.display='block'; err.textContent='Tous les champs sont obligatoires.'; return; }
+    if(password.length < 8){ err.style.display='block'; err.textContent='Le mot de passe doit faire au moins 8 caractères.'; return; }
+    if(admins.find(a=>a.username===username)){ err.style.display='block'; err.textContent='Ce nom d\'utilisateur existe déjà.'; return; }
+
+    const btn = document.getElementById('btn-create-admin');
+    btn.disabled = true; btn.textContent = 'Création…';
+    try {
+      const out = await callAdminFn({
+        action: 'create',
+        email, password, displayName: name, username, role,
+        permissions: ROLE_DEFAULT_PERMS[role] || null
+      });
+      if (out.profile) {
+        const p = out.profile;
+        admins.push({
+          id: p.id, userId: p.user_id, displayName: p.display_name,
+          username: p.username, email: p.email, role: p.role,
+          permissions: p.permissions, active: p.active, lastLogin: null
+        });
+        render();
+      }
+      AdminUI.toast('Administrateur créé ! Il peut se connecter immédiatement.','success');
+      closeNewAdmin();
+    } catch(ex) {
+      err.style.display='block';
+      err.textContent = 'Erreur : ' + ex.message;
+    } finally {
+      btn.disabled = false; btn.textContent = 'Créer l\'administrateur';
+    }
+  });
+
+  function closeNewAdmin() {
+    document.getElementById('modal-new').style.display='none';
+    document.getElementById('new-admin-form').reset();
+  }
+
+  /* ── Panneau accès & permissions ── */
+  const permModal   = document.getElementById('modal-perms');
+  const permToggles = document.getElementById('perm-toggles');
+  let   permEditingId = null;
+
+  function openPerms(id) {
+    const a = admins.find(x => x.id === id);
+    if (!a) return;
+    permEditingId = id;
+
+    /* En-tête */
+    document.getElementById('perm-avatar').textContent =
+      (a.displayName||a.username||'?').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2);
+    document.getElementById('perm-name').textContent = a.displayName || a.username;
+    document.getElementById('perm-sub').textContent  = (ROLE_LABELS[a.role]||a.role) + ' · ' + (a.email||'');
+
+    const isSuper = a.role === 'superadmin';
+    document.getElementById('perm-superadmin-note').style.display = isSuper ? 'block' : 'none';
+
+    /* Permissions effectives actuelles (override ou repli sur le rôle) */
+    const eff = window.Auth.effectivePermissions(a);
+    const hasAll = eff.includes('*');
+
+    permToggles.querySelectorAll('input[data-perm]').forEach(input => {
+      const perm = input.dataset.perm;
+      input.checked  = hasAll || eff.includes(perm);
+      input.disabled = isSuper;   // superadmin = tout, non modifiable
+    });
+
+    document.getElementById('perm-error').style.display = 'none';
+    permModal.style.display = 'flex';
+  }
+
+  function closePerms() { permModal.style.display = 'none'; permEditingId = null; }
+
+  document.getElementById('btn-cancel-perms').addEventListener('click', closePerms);
+  permModal.addEventListener('click', e => { if (e.target === e.currentTarget) closePerms(); });
+
+  document.getElementById('btn-save-perms').addEventListener('click', async () => {
+    if (!permEditingId) return;
+    const a = admins.find(x => x.id === permEditingId);
+    if (!a) return;
+
+    if (a.role === 'superadmin') { closePerms(); return; }  // rien à enregistrer
+
+    const perms = [];
+    permToggles.querySelectorAll('input[data-perm]:checked').forEach(input => perms.push(input.dataset.perm));
+
+    try {
+      await DataStore.update('admins', permEditingId, { permissions: perms });
+      a.permissions = perms;
+      await DataStore.logAction(window.Auth?.getCurrentUser()?.id, 'admins.permissions', { id: permEditingId, count: perms.length });
+      AdminUI.toast('Accès mis à jour pour ' + (a.displayName||a.username) + '.', 'success');
+      closePerms();
+    } catch (ex) {
+      const err = document.getElementById('perm-error');
+      err.style.display = 'block';
+      err.textContent = 'Erreur : ' + (ex.message || 'enregistrement impossible');
+    }
+  });
+
+  await load();
+});
+</script>
+</body></html>

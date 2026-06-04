@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EEF4FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DBEAFE;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4169E1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(65,105,225,0.06)" stroke-width="1"/>
+  </pattern>
+  <rect width="800" height="500" fill="url(#grid)"/>
+
+  <!-- Camera icon background circle -->
+  <circle cx="400" cy="215" r="72" fill="rgba(65,105,225,0.10)"/>
+
+  <!-- Camera icon -->
+  <g transform="translate(400,215)" fill="none" stroke="url(#iconGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Camera body -->
+    <rect x="-38" y="-24" width="76" height="54" rx="8" fill="rgba(65,105,225,0.12)" stroke="url(#iconGrad)"/>
+    <!-- Lens -->
+    <circle cx="0" cy="7" r="16" fill="rgba(65,105,225,0.08)"/>
+    <circle cx="0" cy="7" r="10" fill="rgba(65,105,225,0.15)"/>
+    <!-- Viewfinder bump -->
+    <path d="M-14,-24 L-14,-32 Q-14,-36 -10,-36 L10,-36 Q14,-36 14,-32 L14,-24" fill="rgba(65,105,225,0.12)"/>
+    <!-- Flash dot -->
+    <circle cx="26" cy="-12" r="4" fill="rgba(65,105,225,0.3)" stroke="none"/>
+  </g>
+
+  <!-- "Photo à venir" text -->
+  <text x="400" y="328" text-anchor="middle"
+    font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    font-size="20" font-weight="600" letter-spacing="0.04em"
+    fill="#4169E1" opacity="0.85">Photo à venir</text>
+
+  <!-- Subtitle -->
+  <text x="400" y="358" text-anchor="middle"
+    font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif"
+    font-size="13" font-weight="400"
+    fill="#6B7280" opacity="0.7">Remplacez cette image par une photo réelle</text>
+
+  <!-- Bottom decorative line -->
+  <rect x="340" y="380" width="120" height="2" rx="1" fill="url(#iconGrad)" opacity="0.4"/>
+</svg>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modifier membre du conseil | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .form-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
+    @media(max-width:860px){.form-layout{grid-template-columns:1fr;}}
+    .side-card{background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);padding:1.25rem;box-shadow:var(--shadow-sm);position:sticky;top:80px;margin-bottom:1rem;}
+    .avatar-preview{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:#fff;margin:0 auto 1rem;transition:background .3s;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title" id="topbar-title">Modifier le membre</h1>
+        <div class="admin-breadcrumb"><a href="/admin/conseil/liste-conseil.html" style="color:inherit;">Conseil</a><span>/</span><span>Modifier</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/admin/conseil/liste-conseil.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <div id="state-loading" class="admin-card" style="text-align:center;padding:3rem;"><p style="color:var(--color-muted);">Chargement…</p></div>
+      <div id="state-notfound" class="admin-card" style="display:none;text-align:center;padding:3rem;"><p style="color:var(--color-error);font-weight:600;">Membre introuvable.</p><a href="/admin/conseil/liste-conseil.html" class="btn btn-primary btn-sm" style="margin-top:1rem;">← Retour</a></div>
+
+      <form id="mbr-form" novalidate style="display:none;">
+        <div class="form-layout">
+
+          <div class="admin-card">
+            <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:1.25rem;">Informations du membre</h3>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-nom">Nom complet <span class="required">*</span></label>
+              <input id="f-nom" type="text" class="admin-form-input" required />
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-role">Rôle / fonction <span class="required">*</span></label>
+              <input id="f-role" type="text" class="admin-form-input" required />
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-roletag">Catégorie de couleur du badge</label>
+              <select id="f-roletag" class="admin-form-input admin-form-select">
+                <option value="president">Président</option>
+                <option value="vice">Vice-présidence</option>
+                <option value="coordo">Coordination</option>
+                <option value="secretaire">Secrétariat</option>
+                <option value="tresoriere">Trésorerie</option>
+                <option value="education">Éducation</option>
+                <option value="juridique">Juridique</option>
+                <option value="sante">Santé</option>
+                <option value="membre">Membre (par défaut)</option>
+              </select>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-initiales">Initiales (2 lettres) <span class="required">*</span></label>
+              <input id="f-initiales" type="text" class="admin-form-input" maxlength="2" style="text-transform:uppercase;letter-spacing:.1em;" required />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Utilisées dans l'avatar circulaire <strong>si aucune photo</strong> n'est téléversée.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-photo">Photo du membre <span style="font-weight:500;color:var(--color-muted);">(facultatif)</span></label>
+              <input id="f-photo" type="file" accept="image/*" class="admin-form-input" style="padding:.5rem;" />
+              <div id="photo-current" style="display:none;align-items:center;gap:.6rem;margin-top:.5rem;">
+                <img id="photo-current-img" alt="Photo actuelle" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:1px solid var(--color-border);" />
+                <button type="button" id="btn-remove-photo" class="btn btn-ghost btn-sm" style="font-size:.72rem;">Retirer la photo</button>
+              </div>
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">JPG ou PNG. Laissez vide pour conserver la photo actuelle.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-bio">Biographie / parcours <span style="font-weight:500;color:var(--color-muted);">(facultatif)</span></label>
+              <textarea id="f-bio" class="admin-form-input" rows="5" placeholder="Un ou deux paragraphes sur son parcours…"></textarea>
+            </div>
+
+            <div class="admin-form-group" style="margin-bottom:0;">
+              <label class="admin-form-label" for="f-ordre">Position dans la liste</label>
+              <input id="f-ordre" type="number" class="admin-form-input" min="1" />
+            </div>
+          </div>
+
+          <div>
+            <div class="side-card">
+              <h3 style="font-size:.9rem;font-weight:700;margin-bottom:1rem;">Aperçu</h3>
+              <div class="avatar-preview" id="avatar-preview">??</div>
+              <div style="text-align:center;">
+                <div id="preview-nom" style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-primary);">—</div>
+                <div id="preview-role" style="font-size:.78rem;color:var(--color-muted);margin-top:.3rem;">—</div>
+              </div>
+            </div>
+
+            <div class="side-card">
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-active">Visibilité</label>
+                <select id="f-active" class="admin-form-input admin-form-select">
+                  <option value="true">Visible sur le site</option>
+                  <option value="false">Masqué</option>
+                </select>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--color-border);margin:.875rem 0;">
+              <button type="submit" class="btn btn-primary btn-sm" style="width:100%;margin-bottom:.5rem;">💾 Enregistrer</button>
+              <button type="button" id="btn-delete" class="btn btn-sm" style="width:100%;background:rgba(220,38,38,.08);color:var(--color-error);border:1px solid rgba(220,38,38,.2);">🗑 Supprimer ce membre</button>
+              <div id="form-error" style="display:none;margin-top:.6rem;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.55rem .8rem;font-size:.78rem;color:#991b1b;"></div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script>
+<script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+const ROLE_COLORS = { president:'#00007A', vice:'#4169E1', coordo:'#1a3fa8', secretaire:'#1e3a8a', tresoriere:'#B8860B', education:'#C79A2E', juridique:'#1e293b', sante:'#0e7490', membre:'#4169E1' };
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await AdminUI.init({ page: 'conseil' });
+  await DataStore.init();
+  const id = AdminUI.getParam('id');
+  if (!id) { show('notfound'); return; }
+
+  let mbr;
+  try { mbr = await DataStore.getById('conseil', id); } catch { mbr = null; }
+  if (!mbr) { show('notfound'); return; }
+
+  show('form');
+  document.getElementById('topbar-title').textContent = mbr.nom || 'Modifier';
+
+  const v = (el, val) => { const e = document.getElementById(el); if (e) e.value = val ?? ''; };
+  v('f-nom',      mbr.nom);
+  v('f-role',     mbr.role);
+  v('f-roletag',  mbr.roleTag || 'membre');
+  v('f-initiales',mbr.initiales);
+  v('f-ordre',    mbr.ordre);
+  v('f-bio',      mbr.bio);
+  document.getElementById('f-active').value = mbr.active === false ? 'false' : 'true';
+
+  let photoUrl = mbr.photoUrl || null;
+  let newFile  = null;
+  let previewUrl = null;
+
+  if (photoUrl) {
+    document.getElementById('photo-current').style.display = 'flex';
+    document.getElementById('photo-current-img').src = photoUrl;
+  }
+
+  updatePreview();
+
+  function updatePreview() {
+    const nom  = document.getElementById('f-nom').value.trim() || mbr.nom || 'Nom';
+    const role = document.getElementById('f-role').value.trim() || mbr.role || '—';
+    const init = (document.getElementById('f-initiales').value.trim() || mbr.initiales || '??').toUpperCase().slice(0,2);
+    const tag  = document.getElementById('f-roletag').value;
+    document.getElementById('preview-nom').textContent  = nom;
+    document.getElementById('preview-role').textContent = role;
+    const av = document.getElementById('avatar-preview');
+    const shownPhoto = previewUrl || photoUrl;
+    if (shownPhoto) {
+      av.textContent = '';
+      av.style.background = `center/cover no-repeat url("${shownPhoto}")`;
+    } else {
+      av.textContent = init;
+      av.style.background = ROLE_COLORS[tag] || '#4169E1';
+    }
+  }
+  ['f-nom','f-role','f-initiales','f-roletag'].forEach(elId => {
+    document.getElementById(elId).addEventListener('input', updatePreview);
+    document.getElementById(elId).addEventListener('change', updatePreview);
+  });
+
+  document.getElementById('f-photo').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
+    newFile = file || null;
+    if (file) previewUrl = URL.createObjectURL(file);
+    updatePreview();
+  });
+
+  document.getElementById('btn-remove-photo').addEventListener('click', () => {
+    photoUrl = null; newFile = null;
+    if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
+    document.getElementById('f-photo').value = '';
+    document.getElementById('photo-current').style.display = 'none';
+    updatePreview();
+  });
+
+  let saving = false;
+  document.getElementById('mbr-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (saving) return; saving = true;
+    const err = document.getElementById('form-error'); err.style.display = 'none';
+    const g = elId => document.getElementById(elId).value.trim();
+    const nom = g('f-nom'), role = g('f-role'), initiales = g('f-initiales').toUpperCase();
+    if (!nom || !role || !initiales) { err.style.display='block'; err.textContent='Tous les champs obligatoires doivent être remplis.'; saving=false; return; }
+    try {
+      if (newFile) {
+        if (typeof DataStore.uploadImage !== 'function') throw new Error('Téléversement indisponible hors-ligne.');
+        photoUrl = await DataStore.uploadImage(newFile, 'conseil');
+      }
+      await DataStore.update('conseil', id, {
+        nom, role, roleTag: document.getElementById('f-roletag').value,
+        initiales,
+        ordre: parseInt(g('f-ordre')) || mbr.ordre,
+        active: document.getElementById('f-active').value !== 'false',
+        photoUrl: photoUrl || null,
+        bio: document.getElementById('f-bio').value.trim() || null
+      });
+      await DataStore.logAction(user?.id, 'medecins.update', { conseil: nom });
+      AdminUI.toast('Membre mis à jour !', 'success');
+      setTimeout(() => { window.location.href = '/admin/conseil/liste-conseil.html'; }, 700);
+    } catch(ex) { err.style.display='block'; err.textContent='Erreur : '+(ex.message||'Échec'); saving=false; }
+  });
+
+  document.getElementById('btn-delete').addEventListener('click', async () => {
+    if (!AdminUI.confirm(`Supprimer ${mbr.nom} définitivement ?`)) return;
+    try {
+      await DataStore.delete('conseil', id);
+      AdminUI.toast('Membre supprimé.', 'success');
+      setTimeout(() => { window.location.href = '/admin/conseil/liste-conseil.html'; }, 700);
+    } catch { AdminUI.toast('Erreur suppression.', 'error'); }
+  });
+
+  function show(state) {
+    document.getElementById('state-loading').style.display  = state==='loading'  ? 'block' : 'none';
+    document.getElementById('state-notfound').style.display = state==='notfound' ? 'block' : 'none';
+    document.getElementById('mbr-form').style.display       = state==='form'     ? 'block' : 'none';
+  }
+});
+</script>
+</body></html>

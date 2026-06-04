@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Organisation de l'Union Haïtienne</title>
+  <meta name="description" content="Contactez l'OUH : 390 Av. John Brown, Port-au-Prince. Email : ouhhaiti@gmail.com. Téléphone : 509-3792-4663." />
+  <meta property="og:title"       content="Contact | Organisation de l'Union Haïtienne" />
+  <meta property="og:description" content="Contactez l'OUH : 390 Av. John Brown, Port-au-Prince. Email : ouhhaiti@gmail.com. Téléphone : 509-3792-4663." />
+  <meta property="og:image"       content="https://ouhhaiti.org/assets/images/og-image.jpg" />
+  <meta property="og:url"         content="https://ouhhaiti.org/contact.html" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Organisation de l'Union Haïtienne" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Contact | Organisation de l'Union Haïtienne" />
+  <meta name="twitter:description" content="Contactez l'OUH : 390 Av. John Brown, Port-au-Prince. Email : ouhhaiti@gmail.com. Téléphone : 509-3792-4663." />
+  <link rel="canonical"            href="https://ouhhaiti.org/contact.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/animations.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/responsive.css?v=20260603e" />
+  <style>
+    /* ── Contact page-specific styles ── */
+
+    .contact-hero {
+      background: linear-gradient(135deg, var(--color-primary, #00007A) 0%, #000050 100%);
+      padding: 6rem 0 4rem;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 40% 50%, rgba(0,123,255,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .contact-hero-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.14);
+      color: var(--color-accent, #4169E1);
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.35rem 1.1rem;
+      border-radius: 2rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid rgba(65,105,225,0.4);
+    }
+    .contact-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      line-height: 1.1;
+    }
+    .contact-hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      font-style: italic;
+      color: rgba(255,255,255,0.78);
+    }
+
+    .contact-main {
+      padding: 5rem 0;
+      background: #fff;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-form-row { grid-template-columns: 1fr !important; }
+    }
+
+    .contact-left-img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: var(--radius-xl, 1.25rem);
+      box-shadow: 0 20px 60px rgba(0,0,122,0.15);
+      display: block;
+      margin-bottom: 2rem;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: var(--text-sm, 0.9rem);
+      color: var(--color-muted, #6b7280);
+    }
+    .contact-info-icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--color-primary, #00007A);
+      fill: none;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .contact-info-item a {
+      color: var(--color-primary, #00007A);
+      text-decoration: none;
+    }
+    .contact-info-item a:hover { text-decoration: underline; }
+
+    .contact-socials {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+    .contact-social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-primary, #00007A);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .contact-social-link:hover {
+      background: var(--color-secondary);
+      transform: translateY(-2px);
+    }
+
+    .contact-form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 2.8vw, 2rem);
+      font-weight: 700;
+      color: var(--color-primary, #00007A);
+      margin-bottom: 0.5rem;
+    }
+    .contact-form-subtitle {
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 0.95rem;
+      color: var(--color-muted, #6b7280);
+      margin-bottom: 2rem;
+      line-height: 1.55;
+    }
+
+    .contact-form-group { margin-bottom: 1rem; }
+    .contact-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .contact-form-label {
+      display: block;
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-dark, #1a1a2e);
+      margin-bottom: 0.4rem;
+    }
+    .contact-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--color-border, #e5e7eb);
+      border-radius: var(--radius-md, 0.5rem);
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: var(--text-base, 1rem);
+      color: var(--color-dark, #1a1a2e);
+      background: var(--color-surface, #f9fafb);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+    .contact-input:focus {
+      outline: none;
+      border-color: var(--color-primary, #00007A);
+      box-shadow: 0 0 0 3px rgba(0,0,122,0.1);
+      background: #fff;
+    }
+    textarea.contact-input {
+      resize: vertical;
+      min-height: 150px;
+    }
+    .contact-submit {
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+      background: var(--color-primary, #00007A);
+      color: #fff;
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-md, 0.5rem);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      margin-top: 0.5rem;
+    }
+    .contact-submit:hover {
+      background: var(--color-secondary);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(245,158,11,0.35);
+    }
+    .contact-submit:active { transform: translateY(0); }
+
+    .contact-map-section {
+      background: #f4f6f9;
+      padding: 5rem 0;
+    }
+    .contact-map-embed {
+      width: 100%;
+      height: 400px;
+      border: 0;
+      border-radius: var(--radius-xl, 1.25rem);
+      display: block;
+      box-shadow: 0 8px 32px rgba(0,0,122,0.1);
+    }
+    .contact-map-address {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      margin-top: 1.5rem;
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 0.95rem;
+      color: var(--color-muted, #6b7280);
+    }
+    .contact-map-address svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--color-primary, #00007A);
+      fill: none;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar" role="banner">
+  <div class="container navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <img class="navbar-logo-img" src="assets/images/logo/logo.png" alt="Logo OUH">
+      <div class="navbar-logo-text">
+        <span class="navbar-logo-title">Organisation de l'Union Haïtienne</span>
+        <span class="navbar-logo-sub">ONG depuis 1995</span>
+      </div>
+    </a>
+    <nav class="navbar-nav" aria-label="Navigation principale">
+      <div class="nav-item"><a href="index.html" class="nav-link">Accueil</a></div>
+      <div class="nav-item"><a href="actualites.html" class="nav-link">Actualités</a></div>
+      <div class="nav-item"><a href="galerie.html" class="nav-link">Galerie</a></div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="apropos.html" class="nav-link">À Propos <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="qui-sommes-nous.html" class="dropdown-link">Qui sommes-nous</a>
+          <a href="conseil-administration.html" class="dropdown-link">Conseil d'administration</a>
+          <a href="acteurs-cles.html" class="dropdown-link">Acteurs clés</a>
+          <a href="nos-medecins.html" class="dropdown-link">Nos Médecins</a>
+        </div>
+      </div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="accomplissements.html" class="nav-link">Accomplissements <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="accomplissements-education.html" class="dropdown-link">Éducation</a>
+          <a href="accomplissements-sante.html" class="dropdown-link">Santé</a>
+          <a href="accomplissements-humanitaires.html" class="dropdown-link">Humanitaire</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="pourquoi-donner.html" class="nav-link">Pourquoi Donner</a></div>
+      <div class="nav-item"><a href="contact.html" class="nav-link nav-link--active">Contact</a></div>
+    </nav>
+    <div class="navbar-cta"><a href="don.html" class="btn btn-secondary btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+    <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+  <a href="index.html" class="mobile-nav-link">Accueil</a>
+  <a href="actualites.html" class="mobile-nav-link">Actualités</a>
+  <a href="galerie.html" class="mobile-nav-link">Galerie</a>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ap" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">À Propos <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ap">
+    <a href="qui-sommes-nous.html" class="mobile-nav-sub-link">Qui sommes-nous</a>
+    <a href="conseil-administration.html" class="mobile-nav-sub-link">Conseil d'administration</a>
+    <a href="acteurs-cles.html" class="mobile-nav-sub-link">Acteurs clés</a>
+    <a href="nos-medecins.html" class="mobile-nav-sub-link">Nos Médecins</a>
+  </div>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ac" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">Accomplissements <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ac">
+    <a href="accomplissements-education.html" class="mobile-nav-sub-link">Éducation</a>
+    <a href="accomplissements-sante.html" class="mobile-nav-sub-link">Santé</a>
+    <a href="accomplissements-humanitaires.html" class="mobile-nav-sub-link">Humanitaire</a>
+  </div>
+  <a href="pourquoi-donner.html" class="mobile-nav-link">Pourquoi Donner</a>
+  <a href="contact.html" class="mobile-nav-link">Contact</a>
+  <div style="margin-top:1.5rem;"><a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+</nav>
+
+<main>
+
+  <!-- ─── 1. HERO ─── -->
+  <section class="contact-hero" aria-labelledby="contact-hero-title">
+    <div class="container">
+      <span class="contact-hero-label">Nous contacter</span>
+      <h1 class="contact-hero-title" id="contact-hero-title">Contactez-Nous</h1>
+      <p class="contact-hero-sub">Nous sommes à votre écoute</p>
+    </div>
+  </section>
+
+  <!-- ─── 2. SECTION PRINCIPALE 2 COLONNES ─── -->
+  <section class="contact-main animate-on-scroll" aria-labelledby="contact-form-heading">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Colonne GAUCHE -->
+        <div>
+          <img
+            data-img-key="contact-1" src="assets/images/placeholder.svg"
+            alt="Bureaux de l'OUH à Port-au-Prince"
+            class="contact-left-img"
+            loading="lazy"
+          />
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--color-primary,#00007A);margin-bottom:1.25rem;">Nos coordonnées</h2>
+
+          <div class="contact-info-item">
+            <svg class="contact-info-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>390, Avenue John Brown (Bourdon),<br/>Port-au-Prince, HT 6114</span>
+          </div>
+
+          <div class="contact-info-item">
+            <svg class="contact-info-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.68 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 14.92z"/>
+            </svg>
+            <span><a href="tel:+50937924663">509-3792-4663</a></span>
+          </div>
+
+          <div class="contact-info-item">
+            <svg class="contact-info-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.68 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 14.92z"/>
+            </svg>
+            <span><a href="tel:+50937924664">509-3792-4664</a></span>
+          </div>
+
+          <div class="contact-info-item">
+            <svg class="contact-info-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <span><a href="mailto:ouhhaiti@gmail.com">ouhhaiti@gmail.com</a></span>
+          </div>
+
+          <div class="contact-socials" aria-label="Réseaux sociaux">
+            <a href="https://facebook.com/" class="contact-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook OUH">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/" class="contact-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram OUH">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Colonne DROITE : formulaire -->
+        <div>
+          <h2 class="contact-form-title" id="contact-form-heading">Envoyez-nous un message</h2>
+          <p class="contact-form-subtitle">Remplissez le formulaire ci-dessous et nous vous répondrons dans les 48 heures.</p>
+
+          <form
+            class="contact-form"
+            action="mailto:ouhhaiti@gmail.com"
+            method="post"
+            enctype="text/plain"
+            novalidate
+          >
+            <div class="contact-form-row">
+              <div class="contact-form-group">
+                <label class="contact-form-label" for="contact-prenom">Prénom <span aria-hidden="true" style="color:var(--color-secondary)">*</span></label>
+                <input type="text" id="contact-prenom" name="Prenom" class="contact-input" placeholder="Votre prénom" required autocomplete="given-name" />
+              </div>
+              <div class="contact-form-group">
+                <label class="contact-form-label" for="contact-nom">Nom <span aria-hidden="true" style="color:var(--color-secondary)">*</span></label>
+                <input type="text" id="contact-nom" name="Nom" class="contact-input" placeholder="Votre nom de famille" required autocomplete="family-name" />
+              </div>
+            </div>
+
+            <div class="contact-form-row">
+              <div class="contact-form-group">
+                <label class="contact-form-label" for="contact-tel">Téléphone</label>
+                <input type="tel" id="contact-tel" name="Telephone" class="contact-input" placeholder="Ex: 509-XXXX-XXXX" autocomplete="tel" />
+              </div>
+              <div class="contact-form-group">
+                <label class="contact-form-label" for="contact-email">Email <span aria-hidden="true" style="color:var(--color-secondary)">*</span></label>
+                <input type="email" id="contact-email" name="Email" class="contact-input" placeholder="votre@email.com" required autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="contact-form-group">
+              <label class="contact-form-label" for="contact-message">Message <span aria-hidden="true" style="color:var(--color-secondary)">*</span></label>
+              <textarea id="contact-message" name="Message" class="contact-input" rows="5" placeholder="Écrivez votre message ici..." required></textarea>
+            </div>
+
+            <button type="submit" class="contact-submit">Envoyer le message</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 3. CARTE GOOGLE MAPS ─── -->
+  <section class="contact-map-section animate-on-scroll" aria-labelledby="contact-map-heading">
+    <div class="container">
+      <span class="section-label" style="display:block;text-align:center;margin-bottom:0.5rem;">Où nous trouver</span>
+      <h2 class="section-title" id="contact-map-heading" style="text-align:center;margin-bottom:2rem;">Notre emplacement</h2>
+      <iframe
+        class="contact-map-embed"
+        title="Localisation OUH — 390 Avenue John Brown, Port-au-Prince"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3774.447847093432!2d-72.32700968538253!3d18.54697438737065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eb9e5a8b0b5dcb5%3A0xe2dffd4c5bfba60b!2s390%20Av.%20John%20Brown%2C%20Port-au-Prince%2C%20Haiti!5e0!3m2!1sfr!2sht!4v1716991200000!5m2!1sfr!2sht"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+      <div class="contact-map-address">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span>390, Avenue John Brown (Bourdon), Port-au-Prince, HT 6114, Haïti</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo"><img src="assets/images/logo/logo.png" alt="Logo OUH" width="56" height="56" style="object-fit:contain;border-radius:8px;"></div>
+        <p class="footer-brand-desc">L'Organisation de l'Union Haïtienne œuvre depuis 1995 pour améliorer la vie des communautés haïtiennes les plus vulnérables.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://www.instagram.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        </div>
+      </div>
+            <nav aria-label="À Propos">
+        <h3 class="footer-heading">À Propos</h3>
+        <ul class="footer-links">
+          <li><a href="qui-sommes-nous.html" class="footer-link">Qui sommes-nous</a></li>
+          <li><a href="conseil-administration.html" class="footer-link">Conseil d'Administration</a></li>
+          <li><a href="acteurs-cles.html" class="footer-link">Acteurs Clés</a>
+          <li><a href="nos-medecins.html" class="footer-link">Nos Médecins</a></li></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Accomplissements">
+        <h3 class="footer-heading">Accomplissements</h3>
+        <ul class="footer-links">
+          <li class="footer-link-item">
+            <a href="accomplissements-education.html" class="footer-link">Éducation</a>
+            <ul class="footer-sub-links">
+              <li><a href="bibliotheque.html" class="footer-sub-link">Bibliothèque Edgard Petit</a></li>
+            </ul>
+          </li>
+          <li><a href="accomplissements-sante.html" class="footer-link">Santé</a></li>
+          <li><a href="accomplissements-humanitaires.html" class="footer-link">Humanitaire</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Liens rapides">
+        <h3 class="footer-heading">Liens rapides</h3>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Accueil</a></li>
+          <li><a href="actualites.html" class="footer-link">Actualités</a></li>
+          <li><a href="galerie.html" class="footer-link">Galerie</a></li>
+          <li><a href="pourquoi-donner.html" class="footer-link">Pourquoi Donner</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h3 class="footer-heading">Contact</h3>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>390, Av. John Brown (Bourdon),<br/>Port-au-Prince, HT 6114</span></div>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:ouhhaiti@gmail.com" class="footer-link">ouhhaiti@gmail.com</a></div>
+      </div>
+      <div>
+        <h3 class="footer-heading">Soutenir l'OUH</h3>
+        <p class="footer-brand-desc">Votre don finance nos programmes en Haïti.</p>
+        <a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&#169; 2026 Organisation de l'Union Haïtienne (OUH). Tous droits réservés.</p>
+      <div class="footer-legal-links">
+        <a href="contact.html" class="footer-legal-link">Contact</a>
+        <a href="admin/login.html" class="footer-legal-link">Administration</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Retour en haut">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script src="assets/js/storage.js?v=20260603e" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="assets/js/supabase-config.js?v=20260603e" defer></script>
+<script src="assets/js/supabase-data.js?v=20260603e" defer></script>
+<script src="assets/js/site-images.js?v=20260603e" defer></script>
+<script src="assets/js/main.js?v=20260603e" defer></script>
+<script>
+(function () {
+  'use strict';
+
+  const form = document.querySelector('.contact-form');
+  if (!form) return;
+
+  /* ── Toast helper ── */
+  function toast(msg, type) {
+    const colors = { success:['#dcfce7','#16a34a','#166534'], error:['#fee2e2','#dc2626','#991b1b'] };
+    const [bg, border, color] = colors[type] || colors.success;
+    const t = document.createElement('div');
+    t.setAttribute('role', 'alert');
+    t.style.cssText = `position:fixed;bottom:1.5rem;right:1.5rem;background:${bg};border:1px solid ${border};color:${color};padding:.875rem 1.25rem;border-radius:10px;font-family:var(--font-ui,'DM Sans',sans-serif);font-size:.875rem;font-weight:500;max-width:340px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.12);transition:opacity .3s;`;
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; }, 3500);
+    setTimeout(() => t.remove(), 3850);
+  }
+
+  /* ── Marquer un champ en erreur ── */
+  function setError(input, msg) {
+    input.style.borderColor = '#dc2626';
+    input.style.boxShadow   = '0 0 0 3px rgba(220,38,38,.12)';
+    let err = input.parentElement.querySelector('.field-error');
+    if (!err) { err = document.createElement('span'); err.className = 'field-error'; err.style.cssText = 'display:block;font-size:.75rem;color:#dc2626;margin-top:.25rem;font-family:var(--font-ui,sans-serif);'; input.parentElement.appendChild(err); }
+    err.textContent = msg;
+  }
+  function clearError(input) {
+    input.style.borderColor = '';
+    input.style.boxShadow   = '';
+    const err = input.parentElement.querySelector('.field-error');
+    if (err) err.remove();
+  }
+
+  /* ── Clear on input ── */
+  form.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', () => clearError(el));
+  });
+
+  /* ── Soumission ── */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const prenom  = form.querySelector('#contact-prenom');
+    const nom     = form.querySelector('#contact-nom');
+    const email   = form.querySelector('#contact-email');
+    const message = form.querySelector('#contact-message');
+    let valid = true;
+
+    /* Validation */
+    [prenom, nom, email, message].forEach(f => clearError(f));
+
+    if (!prenom.value.trim())  { setError(prenom, 'Veuillez entrer votre prénom.'); valid = false; }
+    if (!nom.value.trim())     { setError(nom,    'Veuillez entrer votre nom.'); valid = false; }
+    if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+      setError(email, 'Veuillez entrer une adresse email valide.'); valid = false;
+    }
+    if (!message.value.trim()) { setError(message, 'Veuillez écrire votre message.'); valid = false; }
+    if (message.value.trim().length < 10) { setError(message, 'Votre message doit contenir au moins 10 caractères.'); valid = false; }
+
+    if (!valid) return;
+
+    /* Envoi via mailto (ouvre le client mail) */
+    const subject = encodeURIComponent('Message depuis le site OUH');
+    const body    = encodeURIComponent(
+      'Prénom : ' + prenom.value.trim() + '\n' +
+      'Nom : '    + nom.value.trim()    + '\n' +
+      'Email : '  + email.value.trim()  + '\n\n' +
+      message.value.trim()
+    );
+    window.location.href = `mailto:ouhhaiti@gmail.com?subject=${subject}&body=${body}`;
+
+    /* Feedback visuel */
+    toast('Votre client de messagerie va s\'ouvrir. Envoyez l\'email pour contacter l\'OUH.', 'success');
+    this.reset();
+  });
+})();
+</script>
+</body>
+</html>

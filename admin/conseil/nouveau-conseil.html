@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nouveau membre du conseil | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .form-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
+    @media(max-width:860px){.form-layout{grid-template-columns:1fr;}}
+    .side-card{background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);padding:1.25rem;box-shadow:var(--shadow-sm);position:sticky;top:80px;margin-bottom:1rem;}
+    .avatar-preview{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:#fff;margin:0 auto 1rem;transition:background .3s;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Nouveau membre du conseil</h1>
+        <div class="admin-breadcrumb"><a href="/admin/conseil/liste-conseil.html" style="color:inherit;">Conseil</a><span>/</span><span>Nouveau</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/admin/conseil/liste-conseil.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <form id="mbr-form" novalidate>
+        <div class="form-layout">
+
+          <!-- Champs principaux -->
+          <div class="admin-card">
+            <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:1.25rem;">Informations du membre</h3>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-nom">Nom complet <span class="required">*</span></label>
+              <input id="f-nom" type="text" class="admin-form-input" placeholder="ex: Emmanuel Herly PETIT" required />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Le nom de famille (dernier mot) sera mis en évidence sur la page.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-role">Rôle / fonction <span class="required">*</span></label>
+              <input id="f-role" type="text" class="admin-form-input" placeholder="ex: Président, Vice-Présidente, Trésorière…" required />
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-roletag">Catégorie de couleur du badge</label>
+              <select id="f-roletag" class="admin-form-input admin-form-select">
+                <option value="president">Président</option>
+                <option value="vice">Vice-présidence</option>
+                <option value="coordo">Coordination</option>
+                <option value="secretaire">Secrétariat</option>
+                <option value="tresoriere">Trésorerie</option>
+                <option value="education">Éducation</option>
+                <option value="juridique">Juridique</option>
+                <option value="sante">Santé</option>
+                <option value="membre" selected>Membre (par défaut)</option>
+              </select>
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Détermine la couleur du badge et de l'avatar à initiales.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-initiales">Initiales (2 lettres) <span class="required">*</span></label>
+              <input id="f-initiales" type="text" class="admin-form-input" placeholder="ex: EH" maxlength="2" style="text-transform:uppercase;letter-spacing:.1em;" required />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Utilisées dans l'avatar circulaire <strong>si aucune photo</strong> n'est téléversée.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-photo">Photo du membre <span style="font-weight:500;color:var(--color-muted);">(facultatif)</span></label>
+              <input id="f-photo" type="file" accept="image/*" class="admin-form-input" style="padding:.5rem;" />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">JPG ou PNG. Portrait carré recommandé.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-bio">Biographie / parcours <span style="font-weight:500;color:var(--color-muted);">(facultatif)</span></label>
+              <textarea id="f-bio" class="admin-form-input" rows="5" placeholder="Un ou deux paragraphes sur son parcours…"></textarea>
+            </div>
+
+            <div class="admin-form-group" style="margin-bottom:0;">
+              <label class="admin-form-label" for="f-ordre">Position dans la liste</label>
+              <input id="f-ordre" type="number" class="admin-form-input" placeholder="ex: 9" min="1" />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Laissez vide pour ajouter à la fin.</p>
+            </div>
+          </div>
+
+          <!-- Aperçu + publication -->
+          <div>
+            <div class="side-card">
+              <h3 style="font-size:.9rem;font-weight:700;margin-bottom:1rem;">Aperçu</h3>
+              <div class="avatar-preview" id="avatar-preview" style="background:#4169E1;">??</div>
+              <div style="text-align:center;">
+                <div id="preview-nom" style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-primary);">Nom</div>
+                <div id="preview-role" style="font-size:.78rem;color:var(--color-muted);margin-top:.3rem;">Rôle</div>
+              </div>
+            </div>
+
+            <div class="side-card">
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-active">Visibilité</label>
+                <select id="f-active" class="admin-form-input admin-form-select">
+                  <option value="true" selected>Visible sur le site</option>
+                  <option value="false">Masqué</option>
+                </select>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--color-border);margin:.875rem 0;">
+              <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Ajouter le membre</button>
+              <div id="form-error" style="display:none;margin-top:.6rem;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.55rem .8rem;font-size:.78rem;color:#991b1b;"></div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script>
+<script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+const ROLE_COLORS = { president:'#00007A', vice:'#4169E1', coordo:'#1a3fa8', secretaire:'#1e3a8a', tresoriere:'#B8860B', education:'#C79A2E', juridique:'#1e293b', sante:'#0e7490', membre:'#4169E1' };
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await AdminUI.init({ page: 'conseil' });
+  await DataStore.init();
+
+  let photoPreviewUrl = null;
+  function updatePreview() {
+    const nom  = document.getElementById('f-nom').value.trim() || 'Nom';
+    const role = document.getElementById('f-role').value.trim() || 'Rôle';
+    const init = (document.getElementById('f-initiales').value.trim() || '??').toUpperCase().slice(0,2);
+    const tag  = document.getElementById('f-roletag').value;
+    document.getElementById('preview-nom').textContent  = nom;
+    document.getElementById('preview-role').textContent = role;
+    const av = document.getElementById('avatar-preview');
+    if (photoPreviewUrl) {
+      av.textContent = '';
+      av.style.background = `center/cover no-repeat url("${photoPreviewUrl}")`;
+    } else {
+      av.textContent = init;
+      av.style.background = ROLE_COLORS[tag] || '#4169E1';
+    }
+  }
+
+  ['f-nom','f-role','f-initiales','f-roletag'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updatePreview);
+    document.getElementById(id).addEventListener('change', updatePreview);
+  });
+
+  /* Auto-générer les initiales depuis le nom */
+  document.getElementById('f-nom').addEventListener('input', e => {
+    const words = e.target.value.trim().split(/\s+/).filter(w => w && !/^(Dr\.?|Me|Mme|M\.)$/i.test(w));
+    if (words.length >= 1) {
+      const first = words[0][0] || '';
+      const last  = words.length > 1 ? (words[words.length-1][0] || '') : '';
+      document.getElementById('f-initiales').value = (first + last).toUpperCase().slice(0,2);
+    }
+    updatePreview();
+  });
+
+  document.getElementById('f-photo').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    if (photoPreviewUrl) { URL.revokeObjectURL(photoPreviewUrl); photoPreviewUrl = null; }
+    if (file) photoPreviewUrl = URL.createObjectURL(file);
+    updatePreview();
+  });
+
+  let saving = false;
+  document.getElementById('mbr-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (saving) return; saving = true;
+    const err = document.getElementById('form-error'); err.style.display = 'none';
+    const g = id => document.getElementById(id).value.trim();
+    const nom = g('f-nom'), role = g('f-role'), initiales = g('f-initiales').toUpperCase();
+    if (!nom)       { show('Le nom est obligatoire.');       saving=false; return; }
+    if (!role)      { show('Le rôle est obligatoire.');      saving=false; return; }
+    if (!initiales) { show('Les initiales sont obligatoires.'); saving=false; return; }
+
+    const all = await DataStore.getAllConseil().catch(()=>[]);
+    const maxOrdre = all.length ? Math.max(...all.map(m => m.ordre||0)) : 0;
+    const ordre = parseInt(g('f-ordre')) || maxOrdre + 1;
+    const bio = document.getElementById('f-bio').value.trim();
+
+    try {
+      let photoUrl = null;
+      const file = document.getElementById('f-photo').files[0];
+      if (file) {
+        if (typeof DataStore.uploadImage !== 'function') throw new Error('Téléversement indisponible hors-ligne.');
+        photoUrl = await DataStore.uploadImage(file, 'conseil');
+      }
+      await DataStore.create('conseil', {
+        nom, role, roleTag: document.getElementById('f-roletag').value,
+        initiales, ordre,
+        active: document.getElementById('f-active').value !== 'false',
+        photoUrl: photoUrl || null,
+        bio: bio || null
+      });
+      await DataStore.logAction(user?.id, 'medecins.create', { conseil: nom });
+      AdminUI.toast('Membre ajouté !', 'success');
+      setTimeout(() => { window.location.href = '/admin/conseil/liste-conseil.html'; }, 700);
+    } catch(ex) { show('Erreur : ' + (ex.message||'Impossible d\'enregistrer.')); saving = false; }
+
+    function show(msg) { err.style.display='block'; err.textContent=msg; }
+  });
+
+  updatePreview();
+});
+</script>
+</body></html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nos Médecins | Organisation de l'Union Haïtienne</title>
+  <meta name="description" content="Découvrez les médecins et chirurgiens qui collaborent avec l'Organisation de l'Union Haïtienne pour améliorer la santé en Haïti." />
+  <meta property="og:title"       content="Nos Médecins | Organisation de l'Union Haïtienne" />
+  <meta property="og:description" content="Les médecins et chirurgiens spécialistes qui soutiennent la mission de l'OUH en Haïti." />
+  <meta property="og:image"       content="https://ouhhaiti.org/assets/images/og-image.jpg" />
+  <meta property="og:url"         content="https://ouhhaiti.org/nos-medecins.html" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Organisation de l'Union Haïtienne" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <link rel="canonical"            href="https://ouhhaiti.org/nos-medecins.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/animations.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/responsive.css?v=20260603e" />
+  <style>
+    /* ── Nos Médecins — styles spécifiques ── */
+
+    .med-hero {
+      background: var(--gradient-hero);
+      padding: 6rem 0 4.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .med-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 55% 30%, rgba(65,105,225,0.16) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .med-hero-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      color: #93C5FD;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.35rem 1.1rem;
+      border-radius: 2rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid rgba(147,197,253,0.3);
+    }
+    .med-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+    .med-hero-sub {
+      font-family: var(--font-quote);
+      font-style: italic;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      color: rgba(255,255,255,0.72);
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── Grille médecins ── */
+    .med-section {
+      background: var(--color-light);
+      padding: 5rem 0 6rem;
+    }
+    .med-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+    @media (max-width: 960px)  { .med-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px)  { .med-grid { grid-template-columns: 1fr; } }
+
+    /* ── Carte médecin ── */
+    .med-card {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      padding: 2rem 1.5rem 1.75rem;
+      text-align: center;
+      border: 1px solid rgba(0,0,122,0.07);
+      box-shadow: 0 4px 20px rgba(0,0,122,0.06);
+      transition: transform 0.24s ease, box-shadow 0.24s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .med-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 44px rgba(0,0,122,0.12);
+    }
+
+    /* Icône avatar */
+    .med-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* Photo téléversée */
+    .med-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 3px solid rgba(65,105,225,0.18);
+      box-shadow: 0 6px 18px rgba(0,0,122,0.14);
+    }
+
+    /* Bio / parcours */
+    .med-bio {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--color-muted, #555);
+      margin: 0.35rem 0 0;
+      text-align: left;
+    }
+
+    /* Nom */
+    .med-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    /* Badge spécialité */
+    .med-specialty {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.28rem 0.85rem;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.03em;
+    }
+
+    /* Couleurs par catégorie */
+    .spec-ortho      { background: rgba(65,105,225,0.1);   color: #1a3fa8; }
+    .spec-anest      { background: rgba(22,163,74,0.1);    color: #065f46; }
+    .spec-chir-gen   { background: rgba(0,0,122,0.1);      color: #00007A; }
+    .spec-cardio     { background: rgba(14,116,144,0.12);   color: #0e7490; }
+    .spec-bariat     { background: rgba(99,102,241,0.1);   color: #4338ca; }
+    .spec-plastique  { background: rgba(236,72,153,0.1);   color: #9d174d; }
+    .spec-uro        { background: rgba(139,92,246,0.1);   color: #5b21b6; }
+    .spec-orl        { background: rgba(245,158,11,0.1);   color: #92400e; }
+    .spec-recherche  { background: rgba(20,184,166,0.1);   color: #0f766e; }
+
+    /* Séparateur de section */
+    .med-section-intro {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem;
+    }
+    .med-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(65,105,225,0.1);
+      color: var(--color-accent);
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.3rem 0.9rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="container navbar-inner">
+    <a href="index.html" class="navbar-logo" aria-label="Accueil OUH">
+      <img class="navbar-logo-img" src="assets/images/logo/logo.png" alt="Logo OUH">
+      <div class="navbar-logo-text">
+        <span class="navbar-logo-title">Organisation de l'Union Haïtienne</span>
+        <span class="navbar-logo-sub">ONG depuis 1995</span>
+      </div>
+    </a>
+    <nav class="navbar-nav" aria-label="Navigation principale">
+      <div class="nav-item"><a href="index.html" class="nav-link">Accueil</a></div>
+      <div class="nav-item"><a href="actualites.html" class="nav-link">Actualités</a></div>
+      <div class="nav-item"><a href="galerie.html" class="nav-link">Galerie</a></div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="apropos.html" class="nav-link">À Propos <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="qui-sommes-nous.html" class="dropdown-link">Qui sommes-nous</a>
+          <a href="conseil-administration.html" class="dropdown-link">Conseil d'administration</a>
+          <a href="acteurs-cles.html" class="dropdown-link">Acteurs clés</a>
+          <a href="nos-medecins.html" class="dropdown-link active">Nos Médecins</a>
+        </div>
+      </div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="accomplissements.html" class="nav-link">Accomplissements <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="accomplissements-education.html" class="dropdown-link">Éducation</a>
+          <a href="accomplissements-sante.html" class="dropdown-link">Santé</a>
+          <a href="accomplissements-humanitaires.html" class="dropdown-link">Humanitaire</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="pourquoi-donner.html" class="nav-link">Pourquoi Donner</a></div>
+      <div class="nav-item"><a href="contact.html" class="nav-link">Contact</a></div>
+    </nav>
+    <div class="navbar-cta"><a href="don.html" class="btn btn-secondary btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+    <button class="hamburger" aria-label="Menu principal" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+  <a href="index.html" class="mobile-nav-link">Accueil</a>
+  <a href="actualites.html" class="mobile-nav-link">Actualités</a>
+  <a href="galerie.html" class="mobile-nav-link">Galerie</a>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ap" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">À Propos <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ap">
+    <a href="qui-sommes-nous.html" class="mobile-nav-sub-link">Qui sommes-nous</a>
+    <a href="conseil-administration.html" class="mobile-nav-sub-link">Conseil d'administration</a>
+    <a href="acteurs-cles.html" class="mobile-nav-sub-link">Acteurs clés</a>
+    <a href="nos-medecins.html" class="mobile-nav-sub-link">Nos Médecins</a>
+  </div>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ac" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">Accomplissements <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ac">
+    <a href="accomplissements-education.html" class="mobile-nav-sub-link">Éducation</a>
+    <a href="accomplissements-sante.html" class="mobile-nav-sub-link">Santé</a>
+    <a href="accomplissements-humanitaires.html" class="mobile-nav-sub-link">Humanitaire</a>
+  </div>
+  <a href="pourquoi-donner.html" class="mobile-nav-link">Pourquoi Donner</a>
+  <a href="contact.html" class="mobile-nav-link">Contact</a>
+  <div style="margin-top:1.5rem;"><a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+</nav>
+
+<main id="main-content">
+
+  <!-- HERO -->
+  <section class="med-hero" aria-labelledby="med-title">
+    <div class="container" style="position:relative;z-index:1;">
+      <div class="animate-on-scroll">
+        <span class="med-hero-label">À Propos &rsaquo; Notre équipe médicale</span>
+        <h1 id="med-title">Nos Médecins</h1>
+        <p class="med-hero-sub">Les médecins et chirurgiens spécialistes qui soutiennent la mission de l'OUH et contribuent à l'amélioration de la santé en Haïti.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRILLE MÉDECINS -->
+  <section class="med-section" aria-labelledby="med-grid-title">
+    <div class="container">
+
+      <div class="med-section-intro animate-on-scroll">
+        <span class="med-count-badge" id="med-count-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span id="med-count-text">Chargement…</span>
+        </span>
+        <h2 id="med-grid-title" class="section-title" style="margin-bottom:0.75rem;">Notre équipe médicale</h2>
+        <p style="font-family:var(--font-body);font-size:1rem;color:var(--color-muted);line-height:1.75;">Des chirurgiens orthopédistes, anesthésistes et spécialistes de renommée internationale qui donnent de leur temps et de leur expertise au service des communautés haïtiennes.</p>
+      </div>
+
+      <div class="med-grid" id="med-grid" role="list" aria-live="polite">
+        <!-- Rempli dynamiquement par JS depuis IndexedDB -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:var(--gradient-hero);padding:5rem 0;text-align:center;" aria-labelledby="med-cta-title">
+    <div class="container animate-on-scroll">
+      <span style="display:inline-block;background:rgba(255,255,255,0.12);color:#93C5FD;font-family:var(--font-ui);font-size:0.78rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 1.1rem;border-radius:2rem;border:1px solid rgba(147,197,253,0.3);margin-bottom:1.25rem;">Soutenez notre mission</span>
+      <h2 id="med-cta-title" style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);color:#fff;margin-bottom:1rem;line-height:1.15;">Ces médecins donnent de leur temps pour Haïti</h2>
+      <p style="font-family:var(--font-ui);font-size:1.05rem;color:rgba(255,255,255,0.75);max-width:560px;margin:0 auto 2rem;line-height:1.75;">Soutenez leur travail en faisant un don à l'OUH. Chaque contribution aide à financer les missions médicales et les formations sur le terrain.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="don.html" class="btn btn-secondary"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+        <a href="accomplissements-sante.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:#fff;">Voir nos actions santé</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo"><img src="assets/images/logo/logo.png" alt="Logo OUH" width="56" height="56" style="object-fit:contain;border-radius:8px;"></div>
+        <p class="footer-brand-desc">L'Organisation de l'Union Haïtienne œuvre depuis 1995 pour améliorer la vie des communautés haïtiennes les plus vulnérables.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://www.instagram.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="https://tiktok.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.51a8.16 8.16 0 0 0 4.78 1.53V6.6a4.85 4.85 0 0 1-1.01.09z"/></svg></a>
+        </div>
+      </div>
+      <nav aria-label="À Propos">
+        <h3 class="footer-heading">À Propos</h3>
+        <ul class="footer-links">
+          <li><a href="qui-sommes-nous.html" class="footer-link">Qui sommes-nous</a></li>
+          <li><a href="conseil-administration.html" class="footer-link">Conseil d'Administration</a></li>
+          <li><a href="acteurs-cles.html" class="footer-link">Acteurs Clés</a></li>
+          <li><a href="nos-medecins.html" class="footer-link">Nos Médecins</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Accomplissements">
+        <h3 class="footer-heading">Accomplissements</h3>
+        <ul class="footer-links">
+          <li><a href="accomplissements-education.html" class="footer-link">Éducation</a></li>
+          <li><a href="accomplissements-sante.html" class="footer-link">Santé</a></li>
+          <li><a href="accomplissements-humanitaires.html" class="footer-link">Humanitaire</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Liens rapides">
+        <h3 class="footer-heading">Liens rapides</h3>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Accueil</a></li>
+          <li><a href="actualites.html" class="footer-link">Actualités</a></li>
+          <li><a href="galerie.html" class="footer-link">Galerie</a></li>
+          <li><a href="pourquoi-donner.html" class="footer-link">Pourquoi Donner</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h3 class="footer-heading">Contact</h3>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>390, Av. John Brown (Bourdon),<br/>Port-au-Prince, HT 6114</span></div>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.1 6.1l.88-.88a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+50937924663" class="footer-link">509-3792-4663</a></div>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:ouhhaiti@gmail.com" class="footer-link">ouhhaiti@gmail.com</a></div>
+      </div>
+      <div>
+        <h3 class="footer-heading">Soutenir l'OUH</h3>
+        <p class="footer-brand-desc">Votre don permet de financer nos programmes de santé, d'éducation et d'aide humanitaire en Haïti.</p>
+        <a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&#169; 2026 Organisation de l'Union Haïtienne (OUH). Tous droits réservés.</p>
+      <div class="footer-legal-links"><a href="contact.html" class="footer-legal-link">Contact</a><a href="admin/login.html" class="footer-legal-link">Administration</a></div>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Retour en haut de la page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+<script src="assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js?v=20260603e"></script>
+<script src="assets/js/supabase-data.js?v=20260603e"></script>
+<script>
+(async function () {
+  'use strict';
+
+  /* ── Seed de secours (si IndexedDB inaccessible) ── */
+  const SEED = [
+    {id:'med-001',nom:'Dr NGUYEN',    specialite:'Chirurgien Orthopédiste', initiales:'NG',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:1},
+    {id:'med-002',nom:'Dr BILODEAU',  specialite:'Anesthésiste',            initiales:'BI',couleurDebut:'#16a34a',couleurFin:'#4ade80',ordre:2},
+    {id:'med-003',nom:'Dr IRANI',     specialite:'Chirurgien Généraliste',  initiales:'IR',couleurDebut:'#00007A',couleurFin:'#0A0FA8',ordre:3},
+    {id:'med-004',nom:'Dr DEMONTIGNY',specialite:'Cardio Chirurgien',       initiales:'DM',couleurDebut:'#0e7490',couleurFin:'#22d3ee',ordre:4},
+    {id:'med-005',nom:'Dr BENOIT',    specialite:'Professeur Orthopédiste', initiales:'BE',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:5},
+    {id:'med-006',nom:'Dr DENIS',     specialite:'Chirurgien Bariatrique',  initiales:'DN',couleurDebut:'#6366f1',couleurFin:'#818cf8',ordre:6},
+    {id:'med-007',nom:'Dr DUBE',      specialite:'Anesthésiste',            initiales:'DU',couleurDebut:'#16a34a',couleurFin:'#4ade80',ordre:7},
+    {id:'med-008',nom:'Dr LAFLAMME',  specialite:'Professeur Orthopédiste', initiales:'LF',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:8},
+    {id:'med-009',nom:'Dr ALEXIS',    specialite:'Orthopédiste',            initiales:'AL',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:9},
+    {id:'med-010',nom:'Dr DANGEMANS', specialite:'Anesthésiste',            initiales:'DA',couleurDebut:'#16a34a',couleurFin:'#4ade80',ordre:10},
+    {id:'med-011',nom:'Dr FERNANDEZ', specialite:'Orthopédiste et Chercheur',initiales:'FE',couleurDebut:'#0f766e',couleurFin:'#2dd4bf',ordre:11},
+    {id:'med-012',nom:'Dr LEDUC',     specialite:'Orthopédiste',            initiales:'LE',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:12},
+    {id:'med-013',nom:'Dr RANGER',    specialite:'Orthopédiste Professeur', initiales:'RA',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:13},
+    {id:'med-014',nom:'Dr RICHARD',   specialite:'Chirurgien Plasticien',   initiales:'RI',couleurDebut:'#db2777',couleurFin:'#f472b6',ordre:14},
+    {id:'med-015',nom:'Dr SHAIGETZ',  specialite:'Chirurgien Urologue',     initiales:'SH',couleurDebut:'#7c3aed',couleurFin:'#a78bfa',ordre:15},
+    {id:'med-016',nom:'Dr SIDANI',    specialite:'Oto-Rhino-Laryngologue',  initiales:'SI',couleurDebut:'#d97706',couleurFin:'#fbbf24',ordre:16},
+    {id:'med-017',nom:'Dr THERRIER',  specialite:'Orthopédiste',            initiales:'TH',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:17},
+    {id:'med-018',nom:'Dr THOME',     specialite:'Orthopédiste',            initiales:'TO',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:18}
+  ];
+
+  /* ── Rendu d'une carte ── */
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function buildCard(m, i) {
+    const delay = (i * 0.05).toFixed(2);
+    const avatar = m.photoUrl
+      ? `<img class="med-photo" src="${m.photoUrl}" alt="${esc(m.nom)}" loading="lazy">`
+      : `<div class="med-avatar" style="background:linear-gradient(135deg,${m.couleurDebut||'#4169E1'},${m.couleurFin||'#60A5FA'});" aria-hidden="true">${m.initiales||'??'}</div>`;
+    const bio = m.bio ? `<p class="med-bio">${esc(m.bio)}</p>` : '';
+    return `
+      <article class="med-card animate-on-scroll" role="listitem" style="animation-delay:${delay}s;">
+        ${avatar}
+        <h3 class="med-name">${esc(m.nom)}</h3>
+        <span class="med-specialty">${esc(m.specialite)}</span>
+        ${bio}
+      </article>`;
+  }
+
+  /* ── Chargement et affichage ── */
+  async function load() {
+    let medecins = [];
+
+    try {
+      if (typeof DataStore !== 'undefined') {
+        await DataStore.init();
+        /* Seeder au premier chargement si store vide */
+        const existing = await DataStore.getAll('medecins');
+        if (!existing.length) {
+          await DataStore.importFromJSON('medecins', 'data/medecins.json');
+        }
+        medecins = await DataStore.getMedecins();
+      }
+    } catch (_) { /* fallback */ }
+
+    if (!medecins.length) medecins = SEED.filter(m => m.active !== false);
+
+    /* Mettre à jour le compteur */
+    const countEl = document.getElementById('med-count-text');
+    if (countEl) countEl.textContent = medecins.length + ' médecin' + (medecins.length > 1 ? 's' : '') + ' collaborateur' + (medecins.length > 1 ? 's' : '');
+
+    /* Remplir la grille */
+    const grid = document.getElementById('med-grid');
+    if (grid) {
+      grid.innerHTML = medecins.map((m, i) => buildCard(m, i)).join('');
+
+      /* Les cartes sont générées dynamiquement APRÈS que main.js a initialisé
+         l'IntersectionObserver — elles ne sont jamais observées.
+         On les rend visibles directement avec un léger décalage en cascade. */
+      const cards = grid.querySelectorAll('.animate-on-scroll');
+      cards.forEach((card, i) => {
+        setTimeout(() => card.classList.add('animated'), i * 60);
+      });
+    }
+  }
+
+  load();
+})();
+</script>
+<script src="assets/js/main.js?v=20260603e" defer></script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>À Propos | Organisation de l'Union Haïtienne</title>
+  <meta name="description" content="Découvrez l'Organisation de l'Union Haïtienne (OUH) : son histoire, sa mission, son équipe dirigeante et ses acteurs clés engagés pour Haïti depuis 1995." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/animations.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/responsive.css?v=20260603e" />
+  <style>
+    .ap-card {
+      background: #fff;
+      border-radius: var(--radius-xl, 16px);
+      border: 1px solid rgba(65,105,225,0.10);
+      box-shadow: 0 4px 24px rgba(0,0,122,0.07);
+      padding: 2.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: transform .25s ease, box-shadow .25s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .ap-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 44px rgba(0,0,122,0.13);
+    }
+    .ap-card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(65,105,225,0.10);
+      color: #4169E1;
+      flex-shrink: 0;
+    }
+    .ap-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+    @media (max-width: 860px) { .ap-cards-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .ap-cards-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="container navbar-inner">
+    <a href="index.html" class="navbar-logo" aria-label="Accueil OUH">
+      <img class="navbar-logo-img" src="assets/images/logo/logo.png" alt="Logo OUH">
+      <div class="navbar-logo-text">
+        <span class="navbar-logo-title">Organisation de l'Union Haïtienne</span>
+        <span class="navbar-logo-sub">ONG depuis 1995</span>
+      </div>
+    </a>
+    <nav class="navbar-nav" aria-label="Navigation principale">
+      <div class="nav-item"><a href="index.html" class="nav-link">Accueil</a></div>
+      <div class="nav-item"><a href="actualites.html" class="nav-link">Actualités</a></div>
+      <div class="nav-item"><a href="galerie.html" class="nav-link">Galerie</a></div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="apropos.html" class="nav-link active">À Propos <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="qui-sommes-nous.html" class="dropdown-link">Qui sommes-nous</a>
+          <a href="conseil-administration.html" class="dropdown-link">Conseil d'administration</a>
+          <a href="acteurs-cles.html" class="dropdown-link">Acteurs clés</a>
+          <a href="nos-medecins.html" class="dropdown-link">Nos Médecins</a>
+        </div>
+      </div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="accomplissements.html" class="nav-link">Accomplissements <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="accomplissements-education.html" class="dropdown-link">Éducation</a>
+          <a href="accomplissements-sante.html" class="dropdown-link">Santé</a>
+          <a href="accomplissements-humanitaires.html" class="dropdown-link">Humanitaire</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="pourquoi-donner.html" class="nav-link">Pourquoi Donner</a></div>
+      <div class="nav-item"><a href="contact.html" class="nav-link">Contact</a></div>
+    </nav>
+    <div class="navbar-cta">
+      <a href="don.html" class="btn btn-secondary btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+    </div>
+    <button class="hamburger" aria-label="Menu principal" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
+    </button>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+  <a href="index.html" class="mobile-nav-link">Accueil</a>
+  <a href="actualites.html" class="mobile-nav-link">Actualités</a>
+  <a href="galerie.html" class="mobile-nav-link">Galerie</a>
+  <button class="mobile-nav-link" data-toggle-submenu="mobile-apropos" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">À Propos <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="mobile-apropos">
+    <a href="qui-sommes-nous.html" class="mobile-nav-sub-link">Qui sommes-nous</a>
+    <a href="conseil-administration.html" class="mobile-nav-sub-link">Conseil d'administration</a>
+    <a href="acteurs-cles.html" class="mobile-nav-sub-link">Acteurs clés</a>
+    <a href="nos-medecins.html" class="mobile-nav-sub-link">Nos Médecins</a>
+  </div>
+  <button class="mobile-nav-link" data-toggle-submenu="mobile-acc" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">Accomplissements <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="mobile-acc">
+    <a href="accomplissements-education.html" class="mobile-nav-sub-link">Éducation</a>
+    <a href="accomplissements-sante.html" class="mobile-nav-sub-link">Santé</a>
+    <a href="accomplissements-humanitaires.html" class="mobile-nav-sub-link">Humanitaire</a>
+  </div>
+  <a href="pourquoi-donner.html" class="mobile-nav-link">Pourquoi Donner</a>
+  <a href="contact.html" class="mobile-nav-link">Contact</a>
+  <div style="margin-top:1.5rem;"><a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section style="background:var(--gradient-hero);min-height:440px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:7rem 0 5rem;">
+    <div class="container" style="position:relative;z-index:1;text-align:center;">
+      <span class="section-label animate-on-scroll" style="color:var(--color-accent);font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;font-family:var(--font-ui);font-weight:600;display:block;margin-bottom:1rem;">ONG depuis 1995</span>
+      <h1 class="animate-on-scroll" style="font-family:var(--font-display);font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:#fff;line-height:1.15;margin-bottom:1.25rem;">
+        À Propos de l'OUH
+      </h1>
+      <p class="animate-on-scroll" style="color:rgba(255,255,255,0.82);font-family:var(--font-ui);font-size:clamp(1rem,2vw,1.18rem);max-width:660px;margin:0 auto 2rem;line-height:1.7;">
+        Derrière chaque projet transformateur, il y a une équipe dévouée, unie par un même objectif : bâtir un avenir plus équitable pour Haïti.
+      </p>
+      <nav aria-label="Fil d'Ariane" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;font-family:var(--font-ui);font-size:0.85rem;color:rgba(255,255,255,0.55);">
+        <a href="index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;">Accueil</a>
+        <span aria-hidden="true">›</span>
+        <span style="color:var(--color-accent);">À Propos</span>
+      </nav>
+    </div>
+  </section>
+
+  <!-- INTRO (fond bleu marine) -->
+  <section style="background:var(--color-primary);padding:5rem 0;">
+    <div class="container">
+      <div class="text-box--glass animate-on-scroll" style="max-width:840px;margin:0 auto;text-align:left;">
+        <p style="font-family:var(--font-ui);font-size:1.12rem;line-height:1.85;color:rgba(255,255,255,0.92);margin-bottom:1.75rem;">
+          L'Organisation de l'Union Haïtienne (OUH) est légalement une organisation canadienne de développement à but non lucratif dûment enregistrée selon les lois haïtiennes comme une Organisation Non-Gouvernementale. Fondée en 1995, elle réunit des professionnels de la santé, des éducateurs et des militants des droits humains issus du monde entier.
+        </p>
+        <p class="animate-on-scroll" style="font-family:var(--font-ui);font-size:1.12rem;line-height:1.85;color:rgba(255,255,255,0.88);">
+          À l'OUH, nous avons toujours été très proches de nos collaborateurs dans la recherche d'opportunités en vue du changement facilitant l'accès aux services sanitaires, éducatifs et des droits humains. Nous continuons d'explorer d'autres territoires afin d'apporter notre aide aux populations les plus vulnérables de l'Afrique et des Caraïbes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATISTIQUES -->
+  <section style="background:#f4f6fb;padding:4rem 0;">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:780px;margin:0 auto;text-align:center;">
+        <div class="animate-on-scroll" style="background:#fff;border-radius:var(--radius-lg);padding:2rem 1rem;border:1px solid rgba(65,105,225,0.1);box-shadow:0 2px 12px rgba(0,0,122,0.06);">
+          <div style="font-family:var(--font-display);font-size:2.8rem;font-weight:700;color:#4169E1;line-height:1;">1995</div>
+          <div style="font-family:var(--font-ui);font-size:0.9rem;color:var(--color-text-secondary);margin-top:0.5rem;">Année de fondation</div>
+        </div>
+        <div class="animate-on-scroll" style="background:var(--color-primary);border-radius:var(--radius-lg);padding:2rem 1rem;box-shadow:0 2px 12px rgba(0,0,122,0.12);">
+          <div style="font-family:var(--font-display);font-size:2.8rem;font-weight:700;color:var(--color-accent);line-height:1;">200 000</div>
+          <div style="font-family:var(--font-ui);font-size:0.9rem;color:rgba(255,255,255,0.8);margin-top:0.5rem;">Habitants bénéficiaires</div>
+        </div>
+        <div class="animate-on-scroll" style="background:#fff;border-radius:var(--radius-lg);padding:2rem 1rem;border:1px solid rgba(65,105,225,0.1);box-shadow:0 2px 12px rgba(0,0,122,0.06);">
+          <div style="font-family:var(--font-display);font-size:2.8rem;font-weight:700;color:#4169E1;line-height:1;">30+</div>
+          <div style="font-family:var(--font-ui);font-size:0.9rem;color:var(--color-text-secondary);margin-top:0.5rem;">Années de service</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARTES SOUS-SECTIONS -->
+  <section style="background:#fff;padding:5rem 0;">
+    <div class="container">
+      <div class="section-header animate-on-scroll" style="text-align:center;margin-bottom:3rem;">
+        <span class="section-label" style="color:var(--color-secondary);">Explorer l'OUH</span>
+        <h2 class="section-title" style="color:var(--color-primary);">En savoir plus sur l'organisation</h2>
+        <p class="section-subtitle">Découvrez notre histoire, notre équipe de direction et nos principaux collaborateurs.</p>
+      </div>
+
+      <div class="ap-cards-grid">
+
+        <!-- Qui sommes-nous -->
+        <a href="qui-sommes-nous.html" class="ap-card animate-on-scroll">
+          <div class="ap-card-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--color-primary);margin:0;line-height:1.3;">Qui sommes-nous ?</h3>
+          <p style="font-family:var(--font-ui);font-size:0.92rem;line-height:1.7;color:var(--color-text-secondary);margin:0;">Notre histoire, notre mission, nos valeurs et les initiatives qui définissent l'OUH depuis 1995.</p>
+          <span style="font-family:var(--font-ui);font-size:0.82rem;font-weight:700;color:#4169E1;display:inline-flex;align-items:center;gap:0.3rem;margin-top:auto;">Lire la suite <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+
+        <!-- Conseil d'administration -->
+        <a href="conseil-administration.html" class="ap-card animate-on-scroll">
+          <div class="ap-card-icon" style="background:rgba(0,0,122,0.08);color:#00007A;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--color-primary);margin:0;line-height:1.3;">Conseil d'administration</h3>
+          <p style="font-family:var(--font-ui);font-size:0.92rem;line-height:1.7;color:var(--color-text-secondary);margin:0;">8 leaders dévoués qui guident l'OUH avec expertise, passion et un engagement indéfectible envers Haïti.</p>
+          <span style="font-family:var(--font-ui);font-size:0.82rem;font-weight:700;color:#4169E1;display:inline-flex;align-items:center;gap:0.3rem;margin-top:auto;">Rencontrer l'équipe <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+
+        <!-- Acteurs clés -->
+        <a href="acteurs-cles.html" class="ap-card animate-on-scroll">
+          <div class="ap-card-icon" style="background:rgba(184,134,11,0.12);color:#8a6608;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--color-primary);margin:0;line-height:1.3;">Acteurs clés</h3>
+          <p style="font-family:var(--font-ui);font-size:0.92rem;line-height:1.7;color:var(--color-text-secondary);margin:0;">Les partenaires, bénévoles et professionnels internationaux qui rendent possible notre action sur le terrain.</p>
+          <span style="font-family:var(--font-ui);font-size:0.82rem;font-weight:700;color:#4169E1;display:inline-flex;align-items:center;gap:0.3rem;margin-top:auto;">Voir les acteurs <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+
+        <!-- Nos Médecins -->
+        <a href="nos-medecins.html" class="ap-card animate-on-scroll">
+          <div class="ap-card-icon" style="background:rgba(14,116,144,0.10);color:#0e7490;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--color-primary);margin:0;line-height:1.3;">Nos Médecins</h3>
+          <p style="font-family:var(--font-ui);font-size:0.92rem;line-height:1.7;color:var(--color-text-secondary);margin:0;">Les chirurgiens, anesthésistes et spécialistes qui donnent de leur temps et expertise pour améliorer la santé en Haïti.</p>
+          <span style="font-family:var(--font-ui);font-size:0.82rem;font-weight:700;color:#4169E1;display:inline-flex;align-items:center;gap:0.3rem;margin-top:auto;">Voir l'équipe médicale <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CITATION / VISION -->
+  <section style="background:var(--color-primary);padding:5rem 0;text-align:center;">
+    <div class="container">
+      <div style="max-width:700px;margin:0 auto;">
+        <svg style="color:var(--color-accent);opacity:.45;margin-bottom:1.25rem;" width="52" height="52" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+        <blockquote class="animate-on-scroll" style="font-family:var(--font-display);font-size:clamp(1.3rem,2.5vw,1.9rem);font-style:italic;color:#fff;line-height:1.6;margin-bottom:1.5rem;">
+          Joignez-vous à nous dans cette noble mission. Ensemble, nous pouvons transformer des vies, construire des communautés résilientes et bâtir un avenir durable pour Haïti.
+        </blockquote>
+        <p class="animate-on-scroll" style="font-family:var(--font-ui);font-size:0.9rem;color:rgba(255,255,255,0.55);letter-spacing:0.06em;text-transform:uppercase;">— Organisation de l'Union Haïtienne</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA DON -->
+  <section style="background:var(--gradient-hero);text-align:center;padding:5rem 0;">
+    <div class="container">
+      <div style="max-width:620px;margin:0 auto;">
+        <span class="section-label animate-on-scroll" style="color:var(--color-accent);font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;font-family:var(--font-ui);font-weight:600;display:block;margin-bottom:1rem;">Soutenez notre mission</span>
+        <h2 class="animate-on-scroll" style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:#fff;margin-bottom:1.25rem;">
+          Agissez pour Haïti dès aujourd'hui
+        </h2>
+        <p class="animate-on-scroll" style="font-family:var(--font-ui);font-size:1.05rem;line-height:1.75;color:rgba(255,255,255,0.82);margin-bottom:2.5rem;">
+          Votre don permet de financer nos programmes de santé, d'éducation et d'aide humanitaire. Chaque contribution, grande ou petite, change une vie.
+        </p>
+        <div class="animate-on-scroll" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="don.html" class="btn btn-secondary" style="font-size:1.05rem;padding:0.9rem 2.2rem;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+          <a href="pourquoi-donner.html" class="btn btn-accent" style="font-size:1.05rem;padding:0.9rem 2.2rem;">Pourquoi donner ?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo"><img src="assets/images/logo/logo.png" alt="Logo OUH" width="56" height="56" style="object-fit:contain;border-radius:8px;"></div>
+        <p class="footer-brand-desc">L'Organisation de l'Union Haïtienne œuvre depuis 1995 pour améliorer la vie des communautés haïtiennes les plus vulnérables à travers la santé, l'éducation et l'aide humanitaire.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://www.instagram.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="https://tiktok.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.51a8.16 8.16 0 0 0 4.78 1.53V6.6a4.85 4.85 0 0 1-1.01.09z"/></svg></a>
+        </div>
+      </div>
+      <nav aria-label="À Propos">
+        <h3 class="footer-heading">À Propos</h3>
+        <ul class="footer-links">
+          <li><a href="qui-sommes-nous.html" class="footer-link">Qui sommes-nous</a></li>
+          <li><a href="conseil-administration.html" class="footer-link">Conseil d'Administration</a></li>
+          <li><a href="acteurs-cles.html" class="footer-link">Acteurs Clés</a></li>
+          <li><a href="nos-medecins.html" class="footer-link">Nos Médecins</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Accomplissements">
+        <h3 class="footer-heading">Accomplissements</h3>
+        <ul class="footer-links">
+          <li class="footer-link-item">
+            <a href="accomplissements-education.html" class="footer-link">Éducation</a>
+            <ul class="footer-sub-links">
+              <li><a href="bibliotheque.html" class="footer-sub-link">Bibliothèque Edgard Petit</a></li>
+            </ul>
+          </li>
+          <li><a href="accomplissements-sante.html" class="footer-link">Santé</a></li>
+          <li><a href="accomplissements-humanitaires.html" class="footer-link">Humanitaire</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Liens rapides">
+        <h3 class="footer-heading">Liens rapides</h3>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Accueil</a></li>
+          <li><a href="actualites.html" class="footer-link">Actualités</a></li>
+          <li><a href="galerie.html" class="footer-link">Galerie</a></li>
+          <li><a href="pourquoi-donner.html" class="footer-link">Pourquoi Donner</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h3 class="footer-heading">Contact</h3>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>390, Av. John Brown (Bourdon),<br/>Port-au-Prince, HT 6114</span></div>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.1 6.1l.88-.88a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+50937924663" class="footer-link">509-3792-4663</a></div>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:ouhhaiti@gmail.com" class="footer-link">ouhhaiti@gmail.com</a></div>
+      </div>
+      <div>
+        <h3 class="footer-heading">Soutenir l'OUH</h3>
+        <p class="footer-brand-desc">Votre don permet de financer nos programmes de santé, d'éducation et d'aide humanitaire en Haïti.</p>
+        <a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+        <a href="pourquoi-donner.html" class="footer-link" style="display:block;text-align:center;margin-top:0.75rem;">Pourquoi donner ?</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&#169; 2026 Organisation de l'Union Haïtienne (OUH). Tous droits réservés.</p>
+      <div class="footer-legal-links"><a href="contact.html" class="footer-legal-link">Contact</a><a href="admin/login.html" class="footer-legal-link">Administration</a></div>
+    </div>
+  </div>
+</footer>
+<button id="back-to-top" aria-label="Retour en haut de la page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+<script src="assets/js/storage.js?v=20260603e" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="assets/js/supabase-config.js?v=20260603e" defer></script>
+<script src="assets/js/supabase-data.js?v=20260603e" defer></script>
+<script src="assets/js/site-images.js?v=20260603e" defer></script>
+<script src="assets/js/main.js?v=20260603e" defer></script>
+</body>
+</html>

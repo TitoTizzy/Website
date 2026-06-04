@@ -1,0 +1,17 @@
+[
+  {
+    "id": "superadmin-001",
+    "username": "superadmin",
+    "displayName": "Emmanuel Herly Petit",
+    "email": "admin@ouhhaiti.org",
+    "role": "superadmin",
+    "passwordHash": "",
+    "createdAt": "2026-01-01T00:00:00Z",
+    "createdBy": "system",
+    "lastLogin": null,
+    "active": true,
+    "mustChangePassword": true,
+    "failedAttempts": 0,
+    "lockedUntil": null
+  }
+]

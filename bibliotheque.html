@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bibliothèque Edgard Petit | Organisation de l'Union Haïtienne</title>
+  <meta name="description" content="La Bibliothèque Edgard Petit à Port-au-Prince : un espace de savoir ouvert à toute la communauté haïtienne." />
+  <meta property="og:title"       content="Bibliothèque Edgard Petit | Organisation de l'Union Haïtienne" />
+  <meta property="og:description" content="La Bibliothèque Edgard Petit à Port-au-Prince : un espace de savoir ouvert à toute la communauté haïtienne." />
+  <meta property="og:image"       content="https://ouhhaiti.org/assets/images/og-image.jpg" />
+  <meta property="og:url"         content="https://ouhhaiti.org/bibliotheque.html" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Organisation de l'Union Haïtienne" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Bibliothèque Edgard Petit | Organisation de l'Union Haïtienne" />
+  <meta name="twitter:description" content="La Bibliothèque Edgard Petit à Port-au-Prince : un espace de savoir ouvert à toute la communauté haïtienne." />
+  <link rel="canonical"            href="https://ouhhaiti.org/bibliotheque.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/animations.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/responsive.css?v=20260603e" />
+  <style>
+    /* ── Bibliothèque page-specific styles ── */
+    .bib-hero {
+      background: linear-gradient(135deg, #007BFF 0%, #0044CC 100%);
+      padding: 7rem 0 5rem;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .bib-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .bib-hero-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.35rem 1.1rem;
+      border-radius: 2rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .bib-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      color: #fff;
+    }
+    .bib-hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+      font-style: italic;
+      color: rgba(255,255,255,0.88);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+    /* Intro */
+    .bib-intro {
+      padding: 5rem 0;
+      background: #fff;
+    }
+    .bib-intro-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .bib-intro-inner p {
+      font-family: var(--font-body, 'Source Serif 4', serif);
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--color-dark, #1a1a2e);
+      margin-bottom: 1.5rem;
+    }
+    /* Full-width image */
+    .bib-fullwidth-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    /* Dark blue section */
+    .bib-dark {
+      background: var(--color-primary, #00007A);
+      padding: 5rem 0;
+      color: #fff;
+    }
+    .bib-dark .container {
+      max-width: 800px;
+    }
+    .bib-dark-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .bib-dark p {
+      font-family: var(--font-body, 'Source Serif 4', serif);
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.88);
+      text-align: center;
+    }
+    /* Two-col section */
+    .bib-twocol {
+      padding: 5rem 0;
+      background: #fff;
+    }
+    .bib-twocol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .bib-twocol-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    .bib-twocol-img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: var(--radius-xl, 1.25rem);
+      box-shadow: 0 20px 60px rgba(0,0,122,0.15);
+    }
+    .bib-twocol-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      font-weight: 700;
+      color: var(--color-primary, #00007A);
+      margin-bottom: 1.2rem;
+      line-height: 1.25;
+    }
+    .bib-twocol-content p {
+      font-family: var(--font-body, 'Source Serif 4', serif);
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--color-dark, #1a1a2e);
+    }
+    /* Partners section */
+    .bib-partners {
+      background: #f4f6f9;
+      padding: 5rem 0;
+    }
+    .bib-partners-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 700;
+      color: var(--color-primary, #00007A);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .bib-partners-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    @media (max-width: 600px) {
+      .bib-partners-grid { grid-template-columns: 1fr; }
+    }
+    .bib-partner-card {
+      background: #fff;
+      border-radius: var(--radius-lg, 1rem);
+      padding: 2rem 1.75rem;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,122,0.08);
+      border: 1px solid rgba(0,0,122,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .bib-partner-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,122,0.14);
+    }
+    .bib-partner-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #007BFF, #0044CC);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    .bib-partner-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: #fff;
+      fill: none;
+    }
+    .bib-partner-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-primary, #00007A);
+      line-height: 1.3;
+    }
+    /* Practical info section */
+    .bib-info {
+      background: var(--color-primary, #00007A);
+      padding: 4rem 0;
+      color: #fff;
+    }
+    .bib-info-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .bib-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--color-accent, #4169E1);
+      margin-bottom: 2rem;
+    }
+    .bib-info-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .bib-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      text-align: left;
+      max-width: 260px;
+    }
+    .bib-info-item svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--color-accent, #4169E1);
+      fill: none;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .bib-info-item-text {
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.55;
+    }
+    .bib-info-item-text a {
+      color: var(--color-accent, #4169E1);
+      text-decoration: none;
+    }
+    .bib-info-item-text a:hover { text-decoration: underline; }
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #4169E1 0%, #00007A 100%);
+      padding: 5rem 0;
+      text-align: center;
+    }
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .cta-text {
+      font-family: var(--font-body, 'Source Serif 4', serif);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar" role="banner">
+  <div class="container navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <img class="navbar-logo-img" src="assets/images/logo/logo.png" alt="Logo OUH">
+      <div class="navbar-logo-text">
+        <span class="navbar-logo-title">Organisation de l'Union Haïtienne</span>
+        <span class="navbar-logo-sub">ONG depuis 1995</span>
+      </div>
+    </a>
+    <nav class="navbar-nav" aria-label="Navigation principale">
+      <div class="nav-item"><a href="index.html" class="nav-link">Accueil</a></div>
+      <div class="nav-item"><a href="actualites.html" class="nav-link">Actualités</a></div>
+      <div class="nav-item"><a href="galerie.html" class="nav-link">Galerie</a></div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="apropos.html" class="nav-link">À Propos <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="qui-sommes-nous.html" class="dropdown-link">Qui sommes-nous</a>
+          <a href="conseil-administration.html" class="dropdown-link">Conseil d'administration</a>
+          <a href="acteurs-cles.html" class="dropdown-link">Acteurs clés</a>
+          <a href="nos-medecins.html" class="dropdown-link">Nos Médecins</a>
+        </div>
+      </div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="#" class="nav-link nav-link--active">Accomplissements <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="accomplissements-education.html" class="dropdown-link">Éducation</a>
+          <a href="accomplissements-sante.html" class="dropdown-link">Santé</a>
+          <a href="accomplissements-humanitaires.html" class="dropdown-link">Humanitaire</a>
+          <a href="bibliotheque.html" class="dropdown-link dropdown-link--active">Bibliothèque Edgard Petit</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="pourquoi-donner.html" class="nav-link">Pourquoi Donner</a></div>
+      <div class="nav-item"><a href="contact.html" class="nav-link">Contact</a></div>
+    </nav>
+    <div class="navbar-cta"><a href="don.html" class="btn btn-secondary btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+    <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+  <a href="index.html" class="mobile-nav-link">Accueil</a>
+  <a href="actualites.html" class="mobile-nav-link">Actualités</a>
+  <a href="galerie.html" class="mobile-nav-link">Galerie</a>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ap" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">À Propos <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ap">
+    <a href="qui-sommes-nous.html" class="mobile-nav-sub-link">Qui sommes-nous</a>
+    <a href="conseil-administration.html" class="mobile-nav-sub-link">Conseil d'administration</a>
+    <a href="acteurs-cles.html" class="mobile-nav-sub-link">Acteurs clés</a>
+    <a href="nos-medecins.html" class="mobile-nav-sub-link">Nos Médecins</a>
+  </div>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ac" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">Accomplissements <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ac">
+    <a href="accomplissements-education.html" class="mobile-nav-sub-link">Éducation</a>
+    <a href="accomplissements-sante.html" class="mobile-nav-sub-link">Santé</a>
+    <a href="accomplissements-humanitaires.html" class="mobile-nav-sub-link">Humanitaire</a>
+  </div>
+  <a href="pourquoi-donner.html" class="mobile-nav-link">Pourquoi Donner</a>
+  <a href="contact.html" class="mobile-nav-link">Contact</a>
+  <div style="margin-top:1.5rem;"><a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+</nav>
+
+<main>
+
+  <!-- ─── 1. HERO ─── -->
+  <section class="bib-hero" aria-labelledby="bib-hero-title">
+    <div class="container">
+      <span class="bib-hero-label">Accomplissements &rsaquo; Bibliothèque</span>
+      <h1 class="bib-hero-title" id="bib-hero-title">La Bibliothèque Edgard Petit</h1>
+      <p class="bib-hero-subtitle"><em>La Flamme d'un Foyer de Savoir et d'Émancipation</em></p>
+      <div style="margin-top:2rem;">
+        <a href="https://ouhhaiti.org" target="_blank" rel="noopener noreferrer" class="btn btn-accent btn-lg" style="gap:0.5rem;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Visiter le site de la bibliothèque
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 2. INTRO ─── -->
+  <section class="bib-intro animate-on-scroll" aria-labelledby="bib-intro-heading">
+    <div class="container">
+      <div class="bib-intro-inner text-box">
+        <span class="section-label">À propos de la bibliothèque</span>
+        <h2 class="section-title" id="bib-intro-heading" style="text-align:center;margin-bottom:2rem;">Un espace de savoir ouvert à tous</h2>
+        <p>La Bibliothèque Edgard Petit est, par définition, un service connexe aux activités sociales et humanitaires de l'Organisation de l'Union Haïtienne (OUH). Cet outil primordial est principalement destiné aux étudiants haïtiens dont l'accès aux sources du savoir scientifique est trop étroit. Elle est également ouverte à toute clientèle qui entretient des liens étroits avec l'univers professionnel haïtien, notamment de la santé publique et du droit.</p>
+        <p>Elle est située au 390, Avenue John Brown (Bourdon). Par sa proximité géographique avec la zone métropolitaine de Port-au-Prince, cet instrument d'une importance capitale permet à cette catégorie de la population de s'ouvrir sans trop de difficultés à la documentation scientifique pour accroître finalement ses connaissances qui sont d'ailleurs indispensables à leur évolution professionnelle.</p>
+        <p>La Bibliothèque Edgard Petit offre à son public des services de consultation sur place, des ouvrages exposés. En d'autres termes, elle n'offre aucunement des services de prêt d'ouvrages pour la lecture des manuels scientifiques qui dépasse très largement le cadre de ses locaux. Elle propose aussi régulièrement des séances de formations sur divers sujets professionnels tels que le droit et la médecine pour ne citer que cela.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 3. FULL-WIDTH IMAGE ─── -->
+  <div aria-hidden="true">
+    <img
+      data-img-key="biblio-1" src="assets/images/placeholder.svg"
+      alt="La Bibliothèque Edgard Petit — intérieur"
+      class="bib-fullwidth-img"
+      loading="lazy"
+    />
+  </div>
+
+  <!-- ─── 4. OFFRE DE FORMATION (fond bleu marine) ─── -->
+  <section class="bib-dark animate-on-scroll" aria-labelledby="bib-formation-heading">
+    <div class="container">
+      <div class="text-box--glass">
+        <h2 class="bib-dark-title" id="bib-formation-heading">Une Offre de Formation Incomparable</h2>
+        <p>La Bibliothèque Edgard Petit est un catalyseur pour l'émancipation intellectuelle et professionnelle. En offrant un accès à des ressources documentaires de qualité et en organisant des formations de haut niveau, elle contribue à renforcer les capacités des professionnels haïtiens et à améliorer la qualité des services de santé et de droit en Haïti.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 5. FORMATIONS D'EXCELLENCE (2 colonnes) ─── -->
+  <section class="bib-twocol animate-on-scroll" aria-labelledby="bib-excellence-heading">
+    <div class="container">
+      <div class="bib-twocol-grid">
+        <div>
+          <img
+            data-img-key="biblio-2" src="assets/images/placeholder.svg"
+            alt="Formation médicale à la Bibliothèque Edgard Petit"
+            class="bib-twocol-img"
+            loading="lazy"
+          />
+        </div>
+        <div class="bib-twocol-content">
+          <span class="section-label">Partenariat international</span>
+          <h2 id="bib-excellence-heading">Formations d'Excellence&nbsp;: Des Experts Canadiens au Service de la Communauté Haïtienne</h2>
+          <p>Des médecins canadiens spécialisés — chirurgiens orthopédiques, anesthésistes et spécialistes chirurgicaux — ont généreusement fait don de manuels médicaux et offrent des formations spécialisées au personnel médical haïtien. Ces partenariats avec des experts internationaux permettent à la Bibliothèque Edgard Petit de proposer des formations de très haut niveau, qui contribuent à améliorer significativement la qualité des soins prodigués par les professionnels de santé haïtiens.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 6. PARTENAIRES ─── -->
+  <section class="bib-partners animate-on-scroll" aria-labelledby="bib-partners-heading">
+    <div class="container">
+      <span class="section-label" style="display:block;text-align:center;margin-bottom:0.5rem;">Nos collaborateurs</span>
+      <h2 class="bib-partners-title" id="bib-partners-heading">Partenaires</h2>
+      <div class="bib-partners-grid">
+        <article class="bib-partner-card">
+          <div class="bib-partner-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Institut Dwa Pou Tout Moun</h3>
+        </article>
+        <article class="bib-partner-card">
+          <div class="bib-partner-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <h3>Organisation de l'Union Haïtienne (OUH)</h3>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 7. INFOS PRATIQUES ─── -->
+  <section class="bib-info animate-on-scroll" aria-labelledby="bib-info-heading">
+    <div class="container">
+      <div class="bib-info-inner">
+        <h2 id="bib-info-heading">Informations pratiques</h2>
+        <div class="bib-info-items">
+          <div class="bib-info-item">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <div class="bib-info-item-text">
+              390, Avenue John Brown (Bourdon)<br/>
+              Port-au-Prince, HT 6114
+            </div>
+          </div>
+          <div class="bib-info-item">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <div class="bib-info-item-text">
+              <a href="mailto:ouhhaiti@gmail.com">ouhhaiti@gmail.com</a>
+            </div>
+          </div>
+          <div class="bib-info-item">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.68 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 14.92z"/>
+            </svg>
+            <div class="bib-info-item-text">
+              <a href="tel:+50937924663">509-3792-4663</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 8. CTA DON ─── -->
+  <section class="cta-section animate-on-scroll" aria-labelledby="bib-cta-heading">
+    <div class="container">
+      <span class="section-label" style="color:rgba(255,255,255,0.7);display:block;text-align:center;margin-bottom:0.75rem;">Soutenir la bibliothèque</span>
+      <h2 class="cta-title" id="bib-cta-heading">Aidez-nous à maintenir ce foyer de savoir</h2>
+      <p class="cta-text">Votre soutien permet à la Bibliothèque Edgard Petit de continuer à offrir des ressources et des formations gratuites aux professionnels haïtiens.</p>
+      <a href="don.html" class="btn btn-accent btn-lg"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo"><img src="assets/images/logo/logo.png" alt="Logo OUH" width="56" height="56" style="object-fit:contain;border-radius:8px;"></div>
+        <p class="footer-brand-desc">L'Organisation de l'Union Haïtienne œuvre depuis 1995 pour améliorer la vie des communautés haïtiennes les plus vulnérables.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://www.instagram.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        </div>
+      </div>
+            <nav aria-label="À Propos">
+        <h3 class="footer-heading">À Propos</h3>
+        <ul class="footer-links">
+          <li><a href="qui-sommes-nous.html" class="footer-link">Qui sommes-nous</a></li>
+          <li><a href="conseil-administration.html" class="footer-link">Conseil d'Administration</a></li>
+          <li><a href="acteurs-cles.html" class="footer-link">Acteurs Clés</a>
+          <li><a href="nos-medecins.html" class="footer-link">Nos Médecins</a></li></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Accomplissements">
+        <h3 class="footer-heading">Accomplissements</h3>
+        <ul class="footer-links">
+          <li class="footer-link-item">
+            <a href="accomplissements-education.html" class="footer-link">Éducation</a>
+            <ul class="footer-sub-links">
+              <li><a href="bibliotheque.html" class="footer-sub-link">Bibliothèque Edgard Petit</a></li>
+            </ul>
+          </li>
+          <li><a href="accomplissements-sante.html" class="footer-link">Santé</a></li>
+          <li><a href="accomplissements-humanitaires.html" class="footer-link">Humanitaire</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Liens rapides">
+        <h3 class="footer-heading">Liens rapides</h3>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Accueil</a></li>
+          <li><a href="actualites.html" class="footer-link">Actualités</a></li>
+          <li><a href="galerie.html" class="footer-link">Galerie</a></li>
+          <li><a href="pourquoi-donner.html" class="footer-link">Pourquoi Donner</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h3 class="footer-heading">Contact</h3>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>390, Av. John Brown (Bourdon),<br/>Port-au-Prince, HT 6114</span></div>
+        <div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:ouhhaiti@gmail.com" class="footer-link">ouhhaiti@gmail.com</a></div>
+      </div>
+      <div>
+        <h3 class="footer-heading">Soutenir l'OUH</h3>
+        <p class="footer-brand-desc">Votre don finance nos programmes en Haïti.</p>
+        <a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&#169; 2026 Organisation de l'Union Haïtienne (OUH). Tous droits réservés.</p>
+      <div class="footer-legal-links">
+        <a href="contact.html" class="footer-legal-link">Contact</a>
+        <a href="admin/login.html" class="footer-legal-link">Administration</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Retour en haut">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+<script src="assets/js/storage.js?v=20260603e" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="assets/js/supabase-config.js?v=20260603e" defer></script>
+<script src="assets/js/supabase-data.js?v=20260603e" defer></script>
+<script src="assets/js/site-images.js?v=20260603e" defer></script>
+<script src="assets/js/main.js?v=20260603e" defer></script>
+</body>
+</html>

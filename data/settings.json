@@ -1,0 +1,30 @@
+{
+  "id": "site-settings",
+  "siteName": "Organisation de l'Union Haïtienne",
+  "siteUrl": "https://ouhhaiti.org",
+  "tagline": "Ensemble, cultivons le savoir, préservons la santé, façonnons l'avenir.",
+  "email": "ouhhaiti@gmail.com",
+  "phone1": "509-3792-4663",
+  "phone2": "509-5565-2717",
+  "address": "390, Av. John Brown, Port-au-Prince, HT 6114",
+  "facebook": "https://facebook.com/",
+  "instagram": "https://www.instagram.com/",
+  "tiktok": "https://tiktok.com/",
+  "donationUrl": "/don.html",
+  "foundedYear": 1995,
+  "copyrightYear": 2026,
+  "heroSlides": [
+    {
+      "quote": "La santé et l'Intellect sont les deux bénédictions de la vie.",
+      "tagline": "Organisation de l'Union Haïtienne"
+    },
+    {
+      "quote": "L'Education est au cœur de la santé publique.",
+      "tagline": "Ensemble, bâtissons un Haïti meilleur"
+    },
+    {
+      "quote": "Une éducation de qualité est la base d'une vie en bonne santé pour les générations futures.",
+      "tagline": "OUH — Fondée en 1995"
+    }
+  ]
+}

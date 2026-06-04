@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Médecins | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .med-avatar-sm{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0;}
+    .order-btn{background:none;border:1px solid var(--color-border);border-radius:6px;width:28px;height:28px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--color-muted);transition:all .15s;}
+    .order-btn:hover{background:var(--color-light);color:var(--color-dark);}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Médecins</h1>
+        <div class="admin-breadcrumb"><span>Administration</span><span>/</span><span>Médecins</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/nos-medecins.html" class="btn btn-ghost btn-sm" target="_blank">Voir la page</a>
+        <a href="/admin/medecins/nouveau-medecin.html" class="btn btn-primary btn-sm">+ Ajouter un médecin</a>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <!-- Toolbar -->
+      <div class="admin-card" style="margin-bottom:1.5rem;padding:.875rem 1.25rem;">
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <div style="position:relative;flex:1;min-width:180px;">
+            <svg style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--color-muted);" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="search-input" type="search" placeholder="Rechercher un médecin…" class="admin-form-input" style="padding-left:2.4rem;margin:0;" />
+          </div>
+          <div style="display:flex;gap:.4rem;">
+            <button class="btn btn-sm filter-btn active" data-filter="all">Tous</button>
+            <button class="btn btn-sm filter-btn" data-filter="active">Actifs</button>
+            <button class="btn btn-sm filter-btn" data-filter="inactive">Masqués</button>
+          </div>
+          <span id="med-count" style="font-size:.8rem;color:var(--color-muted);margin-left:auto;">0 médecin(s)</span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="admin-card" style="padding:0;">
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="med-table">
+            <thead>
+              <tr>
+                <th style="width:36px;">Ordre</th>
+                <th>Médecin</th>
+                <th>Spécialité</th>
+                <th>Statut</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="med-tbody">
+              <tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--color-muted);">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script>
+<script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AdminUI.init({ page: 'medecins' });
+  await DataStore.init();
+  await DataStore.importFromJSON('medecins', '/data/medecins.json');
+
+  let all = [];
+  let filterMode = 'all';
+  let q = '';
+
+  async function load() {
+    try { all = await DataStore.getAllMedecins(); } catch { all = []; }
+    render();
+  }
+
+  function filtered() {
+    return all.filter(m => {
+      if (filterMode === 'active'   && m.active === false) return false;
+      if (filterMode === 'inactive' && m.active !== false) return false;
+      if (q) return (m.nom||'').toLowerCase().includes(q.toLowerCase()) || (m.specialite||'').toLowerCase().includes(q.toLowerCase());
+      return true;
+    });
+  }
+
+  function render() {
+    const list = filtered();
+    document.getElementById('med-count').textContent = list.length + ' médecin(s)';
+    const tbody = document.getElementById('med-tbody');
+    if (!list.length) { tbody.innerHTML = AdminUI.emptyRow(5, 'Aucun médecin. <a href="/admin/medecins/nouveau-medecin.html" class="btn btn-primary btn-sm" style="margin-left:.5rem;">Ajouter le premier</a>'); return; }
+
+    tbody.innerHTML = list.map((m, idx) => `
+      <tr>
+        <td>
+          <div style="display:flex;flex-direction:column;gap:2px;align-items:center;">
+            <button class="order-btn" data-action="up" data-id="${m.id}" title="Monter" ${idx===0?'disabled style="opacity:.3"':''}>▲</button>
+            <span style="font-size:.75rem;font-weight:600;color:var(--color-muted);">${m.ordre||idx+1}</span>
+            <button class="order-btn" data-action="down" data-id="${m.id}" title="Descendre" ${idx===list.length-1?'disabled style="opacity:.3"':''}>▼</button>
+          </div>
+        </td>
+        <td>
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            ${m.photoUrl
+              ? `<img class="med-avatar-sm" src="${m.photoUrl}" alt="" style="object-fit:cover;">`
+              : `<div class="med-avatar-sm" style="background:linear-gradient(135deg,${m.couleurDebut||'#4169E1'},${m.couleurFin||'#60A5FA'});">${m.initiales||'??'}</div>`}
+            <span style="font-weight:600;font-size:.875rem;">${m.nom}</span>
+          </div>
+        </td>
+        <td style="font-size:.82rem;color:var(--color-muted);">${m.specialite}</td>
+        <td>${m.active===false ? '<span class="badge badge-gray">Masqué</span>' : '<span class="badge badge-green">Visible</span>'}</td>
+        <td>
+          <div class="admin-table-actions" style="justify-content:flex-end;">
+            <a href="/admin/medecins/modifier-medecin.html?id=${m.id}" class="admin-action-btn" title="Modifier">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </a>
+            <button class="admin-action-btn" data-action="toggle" data-id="${m.id}" data-active="${m.active!==false}" title="${m.active===false?'Afficher':'Masquer'}">
+              ${m.active===false
+                ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+                : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`}
+            </button>
+            <button class="admin-action-btn danger" data-action="delete" data-id="${m.id}" data-nom="${(m.nom||'').replace(/"/g,'')}" title="Supprimer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  document.getElementById('med-table').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const { action, id, active, nom } = btn.dataset;
+
+    if (action === 'delete') {
+      if (!AdminUI.confirm(`Supprimer ${nom} ? Cette action est irréversible.`)) return;
+      try { await DataStore.delete('medecins', id); all = all.filter(m => m.id !== id); render(); AdminUI.toast('Médecin supprimé.', 'success'); }
+      catch { AdminUI.toast('Erreur suppression.', 'error'); }
+    }
+
+    if (action === 'toggle') {
+      const newActive = active === 'true' ? false : true;
+      try { await DataStore.update('medecins', id, { active: newActive }); const m = all.find(x => x.id === id); if (m) m.active = newActive; render(); AdminUI.toast(newActive ? 'Médecin affiché.' : 'Médecin masqué.', 'success'); }
+      catch { AdminUI.toast('Erreur.', 'error'); }
+    }
+
+    if (action === 'up' || action === 'down') {
+      const list = filtered();
+      const idx = list.findIndex(m => m.id === id);
+      const swapIdx = action === 'up' ? idx - 1 : idx + 1;
+      if (swapIdx < 0 || swapIdx >= list.length) return;
+      const a = list[idx], b = list[swapIdx];
+      const ao = a.ordre, bo = b.ordre;
+      try {
+        await DataStore.update('medecins', a.id, { ordre: bo });
+        await DataStore.update('medecins', b.id, { ordre: ao });
+        a.ordre = bo; b.ordre = ao;
+        all.sort((x, y) => (x.ordre||0) - (y.ordre||0));
+        render();
+      } catch { AdminUI.toast('Erreur réordonnancement.', 'error'); }
+    }
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); filterMode = b.dataset.filter; render();
+  }));
+  document.getElementById('search-input').addEventListener('input', e => { q = e.target.value.trim(); render(); });
+
+  await load();
+});
+</script>
+</body></html>

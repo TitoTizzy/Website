@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nouveau médecin | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .form-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
+    @media(max-width:860px){.form-layout{grid-template-columns:1fr;}}
+    .side-card{background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);padding:1.25rem;box-shadow:var(--shadow-sm);position:sticky;top:80px;margin-bottom:1rem;}
+    .avatar-preview{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:#fff;margin:0 auto 1rem;transition:background .3s;}
+    .color-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .color-hint{font-size:.72rem;color:var(--color-muted);margin-top:.2rem;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Nouveau médecin</h1>
+        <div class="admin-breadcrumb"><a href="/admin/medecins/liste-medecins.html" style="color:inherit;">Médecins</a><span>/</span><span>Nouveau</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/admin/medecins/liste-medecins.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <form id="med-form" novalidate>
+        <div class="form-layout">
+
+          <!-- Champs principaux -->
+          <div class="admin-card">
+            <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:1.25rem;">Informations du médecin</h3>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-nom">Nom complet <span class="required">*</span></label>
+              <input id="f-nom" type="text" class="admin-form-input" placeholder="ex: Dr DUPONT" required />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Inclure le titre « Dr » dans le nom.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-specialite">Spécialité <span class="required">*</span></label>
+              <input id="f-specialite" type="text" class="admin-form-input" placeholder="ex: Chirurgien Orthopédiste" required />
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-initiales">Initiales (2 lettres) <span class="required">*</span></label>
+              <input id="f-initiales" type="text" class="admin-form-input" placeholder="ex: DU" maxlength="2" style="text-transform:uppercase;letter-spacing:.1em;" required />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Utilisées dans l'avatar circulaire <strong>si aucune photo</strong> n'est téléversée.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-photo">Photo du médecin <span style="font-weight:500;color:var(--color-muted);">(facultatif)</span></label>
+              <input id="f-photo" type="file" accept="image/*" class="admin-form-input" style="padding:.5rem;" />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">JPG ou PNG. Recommandé : portrait carré. Remplace l'avatar à initiales.</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="f-bio">Biographie / parcours <span style="font-weight:500;color:var(--color-muted);">(facultatif)</span></label>
+              <textarea id="f-bio" class="admin-form-input" rows="5" placeholder="Un ou deux paragraphes sur son parcours, sa formation, son expérience…"></textarea>
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Affichée sous le nom sur la page « Nos médecins ».</p>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-form-label">Couleur de l'avatar</label>
+              <div class="color-row">
+                <div>
+                  <label class="admin-form-label" for="f-couleur1" style="font-size:.75rem;font-weight:500;">Couleur début</label>
+                  <input id="f-couleur1" type="color" class="admin-form-input" value="#4169E1" style="height:42px;padding:.25rem;cursor:pointer;" />
+                </div>
+                <div>
+                  <label class="admin-form-label" for="f-couleur2" style="font-size:.75rem;font-weight:500;">Couleur fin</label>
+                  <input id="f-couleur2" type="color" class="admin-form-input" value="#60A5FA" style="height:42px;padding:.25rem;cursor:pointer;" />
+                </div>
+              </div>
+              <p class="color-hint">Dégradé de l'avatar circulaire affiché sur la page publique.</p>
+            </div>
+
+            <div class="admin-form-group" style="margin-bottom:0;">
+              <label class="admin-form-label" for="f-ordre">Position dans la liste</label>
+              <input id="f-ordre" type="number" class="admin-form-input" placeholder="ex: 19" min="1" />
+              <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Laissez vide pour ajouter à la fin.</p>
+            </div>
+          </div>
+
+          <!-- Aperçu + publication -->
+          <div>
+            <div class="side-card">
+              <h3 style="font-size:.9rem;font-weight:700;margin-bottom:1rem;">Aperçu de la carte</h3>
+              <div class="avatar-preview" id="avatar-preview" style="background:linear-gradient(135deg,#4169E1,#60A5FA);">NG</div>
+              <div style="text-align:center;">
+                <div id="preview-nom" style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-primary);">Dr NOM</div>
+                <div id="preview-spec" style="font-size:.78rem;color:var(--color-muted);margin-top:.3rem;">Spécialité</div>
+              </div>
+            </div>
+
+            <div class="side-card">
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-active">Visibilité</label>
+                <select id="f-active" class="admin-form-input admin-form-select">
+                  <option value="true" selected>Visible sur le site</option>
+                  <option value="false">Masqué</option>
+                </select>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--color-border);margin:.875rem 0;">
+              <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Ajouter le médecin</button>
+              <div id="form-error" style="display:none;margin-top:.6rem;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.55rem .8rem;font-size:.78rem;color:#991b1b;"></div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script>
+<script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await AdminUI.init({ page: 'medecins' });
+  await DataStore.init();
+  await DataStore.importFromJSON('medecins', '/data/medecins.json');
+
+  /* ── Aperçu en temps réel ── */
+  let photoPreviewUrl = null;
+  function updatePreview() {
+    const nom   = document.getElementById('f-nom').value.trim() || 'Dr NOM';
+    const spec  = document.getElementById('f-specialite').value.trim() || 'Spécialité';
+    const init  = (document.getElementById('f-initiales').value.trim() || 'NG').toUpperCase().slice(0,2);
+    const c1    = document.getElementById('f-couleur1').value;
+    const c2    = document.getElementById('f-couleur2').value;
+    document.getElementById('preview-nom').textContent  = nom;
+    document.getElementById('preview-spec').textContent = spec;
+    const av = document.getElementById('avatar-preview');
+    if (photoPreviewUrl) {
+      av.textContent = '';
+      av.style.background = `center/cover no-repeat url("${photoPreviewUrl}")`;
+    } else {
+      av.textContent = init;
+      av.style.background = `linear-gradient(135deg,${c1},${c2})`;
+    }
+  }
+
+  ['f-nom','f-specialite','f-initiales','f-couleur1','f-couleur2'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updatePreview);
+  });
+
+  /* Aperçu de la photo téléversée */
+  document.getElementById('f-photo').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    if (photoPreviewUrl) { URL.revokeObjectURL(photoPreviewUrl); photoPreviewUrl = null; }
+    if (file) photoPreviewUrl = URL.createObjectURL(file);
+    updatePreview();
+  });
+
+  /* Auto-générer les initiales depuis le nom */
+  document.getElementById('f-nom').addEventListener('input', e => {
+    const words = e.target.value.trim().split(/\s+/).filter(w => w && w !== 'Dr');
+    if (words.length >= 1) {
+      document.getElementById('f-initiales').value = words.map(w => w[0]).join('').toUpperCase().slice(0,2);
+    }
+    updatePreview();
+  });
+
+  /* ── Soumission ── */
+  let saving = false;
+  document.getElementById('med-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (saving) return; saving = true;
+    const err = document.getElementById('form-error'); err.style.display = 'none';
+
+    const g = id => document.getElementById(id).value.trim();
+    const nom = g('f-nom'), specialite = g('f-specialite'), initiales = g('f-initiales').toUpperCase();
+    if (!nom)        { show('Le nom est obligatoire.');       saving=false; return; }
+    if (!specialite) { show('La spécialité est obligatoire.'); saving=false; return; }
+    if (!initiales)  { show('Les initiales sont obligatoires.'); saving=false; return; }
+
+    /* Calculer l'ordre max + 1 si non spécifié */
+    const all = await DataStore.getAllMedecins().catch(()=>[]);
+    const maxOrdre = all.length ? Math.max(...all.map(m => m.ordre||0)) : 0;
+    const ordre = parseInt(g('f-ordre')) || maxOrdre + 1;
+    const bio = document.getElementById('f-bio').value.trim();
+
+    try {
+      /* Téléverser la photo si fournie */
+      let photoUrl = null;
+      const file = document.getElementById('f-photo').files[0];
+      if (file) {
+        if (typeof DataStore.uploadImage !== 'function') throw new Error('Téléversement indisponible hors-ligne.');
+        photoUrl = await DataStore.uploadImage(file, 'medecins');
+      }
+
+      await DataStore.create('medecins', {
+        nom, specialite, initiales,
+        couleurDebut: document.getElementById('f-couleur1').value,
+        couleurFin:   document.getElementById('f-couleur2').value,
+        ordre,
+        active: document.getElementById('f-active').value !== 'false',
+        photoUrl: photoUrl || null,
+        bio: bio || null
+      });
+      await DataStore.logAction(user?.id, 'medecins.create', { nom });
+      AdminUI.toast('Médecin ajouté !', 'success');
+      setTimeout(() => { window.location.href = '/admin/medecins/liste-medecins.html'; }, 700);
+    } catch(ex) { show('Erreur : ' + (ex.message||'Impossible d\'enregistrer.')); saving = false; }
+
+    function show(msg) { err.style.display='block'; err.textContent=msg; }
+  });
+
+  updatePreview();
+});
+</script>
+</body></html>

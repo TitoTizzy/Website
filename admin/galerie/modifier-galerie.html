@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modifier photo | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .form-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
+    @media(max-width:860px){.form-layout{grid-template-columns:1fr;}}
+    .preview-box{width:100%;height:200px;border-radius:var(--radius-lg);border:2px dashed var(--color-border);display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--color-light);margin-bottom:.75rem;}
+    .preview-box img{width:100%;height:100%;object-fit:cover;}
+    .side-card{background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);padding:1.25rem;box-shadow:var(--shadow-sm);position:sticky;top:80px;margin-bottom:1rem;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Modifier la photo</h1>
+        <div class="admin-breadcrumb"><a href="/admin/galerie/liste-galeries.html" style="color:inherit;">Galeries</a><span>/</span><span>Modifier</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/admin/galerie/liste-galeries.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+    <div class="admin-content">
+      <div id="state-loading" class="admin-card" style="text-align:center;padding:3rem;"><p style="color:var(--color-muted);">Chargement…</p></div>
+      <div id="state-notfound" class="admin-card" style="display:none;text-align:center;padding:3rem;"><p style="color:var(--color-error);font-weight:600;">Photo introuvable.</p><a href="/admin/galerie/liste-galeries.html" class="btn btn-primary btn-sm" style="margin-top:1rem;">← Retour</a></div>
+
+      <form id="gallery-form" novalidate style="display:none;">
+        <div class="form-layout">
+          <div>
+            <div class="admin-card" style="margin-bottom:1.5rem;">
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-file">Remplacer la photo (optionnel)</label>
+                <input id="f-file" type="file" class="admin-form-input" accept="image/png,image/jpeg,image/webp,image/gif" style="padding:.5rem;cursor:pointer;" />
+                <p style="font-size:.72rem;color:var(--color-muted);margin-top:.3rem;">Laissez vide pour garder la photo actuelle. Sinon, choisissez une nouvelle image (max 5&nbsp;Mo).</p>
+                <input id="f-src" type="hidden" />
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-alt">Description / Texte alt <span class="required">*</span></label>
+                <input id="f-alt" type="text" class="admin-form-input" required />
+              </div>
+              <div class="admin-form-group" style="margin-bottom:0;">
+                <label class="admin-form-label" for="f-caption">Légende</label>
+                <input id="f-caption" type="text" class="admin-form-input" />
+              </div>
+            </div>
+            <div class="admin-card">
+              <h3 style="font-size:.95rem;font-weight:700;margin-bottom:.875rem;">Classification</h3>
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-category">Catégorie <span class="required">*</span></label>
+                <select id="f-category" class="admin-form-input admin-form-select" required>
+                  <option value="">— Choisir —</option>
+                  <option value="evenements">Événements</option>
+                  <option value="missions">Missions médicales</option>
+                  <option value="terrain">Terrain / Communautaire</option>
+                  <option value="__new__">+ Nouvelle catégorie…</option>
+                </select>
+                <input id="f-category-new" type="text" class="admin-form-input" placeholder="Nom de la nouvelle catégorie" style="display:none;margin-top:.5rem;" />
+              </div>
+              <div class="admin-form-group" style="margin-bottom:0;">
+                <label class="admin-form-label" for="f-annee">Année <span class="required">*</span></label>
+                <input id="f-annee" type="number" class="admin-form-input" min="1995" max="2030" required />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="side-card">
+              <h3 style="font-size:.9rem;font-weight:700;margin-bottom:.875rem;">Aperçu</h3>
+              <div class="preview-box" id="preview-box"><span style="font-size:.8rem;color:var(--color-muted);">Chargement…</span></div>
+              <button type="button" id="btn-preview" class="btn btn-outline btn-sm" style="width:100%;margin-bottom:1rem;">Actualiser l'aperçu</button>
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-status">Statut</label>
+                <select id="f-status" class="admin-form-input admin-form-select">
+                  <option value="published">Publié</option><option value="draft">Masqué</option>
+                </select>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--color-border);margin:.875rem 0;">
+              <button type="submit" class="btn btn-primary btn-sm" style="width:100%;margin-bottom:.5rem;">💾 Enregistrer</button>
+              <button type="button" id="btn-delete" class="btn btn-sm" style="width:100%;background:rgba(220,38,38,.08);color:var(--color-error);border:1px solid rgba(220,38,38,.2);">🗑 Supprimer</button>
+              <div id="form-error" style="display:none;margin-top:.6rem;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.55rem .8rem;font-size:.78rem;color:#991b1b;"></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script><script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script><script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await AdminUI.init({ page:'galeries', roles:['superadmin','admin_general','admin_gallery'] });
+  await DataStore.init();
+  const id = AdminUI.getParam('id');
+  if (!id) { show('notfound'); return; }
+
+  let photo;
+  try { photo = await DataStore.getById('galeries', id); } catch{ photo=null; }
+  if (!photo) { show('notfound'); return; }
+  show('form');
+
+  const MAX_BYTES = 5 * 1024 * 1024;
+  let selectedFile = null;
+
+  /* Catégorie : si celle du photo n'est pas dans la liste, l'ajouter */
+  const catSelect = document.getElementById('f-category');
+  const catNew = document.getElementById('f-category-new');
+  if (photo.category && ![...catSelect.options].some(o => o.value === photo.category)) {
+    const opt = document.createElement('option');
+    opt.value = photo.category; opt.textContent = photo.category;
+    catSelect.insertBefore(opt, catSelect.querySelector('option[value="__new__"]'));
+  }
+
+  const v = (el,val) => { const e=document.getElementById(el); if(e) e.value=val||''; };
+  v('f-src',photo.src); v('f-alt',photo.alt); v('f-caption',photo.caption);
+  v('f-category',photo.category); v('f-annee',photo.annee||''); v('f-status',photo.status||'published');
+  showCurrentImage();
+
+  catSelect.addEventListener('change', () => {
+    catNew.style.display = catSelect.value === '__new__' ? 'block' : 'none';
+    if (catSelect.value === '__new__') catNew.focus();
+  });
+
+  /* Aperçu : image actuelle, ou la nouvelle si on en choisit une */
+  function showCurrentImage() {
+    const box = document.getElementById('preview-box');
+    const src = photo.src;
+    if (!src) { box.innerHTML='<span style="font-size:.8rem;color:var(--color-muted);">Aucune image</span>'; return; }
+    const url = (/^https?:\/\//.test(src)||src.startsWith('/')) ? src
+              : src.startsWith('assets/') ? '/'+src
+              : '/assets/images/gallery/'+encodeURIComponent(src);
+    box.innerHTML=`<img src="${url}" alt="Aperçu" onerror="this.parentElement.innerHTML='<span style=&quot;font-size:.75rem;color:var(--color-error);&quot;>Image introuvable</span>'">`;
+  }
+
+  const fileInput = document.getElementById('f-file');
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) { selectedFile = null; showCurrentImage(); return; }
+    if (!file.type.startsWith('image/')) { AdminUI.toast('Veuillez choisir une image.','error'); fileInput.value=''; return; }
+    if (file.size > MAX_BYTES) { AdminUI.toast('Image trop lourde (max 5 Mo).','error'); fileInput.value=''; return; }
+    selectedFile = file;
+    const r = new FileReader();
+    r.onload = () => { document.getElementById('preview-box').innerHTML = `<img src="${r.result}" alt="Aperçu">`; };
+    r.readAsDataURL(file);
+  });
+  document.getElementById('btn-preview')?.addEventListener('click', () => fileInput.click());
+
+  let saving=false;
+  document.getElementById('gallery-form').addEventListener('submit', async e => {
+    e.preventDefault(); if(saving)return;
+    const err=document.getElementById('form-error'); err.style.display='none';
+    const g=el=>document.getElementById(el).value.trim();
+    const alt=g('f-alt'),annee=g('f-annee');
+    let category = catSelect.value;
+    if (category === '__new__') {
+      category = catNew.value.trim().toLowerCase().replace(/\s+/g,'-');
+      if (!category) { err.style.display='block'; err.textContent='Entrez le nom de la nouvelle catégorie.'; return; }
+    }
+    if(!alt||!category||!annee){err.style.display='block';err.textContent='Tous les champs obligatoires.';return;}
+
+    saving=true;
+    const btn=e.submitter; if(btn){btn.disabled=true;btn.textContent='Enregistrement…';}
+    try{
+      let src = photo.src;   // garder l'image actuelle par défaut
+      if (selectedFile) {
+        src = (window.SUPABASE_READY && DataStore.uploadImage)
+          ? await DataStore.uploadImage(selectedFile, 'galerie')
+          : await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(selectedFile);});
+      }
+      await DataStore.update('galeries',id,{src,alt,caption:g('f-caption'),category,annee:parseInt(annee),status:g('f-status')||'published'});
+      await DataStore.logAction(user?.id,'gallery.update',{id});
+      AdminUI.toast('Photo mise à jour !','success');
+      setTimeout(()=>{window.location.href='/admin/galerie/liste-galeries.html';},700);
+    }catch(ex){err.style.display='block';err.textContent='Erreur : '+(ex.message||'Echec');saving=false;if(btn){btn.disabled=false;btn.textContent='💾 Enregistrer';}}
+  });
+
+  document.getElementById('btn-delete').addEventListener('click', async () => {
+    if (!AdminUI.confirm('Supprimer cette photo définitivement ?')) return;
+    try{await DataStore.delete('galeries',id);AdminUI.toast('Photo supprimée.','success');setTimeout(()=>{window.location.href='/admin/galerie/liste-galeries.html';},700);}
+    catch{AdminUI.toast('Erreur suppression.','error');}
+  });
+
+  function show(state){
+    document.getElementById('state-loading').style.display  = state==='loading'  ?'block':'none';
+    document.getElementById('state-notfound').style.display = state==='notfound' ?'block':'none';
+    document.getElementById('gallery-form').style.display   = state==='form'     ?'block':'none';
+  }
+});
+</script>
+</body></html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paramètres | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+    @media(max-width:768px){.settings-grid{grid-template-columns:1fr;}}
+    .settings-section-title{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-primary);margin-bottom:1rem;padding-bottom:.625rem;border-bottom:2px solid var(--color-accent);}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Paramètres du site</h1>
+        <div class="admin-breadcrumb"><span>SuperAdmin</span><span>/</span><span>Paramètres</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/index.html" class="btn btn-ghost btn-sm" target="_blank">Voir le site</a>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+    <div class="admin-content">
+      <form id="settings-form" novalidate>
+        <div class="settings-grid" style="margin-bottom:1.5rem;">
+
+          <!-- Infos générales -->
+          <div class="admin-card">
+            <h2 class="settings-section-title">Informations générales</h2>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-sitename">Nom du site</label>
+              <input id="s-sitename" type="text" class="admin-form-input" placeholder="Organisation de l'Union Haïtienne" />
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-tagline">Slogan / Sous-titre</label>
+              <input id="s-tagline" type="text" class="admin-form-input" placeholder="ONG depuis 1995" />
+            </div>
+            <div class="admin-form-group" style="margin-bottom:0;">
+              <label class="admin-form-label" for="s-description">Description courte</label>
+              <textarea id="s-description" class="admin-form-input" rows="3" placeholder="Description affichée dans les métadonnées SEO"></textarea>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="admin-card">
+            <h2 class="settings-section-title">Coordonnées</h2>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-email">Email principal</label>
+              <input id="s-email" type="email" class="admin-form-input" placeholder="ouhhaiti@gmail.com" />
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-phone">Téléphone</label>
+              <input id="s-phone" type="tel" class="admin-form-input" placeholder="509-3792-4663" />
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-address">Adresse</label>
+              <textarea id="s-address" class="admin-form-input" rows="2" placeholder="390, Av. John Brown (Bourdon), Port-au-Prince, HT 6114"></textarea>
+            </div>
+            <div class="admin-form-group" style="margin-bottom:0;">
+              <label class="admin-form-label" for="s-mapurl">Lien Google Maps (optionnel)</label>
+              <input id="s-mapurl" type="url" class="admin-form-input" placeholder="https://maps.google.com/..." />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="settings-grid" style="margin-bottom:1.5rem;">
+
+          <!-- Réseaux sociaux -->
+          <div class="admin-card">
+            <h2 class="settings-section-title">Réseaux sociaux</h2>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-facebook">Facebook</label>
+              <input id="s-facebook" type="url" class="admin-form-input" placeholder="https://facebook.com/ouhhaiti" />
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-instagram">Instagram</label>
+              <input id="s-instagram" type="url" class="admin-form-input" placeholder="https://instagram.com/ouhhaiti" />
+            </div>
+            <div class="admin-form-group" style="margin-bottom:0;">
+              <label class="admin-form-label" for="s-tiktok">TikTok</label>
+              <input id="s-tiktok" type="url" class="admin-form-input" placeholder="https://tiktok.com/@ouhhaiti" />
+            </div>
+          </div>
+
+          <!-- Options -->
+          <div class="admin-card">
+            <h2 class="settings-section-title">Options du site</h2>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-lang">Langue par défaut</label>
+              <select id="s-lang" class="admin-form-input admin-form-select">
+                <option value="fr">Français</option>
+                <option value="ht">Haïtien créole</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="s-articles-per-page">Articles par page</label>
+              <input id="s-articles-per-page" type="number" class="admin-form-input" min="3" max="24" placeholder="6" />
+            </div>
+            <div class="admin-form-group" style="margin-bottom:0;">
+              <label class="admin-form-label" for="s-paypal">Email PayPal (dons)</label>
+              <input id="s-paypal" type="email" class="admin-form-input" placeholder="ouhhaiti@gmail.com" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="admin-card" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+          <div id="save-status" style="font-size:.82rem;color:var(--color-muted);"></div>
+          <div style="display:flex;gap:.75rem;">
+            <button type="button" id="btn-reset" class="btn btn-ghost btn-sm">Réinitialiser</button>
+            <button type="submit" class="btn btn-primary">💾 Enregistrer les paramètres</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script><script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script><script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AdminUI.init({ page:'parametres', roles:['superadmin'] });
+  await DataStore.init();
+
+  const FIELDS = ['sitename','tagline','description','email','phone','address','mapurl','facebook','instagram','tiktok','lang','articles-per-page','paypal'];
+  const DEFAULT = { sitename:"Organisation de l'Union Haïtienne", tagline:'ONG depuis 1995', email:'ouhhaiti@gmail.com', phone:'509-3792-4663', address:'390, Av. John Brown (Bourdon), Port-au-Prince, HT 6114', lang:'fr', 'articles-per-page':6, paypal:'ouhhaiti@gmail.com' };
+
+  async function loadSettings() {
+    let s = await DataStore.getSettings().catch(()=>null);
+    s = s || DEFAULT;
+    FIELDS.forEach(k => { const el=document.getElementById('s-'+k); if(el&&s[k]!=null) el.value=s[k]; });
+    document.getElementById('save-status').textContent = s.updatedAt ? 'Dernière sauvegarde : ' + AdminUI.formatDate(s.updatedAt) : '';
+  }
+
+  document.getElementById('settings-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = {};
+    FIELDS.forEach(k => { const el=document.getElementById('s-'+k); if(el) data[k]=el.value.trim(); });
+    data.updatedAt = new Date().toISOString();
+    try {
+      await DataStore.saveSettings(data);
+      AdminUI.toast('Paramètres enregistrés !','success');
+      document.getElementById('save-status').textContent = 'Dernière sauvegarde : ' + AdminUI.formatDate(data.updatedAt);
+    } catch { AdminUI.toast('Erreur lors de la sauvegarde.','error'); }
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if (!AdminUI.confirm('Réinitialiser avec les valeurs par défaut ?')) return;
+    FIELDS.forEach(k => { const el=document.getElementById('s-'+k); if(el&&DEFAULT[k]!=null) el.value=DEFAULT[k]; else if(el) el.value=''; });
+    AdminUI.toast('Valeurs réinitialisées (non sauvegardées).','info');
+  });
+
+  await loadSettings();
+});
+</script>
+</body></html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ajouter une photo | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .form-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
+    @media(max-width:860px){.form-layout{grid-template-columns:1fr;}}
+    .preview-box{width:100%;height:200px;border-radius:var(--radius-lg);border:2px dashed var(--color-border);display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--color-light);margin-bottom:.75rem;}
+    .preview-box img{width:100%;height:100%;object-fit:cover;}
+    .side-card{background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);padding:1.25rem;box-shadow:var(--shadow-sm);position:sticky;top:80px;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Ajouter une photo</h1>
+        <div class="admin-breadcrumb"><a href="/admin/galerie/liste-galeries.html" style="color:inherit;">Galeries</a><span>/</span><span>Nouveau</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/admin/galerie/liste-galeries.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+    <div class="admin-content">
+      <form id="gallery-form" novalidate>
+        <div class="form-layout">
+          <div>
+            <div class="admin-card" style="margin-bottom:1.5rem;">
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-file">Photo <span class="required">*</span></label>
+                <input id="f-file" type="file" class="admin-form-input" accept="image/png,image/jpeg,image/webp,image/gif" required style="padding:.5rem;cursor:pointer;" />
+                <p style="font-size:.72rem;color:var(--color-muted);margin-top:.3rem;">Choisissez une image depuis votre ordinateur (JPG, PNG ou WebP, max 5&nbsp;Mo).</p>
+                <input id="f-src" type="hidden" />
+              </div>
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-alt">Description / Texte alt <span class="required">*</span></label>
+                <input id="f-alt" type="text" class="admin-form-input" placeholder="Description de la photo pour l'accessibilité" required />
+              </div>
+              <div class="admin-form-group" style="margin-bottom:0;">
+                <label class="admin-form-label" for="f-caption">Légende (optionnel)</label>
+                <input id="f-caption" type="text" class="admin-form-input" placeholder="Légende affichée sous la photo" />
+              </div>
+            </div>
+            <div class="admin-card">
+              <h3 style="font-size:.95rem;font-weight:700;margin-bottom:.875rem;">Classification</h3>
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-category">Catégorie <span class="required">*</span></label>
+                <select id="f-category" class="admin-form-input admin-form-select" required>
+                  <option value="">— Choisir —</option>
+                  <option value="evenements">Événements</option>
+                  <option value="missions">Missions médicales</option>
+                  <option value="terrain">Terrain / Communautaire</option>
+                  <option value="__new__">+ Nouvelle catégorie…</option>
+                </select>
+                <input id="f-category-new" type="text" class="admin-form-input" placeholder="Nom de la nouvelle catégorie" style="display:none;margin-top:.5rem;" />
+              </div>
+              <div class="admin-form-group" style="margin-bottom:0;">
+                <label class="admin-form-label" for="f-annee">Année <span class="required">*</span></label>
+                <input id="f-annee" type="number" class="admin-form-input" min="1995" max="2030" placeholder="2024" required />
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div>
+            <div class="side-card" style="margin-bottom:1rem;">
+              <h3 style="font-size:.9rem;font-weight:700;margin-bottom:.875rem;">Aperçu</h3>
+              <div class="preview-box" id="preview-box">
+                <span style="font-size:.8rem;color:var(--color-muted);">Entrez un nom de fichier</span>
+              </div>
+              <button type="button" id="btn-preview" class="btn btn-outline btn-sm" style="width:100%;">Actualiser l'aperçu</button>
+            </div>
+            <div class="side-card">
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-status">Statut</label>
+                <select id="f-status" class="admin-form-input admin-form-select">
+                  <option value="published" selected>Publié</option>
+                  <option value="draft">Masqué</option>
+                </select>
+              </div>
+              <hr style="border:none;border-top:1px solid var(--color-border);margin:.875rem 0;">
+              <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Ajouter la photo</button>
+              <div id="form-error" style="display:none;margin-top:.6rem;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.55rem .8rem;font-size:.78rem;color:#991b1b;"></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script><script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script><script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await AdminUI.init({ page:'galeries', roles:['superadmin','admin_general','admin_gallery'] });
+  await DataStore.init();
+
+  const MAX_BYTES = 5 * 1024 * 1024;
+  let selectedFile = null;
+
+  /* Aperçu de l'image choisie sur l'ordinateur */
+  const fileInput = document.getElementById('f-file');
+  fileInput.addEventListener('change', () => {
+    const box = document.getElementById('preview-box');
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) { selectedFile = null; return; }
+    if (!file.type.startsWith('image/')) { AdminUI.toast('Veuillez choisir une image.','error'); fileInput.value=''; return; }
+    if (file.size > MAX_BYTES) { AdminUI.toast('Image trop lourde (max 5 Mo).','error'); fileInput.value=''; return; }
+    selectedFile = file;
+    const r = new FileReader();
+    r.onload = () => { box.innerHTML = `<img src="${r.result}" alt="Aperçu">`; };
+    r.readAsDataURL(file);
+  });
+  /* le bouton "Actualiser l'aperçu" n'est plus utile mais on le garde inoffensif */
+  document.getElementById('btn-preview')?.addEventListener('click', () => fileInput.click());
+
+  /* Nouvelle catégorie : afficher le champ texte si "+ Nouvelle catégorie…" */
+  const catSelect = document.getElementById('f-category');
+  const catNew = document.getElementById('f-category-new');
+  catSelect.addEventListener('change', () => {
+    if (catSelect.value === '__new__') { catNew.style.display='block'; catNew.focus(); }
+    else { catNew.style.display='none'; }
+  });
+
+  let saving = false;
+  document.getElementById('gallery-form').addEventListener('submit', async e => {
+    e.preventDefault(); if(saving) return;
+    const err = document.getElementById('form-error'); err.style.display='none';
+    const g = id => document.getElementById(id).value.trim();
+    const alt=g('f-alt'), annee=g('f-annee');
+
+    /* Catégorie : valeur du select, ou texte libre si nouvelle */
+    let category = catSelect.value;
+    if (category === '__new__') {
+      category = catNew.value.trim().toLowerCase().replace(/\s+/g,'-');
+      if (!category) { err.style.display='block'; err.textContent='Entrez le nom de la nouvelle catégorie.'; return; }
+    }
+
+    if(!selectedFile){ err.style.display='block'; err.textContent='Veuillez choisir une photo.'; return; }
+    if(!alt||!category||!annee){ err.style.display='block'; err.textContent='Tous les champs obligatoires doivent être remplis.'; return; }
+
+    saving=true;
+    const btn = e.submitter; if(btn){ btn.disabled=true; btn.textContent='Téléversement…'; }
+    try {
+      let src;
+      if (window.SUPABASE_READY && DataStore.uploadImage) {
+        src = await DataStore.uploadImage(selectedFile, 'galerie');   // URL Storage
+      } else {
+        src = await new Promise(res => { const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(selectedFile); });
+      }
+      await DataStore.create('galeries', { src, alt, caption:g('f-caption'), category, annee:parseInt(annee), status:g('f-status')||'published' });
+      await DataStore.logAction(user?.id,'gallery.create',{alt,category});
+      AdminUI.toast('Photo ajoutée !','success');
+      setTimeout(()=>{ window.location.href='/admin/galerie/liste-galeries.html'; },700);
+    } catch(ex){ err.style.display='block'; err.textContent='Erreur : '+(ex.message||'Impossible d\'enregistrer.'); saving=false; if(btn){ btn.disabled=false; btn.textContent='Ajouter la photo'; } }
+  });
+});
+</script>
+</body></html>

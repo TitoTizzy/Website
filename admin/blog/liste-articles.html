@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles | Admin OUH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+
+  <div class="admin-main">
+    <!-- Topbar -->
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Articles</h1>
+        <div class="admin-breadcrumb"><span>Administration</span><span>/</span><span>Articles</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/index.html" class="btn btn-ghost btn-sm" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Voir le site
+        </a>
+        <a href="/admin/blog/nouvel-article.html" class="btn btn-primary btn-sm">+ Nouvel article</a>
+        <div class="admin-topbar-user">
+          <div class="admin-topbar-avatar" id="topbar-avatar">SA</div>
+          <span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <!-- Toolbar -->
+      <div class="admin-card" style="margin-bottom:1.5rem;padding:1rem 1.25rem;">
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <div style="position:relative;flex:1;min-width:200px;">
+            <svg style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--color-muted);" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="search-input" type="search" placeholder="Rechercher un article…" class="admin-form-input" style="padding-left:2.5rem;margin:0;" />
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <button class="btn btn-sm filter-btn active" data-status="all">Tous <span id="cnt-all" class="badge badge-gray" style="margin-left:.25rem;">0</span></button>
+            <button class="btn btn-sm filter-btn" data-status="published">Publiés <span id="cnt-pub" class="badge badge-green" style="margin-left:.25rem;">0</span></button>
+            <button class="btn btn-sm filter-btn" data-status="draft">Brouillons <span id="cnt-dft" class="badge badge-gray" style="margin-left:.25rem;">0</span></button>
+            <button class="btn btn-sm filter-btn" data-status="archived">Archivés <span id="cnt-arc" class="badge badge-red" style="margin-left:.25rem;">0</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="admin-card" style="padding:0;">
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="articles-table">
+            <thead>
+              <tr>
+                <th>Titre</th>
+                <th>Catégorie</th>
+                <th>Statut</th>
+                <th>Publié le</th>
+                <th>Auteur</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="articles-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--color-muted);">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script>
+<script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="/assets/js/blog.js?v=20260603e"></script>
+<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AdminUI.init({ page: 'articles' });
+  await DataStore.init();
+
+  let allArticles = [];
+  let currentStatus = 'all';
+  let searchQuery = '';
+
+  /* ── Chargement ── */
+  async function loadArticles() {
+    try {
+      allArticles = await DataStore.getAll('articles');
+      allArticles.sort((a,b) => new Date(b.updatedAt||b.createdAt) - new Date(a.updatedAt||a.createdAt));
+    } catch(e) { allArticles = []; }
+    updateCounts();
+    renderTable();
+  }
+
+  function updateCounts() {
+    document.getElementById('cnt-all').textContent = allArticles.length;
+    document.getElementById('cnt-pub').textContent = allArticles.filter(a=>a.status==='published').length;
+    document.getElementById('cnt-dft').textContent = allArticles.filter(a=>a.status==='draft').length;
+    document.getElementById('cnt-arc').textContent = allArticles.filter(a=>a.status==='archived').length;
+  }
+
+  function getFiltered() {
+    return allArticles.filter(a => {
+      if (currentStatus !== 'all' && a.status !== currentStatus) return false;
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        return (a.title||'').toLowerCase().includes(q) || (a.excerpt||'').toLowerCase().includes(q);
+      }
+      return true;
+    });
+  }
+
+  function renderTable() {
+    const filtered = getFiltered();
+    const tbody = document.getElementById('articles-tbody');
+    if (!filtered.length) {
+      tbody.innerHTML = AdminUI.emptyRow(6, allArticles.length ? 'Aucun article correspond à vos critères.' : 'Aucun article. <a href="/admin/blog/nouvel-article.html" class="btn btn-primary btn-sm" style="margin-left:.5rem;">Créer le premier</a>');
+      return;
+    }
+    tbody.innerHTML = filtered.map(a => `
+      <tr>
+        <td>
+          <div style="font-weight:600;color:var(--color-dark);max-width:320px;">
+            ${AdminUI.truncate(a.title || '(Sans titre)', 55)}
+          </div>
+          ${a.excerpt ? `<div style="font-size:.75rem;color:var(--color-muted);margin-top:.15rem;">${AdminUI.truncate(a.excerpt,70)}</div>` : ''}
+        </td>
+        <td><span style="font-size:.82rem;">${AdminUI.catLabel(a.category)}</span></td>
+        <td>${AdminUI.statusBadge(a.status)}</td>
+        <td style="font-size:.8rem;color:var(--color-muted);white-space:nowrap;">${AdminUI.formatDate(a.publishedAt || a.createdAt)}</td>
+        <td style="font-size:.8rem;">${a.author || '—'}</td>
+        <td>
+          <div class="admin-table-actions" style="justify-content:flex-end;">
+            <a href="/admin/blog/modifier-article.html?id=${a.id}" class="admin-action-btn" title="Modifier" aria-label="Modifier l'article">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </a>
+            <button class="admin-action-btn" data-action="toggle" data-id="${a.id}" data-status="${a.status}" title="${a.status==='published'?'Dépublier':'Publier'}" aria-label="${a.status==='published'?'Dépublier':'Publier'} l'article">
+              ${a.status==='published'
+                ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+                : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`}
+            </button>
+            <button class="admin-action-btn danger" data-action="delete" data-id="${a.id}" data-title="${(a.title||'').replace(/"/g,'')}" title="Supprimer" aria-label="Supprimer l'article">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  /* ── Actions table ── */
+  document.getElementById('articles-table').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const { action, id, status, title } = btn.dataset;
+
+    if (action === 'delete') {
+      if (!AdminUI.confirm(`Supprimer l'article « ${title} » ? Cette action est irréversible.`)) return;
+      try {
+        await DataStore.delete('articles', id);
+        allArticles = allArticles.filter(a => a.id !== id);
+        updateCounts(); renderTable();
+        AdminUI.toast('Article supprimé.', 'success');
+      } catch { AdminUI.toast('Erreur lors de la suppression.', 'error'); }
+    }
+
+    if (action === 'toggle') {
+      const newStatus = status === 'published' ? 'draft' : 'published';
+      try {
+        const update = { status: newStatus };
+        if (newStatus === 'published') update.publishedAt = new Date().toISOString();
+        await DataStore.update('articles', id, update);
+        const art = allArticles.find(a => a.id === id);
+        if (art) { art.status = newStatus; if (newStatus==='published') art.publishedAt = update.publishedAt; }
+        updateCounts(); renderTable();
+        AdminUI.toast(newStatus==='published' ? 'Article publié !' : 'Article repassé en brouillon.', 'success');
+      } catch { AdminUI.toast('Erreur lors de la mise à jour.', 'error'); }
+    }
+  });
+
+  /* ── Filtres ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentStatus = btn.dataset.status;
+      renderTable();
+    });
+  });
+
+  /* ── Recherche ── */
+  document.getElementById('search-input').addEventListener('input', e => {
+    searchQuery = e.target.value.trim();
+    renderTable();
+  });
+
+  await loadArticles();
+});
+</script>
+</body>
+</html>

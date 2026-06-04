@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page introuvable | Organisation de l'Union Haïtienne</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@0,700;0,900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260603e" />
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+    .err-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient-hero);
+      padding: 4rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .err-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(65,105,225,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .err-inner { position: relative; z-index: 1; max-width: 580px; }
+    .err-code {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 18vw, 10rem);
+      font-weight: 900;
+      color: rgba(255,255,255,0.08);
+      line-height: 1;
+      margin-bottom: -1rem;
+      letter-spacing: -0.05em;
+      user-select: none;
+    }
+    .err-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(65,105,225,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      border: 1px solid rgba(147,197,253,0.25);
+    }
+    .err-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .err-sub {
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 1rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+    .err-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .err-links {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .err-link {
+      font-family: var(--font-ui, 'DM Sans', sans-serif);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .err-link:hover { color: rgba(255,255,255,0.9); }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="container navbar-inner">
+    <a href="index.html" class="navbar-logo" aria-label="Accueil OUH">
+      <img class="navbar-logo-img" src="assets/images/logo/logo.png" alt="Logo OUH">
+      <div class="navbar-logo-text">
+        <span class="navbar-logo-title">Organisation de l'Union Haïtienne</span>
+        <span class="navbar-logo-sub">ONG depuis 1995</span>
+      </div>
+    </a>
+    <div class="navbar-cta">
+      <a href="index.html" class="btn btn-outline btn-sm">← Accueil</a>
+    </div>
+  </div>
+</header>
+
+<div class="err-wrap" role="main">
+  <div class="err-inner">
+    <div class="err-code" aria-hidden="true">404</div>
+    <div class="err-icon" aria-hidden="true">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(147,197,253,0.8)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </div>
+    <h1 class="err-title">Page introuvable</h1>
+    <p class="err-sub">
+      La page que vous recherchez n'existe pas, a été déplacée ou l'adresse est incorrecte.<br>
+      Pas d'inquiétude — vous pouvez retrouver votre chemin ci-dessous.
+    </p>
+    <div class="err-actions">
+      <a href="index.html" class="btn btn-accent" style="font-weight:700;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:.3rem;" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Retour à l'accueil
+      </a>
+      <a href="contact.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.35);color:#fff;">
+        Nous contacter
+      </a>
+    </div>
+    <div class="err-links">
+      <a href="actualites.html" class="err-link">Actualités</a>
+      <a href="galerie.html" class="err-link">Galerie</a>
+      <a href="apropos.html" class="err-link">À Propos</a>
+      <a href="don.html" class="err-link">Faire un don</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" role="contentinfo" style="background:var(--color-dark);">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.08);padding:1.25rem 0;">
+      <p class="footer-copyright">&#169; 2026 Organisation de l'Union Haïtienne (OUH). Tous droits réservés.</p>
+      <div class="footer-legal-links"><a href="contact.html" class="footer-legal-link">Contact</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

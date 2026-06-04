@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Admin area — private
+Disallow: /admin/
+
+# Data files
+Disallow: /data/
+
+# Assets
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/images/
+
+Sitemap: https://ouhhaiti.org/sitemap.xml

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Article | Organisation de l'Union Haïtienne</title>
+  <meta name="description" id="page-desc" content="Actualités de l'Organisation de l'Union Haïtienne." />
+  <meta property="og:type"      content="article" />
+  <meta property="og:site_name" content="Organisation de l'Union Haïtienne" />
+  <meta property="og:title"     id="og-title"  content="Article | OUH" />
+  <meta property="og:description" id="og-desc" content="" />
+  <meta property="og:image"     id="og-image" content="https://ouhhaiti.org/assets/images/og-image.jpg" />
+  <meta name="twitter:card"     content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/animations.css?v=20260603e" />
+  <link rel="stylesheet" href="assets/css/responsive.css?v=20260603e" />
+  <style>
+    /* ── Article page styles ── */
+    .art-hero {
+      background: var(--gradient-hero);
+      padding: 5rem 0 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .art-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 30%, rgba(65,105,225,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .art-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .art-breadcrumb a { color: rgba(255,255,255,0.65); text-decoration: none; transition: color 0.2s; }
+    .art-breadcrumb a:hover { color: #fff; }
+    .art-breadcrumb span { color: rgba(255,255,255,0.35); }
+    .art-cat-badge {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.75rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 1rem;
+    }
+    .art-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      max-width: 820px;
+      margin-bottom: 1.25rem;
+    }
+    .art-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .art-meta-item { display: flex; align-items: center; gap: 0.35rem; }
+    .art-meta-item svg { opacity: 0.7; flex-shrink: 0; }
+
+    /* Body layout */
+    .art-body-wrap {
+      background: #fff;
+      padding: 4rem 0 5rem;
+    }
+    .art-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 3.5rem;
+      align-items: start;
+    }
+    @media (max-width: 960px) { .art-layout { grid-template-columns: 1fr; } }
+
+    /* Cover image */
+    .art-cover {
+      width: 100%;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 12px 40px rgba(0,0,122,0.12);
+    }
+    .art-cover img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 768px) { .art-cover img { height: 240px; } }
+
+    /* Article content typography */
+    .art-content {
+      font-family: var(--font-body);
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: var(--color-dark);
+    }
+    .art-content p { margin-bottom: 1.4rem; }
+    .art-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 2.5rem 0 1rem;
+      line-height: 1.25;
+    }
+    .art-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 2rem 0 0.75rem;
+    }
+    .art-content ul, .art-content ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.4rem;
+    }
+    .art-content li { margin-bottom: 0.5rem; }
+    .art-content blockquote {
+      border-left: 4px solid var(--color-accent);
+      padding: 1rem 1.5rem;
+      margin: 2rem 0;
+      background: rgba(65,105,225,0.05);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      font-family: var(--font-quote);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--color-primary);
+    }
+    .art-content strong { font-weight: 700; color: var(--color-primary); }
+    .art-content a { color: var(--color-accent); text-decoration: underline; }
+
+    /* Excerpt fallback (when no full content) */
+    .art-excerpt-note {
+      background: rgba(65,105,225,0.06);
+      border: 1px solid rgba(65,105,225,0.15);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      color: var(--color-muted);
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    /* Share bar */
+    .art-share {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--color-border);
+      margin-top: 2.5rem;
+    }
+    .art-share-label {
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 0.25rem;
+    }
+    .art-share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--color-border);
+      background: #fff;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      text-decoration: none;
+    }
+    .art-share-btn:hover { border-color: var(--color-accent); color: var(--color-accent); background: rgba(65,105,225,0.05); }
+    .art-share-btn.copied { border-color: var(--color-success); color: var(--color-success); }
+
+    /* Sidebar */
+    .art-sidebar { position: sticky; top: calc(var(--navbar-height, 72px) + 1.5rem); }
+    .art-sidebar-card {
+      background: var(--color-light);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      border: 1px solid var(--color-border);
+      margin-bottom: 1.5rem;
+    }
+    .art-sidebar-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+      padding-bottom: 0.625rem;
+      border-bottom: 2px solid var(--color-accent);
+    }
+    .art-related-item {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--color-border);
+      text-decoration: none;
+      transition: opacity 0.18s;
+    }
+    .art-related-item:last-child { border-bottom: none; }
+    .art-related-item:hover { opacity: 0.75; }
+    .art-related-thumb {
+      width: 56px;
+      height: 42px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--color-border);
+    }
+    .art-related-info { flex: 1; min-width: 0; }
+    .art-related-ttl {
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .art-related-date {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      color: var(--color-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* Not found state */
+    .art-notfound {
+      text-align: center;
+      padding: 5rem 2rem;
+    }
+    .art-notfound h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.75rem;
+    }
+    .art-notfound p { font-family: var(--font-ui); color: var(--color-muted); margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="container navbar-inner">
+    <a href="index.html" class="navbar-logo" aria-label="Accueil OUH">
+      <img class="navbar-logo-img" src="assets/images/logo/logo.png" alt="Logo OUH">
+      <div class="navbar-logo-text">
+        <span class="navbar-logo-title">Organisation de l'Union Haïtienne</span>
+        <span class="navbar-logo-sub">ONG depuis 1995</span>
+      </div>
+    </a>
+    <nav class="navbar-nav" aria-label="Navigation principale">
+      <div class="nav-item"><a href="index.html" class="nav-link">Accueil</a></div>
+      <div class="nav-item"><a href="actualites.html" class="nav-link active">Actualités</a></div>
+      <div class="nav-item"><a href="galerie.html" class="nav-link">Galerie</a></div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="apropos.html" class="nav-link">À Propos <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="qui-sommes-nous.html" class="dropdown-link">Qui sommes-nous</a>
+          <a href="conseil-administration.html" class="dropdown-link">Conseil d'administration</a>
+          <a href="acteurs-cles.html" class="dropdown-link">Acteurs clés</a>
+          <a href="nos-medecins.html" class="dropdown-link">Nos Médecins</a>
+        </div>
+      </div>
+      <div class="nav-item" data-has-dropdown>
+        <a href="accomplissements.html" class="nav-link">Accomplissements <svg class="nav-dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="accomplissements-education.html" class="dropdown-link">Éducation</a>
+          <a href="accomplissements-sante.html" class="dropdown-link">Santé</a>
+          <a href="accomplissements-humanitaires.html" class="dropdown-link">Humanitaire</a>
+        </div>
+      </div>
+      <div class="nav-item"><a href="pourquoi-donner.html" class="nav-link">Pourquoi Donner</a></div>
+      <div class="nav-item"><a href="contact.html" class="nav-link">Contact</a></div>
+    </nav>
+    <div class="navbar-cta"><a href="don.html" class="btn btn-secondary btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+    <button class="hamburger" aria-label="Menu principal" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+  <a href="index.html" class="mobile-nav-link">Accueil</a>
+  <a href="actualites.html" class="mobile-nav-link">Actualités</a>
+  <a href="galerie.html" class="mobile-nav-link">Galerie</a>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ap" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">À Propos <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ap">
+    <a href="qui-sommes-nous.html" class="mobile-nav-sub-link">Qui sommes-nous</a>
+    <a href="conseil-administration.html" class="mobile-nav-sub-link">Conseil d'administration</a>
+    <a href="acteurs-cles.html" class="mobile-nav-sub-link">Acteurs clés</a>
+    <a href="nos-medecins.html" class="mobile-nav-sub-link">Nos Médecins</a>
+  </div>
+  <button class="mobile-nav-link" data-toggle-submenu="m-ac" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">Accomplissements <span class="mobile-toggle-icon">&#9660;</span></button>
+  <div class="mobile-nav-submenu" id="m-ac">
+    <a href="accomplissements-education.html" class="mobile-nav-sub-link">Éducation</a>
+    <a href="accomplissements-sante.html" class="mobile-nav-sub-link">Santé</a>
+    <a href="accomplissements-humanitaires.html" class="mobile-nav-sub-link">Humanitaire</a>
+  </div>
+  <a href="pourquoi-donner.html" class="mobile-nav-link">Pourquoi Donner</a>
+  <a href="contact.html" class="mobile-nav-link">Contact</a>
+  <div style="margin-top:1.5rem;"><a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+</nav>
+
+<main id="main-content">
+
+  <!-- Hero dynamique -->
+  <section class="art-hero" id="art-hero" aria-labelledby="art-title" style="display:none;">
+    <div class="container" style="position:relative;z-index:1;">
+      <nav class="art-breadcrumb" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <a href="actualites.html">Actualités</a>
+        <span aria-hidden="true">/</span>
+        <span id="breadcrumb-title" aria-current="page">Article</span>
+      </nav>
+      <span class="art-cat-badge" id="art-cat-badge"></span>
+      <h1 class="art-title" id="art-title"></h1>
+      <div class="art-meta">
+        <span class="art-meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <time id="art-date"></time>
+        </span>
+        <span class="art-meta-item" id="art-author-wrap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="art-author"></span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article non trouvé -->
+  <section id="art-notfound" style="display:none;" aria-live="polite">
+    <div class="container">
+      <div class="art-notfound">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(65,105,225,0.35)" stroke-width="1.5" style="margin:0 auto 1.5rem;display:block;" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <h2>Article introuvable</h2>
+        <p>Cet article n'existe pas ou a été supprimé.</p>
+        <a href="actualites.html" class="btn btn-primary">← Retour aux actualités</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Corps de l'article -->
+  <section class="art-body-wrap" id="art-body" style="display:none;">
+    <div class="container">
+      <div class="art-layout">
+
+        <!-- Contenu principal -->
+        <article>
+          <div class="art-cover" id="art-cover">
+            <img id="art-img" src="assets/images/placeholder.svg" alt="" loading="eager" />
+          </div>
+
+          <div class="art-content" id="art-content"></div>
+
+          <!-- Note si pas de contenu complet -->
+          <div class="art-excerpt-note" id="art-excerpt-note" style="display:none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:.5rem;display:block;margin-left:auto;margin-right:auto;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Le contenu complet de cet article sera publié prochainement.<br>
+            Revenez bientôt ou <a href="contact.html">contactez-nous</a> pour plus d'informations.
+          </div>
+
+          <!-- Barre de partage -->
+          <div class="art-share" role="group" aria-label="Partager l'article">
+            <span class="art-share-label">Partager</span>
+            <button class="art-share-btn" id="btn-copy-link" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Copier le lien
+            </button>
+            <a class="art-share-btn" id="btn-share-email" href="#" aria-label="Partager par email">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email
+            </a>
+            <a href="actualites.html" class="art-share-btn" style="margin-left:auto;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+              Toutes les actualités
+            </a>
+          </div>
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="art-sidebar" aria-label="Articles récents">
+          <div class="art-sidebar-card">
+            <h2 class="art-sidebar-title">Articles récents</h2>
+            <div id="art-related"></div>
+          </div>
+
+          <div class="art-sidebar-card">
+            <h2 class="art-sidebar-title">Soutenir l'OUH</h2>
+            <p style="font-family:var(--font-ui);font-size:.85rem;color:var(--color-muted);line-height:1.6;margin-bottom:1rem;">Votre don finance directement nos programmes sur le terrain en Haïti.</p>
+            <a href="don.html" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-logo"><img src="assets/images/logo/logo.png" alt="Logo OUH" width="56" height="56" style="object-fit:contain;border-radius:8px;"></div>
+        <p class="footer-brand-desc">L'Organisation de l'Union Haïtienne œuvre depuis 1995 pour améliorer la vie des communautés haïtiennes les plus vulnérables.</p>
+        <div class="footer-socials">
+          <a href="https://facebook.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://www.instagram.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="https://tiktok.com/" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.51a8.16 8.16 0 0 0 4.78 1.53V6.6a4.85 4.85 0 0 1-1.01.09z"/></svg></a>
+        </div>
+      </div>
+      <nav aria-label="À Propos"><h3 class="footer-heading">À Propos</h3><ul class="footer-links"><li><a href="qui-sommes-nous.html" class="footer-link">Qui sommes-nous</a></li><li><a href="conseil-administration.html" class="footer-link">Conseil d'Administration</a></li><li><a href="acteurs-cles.html" class="footer-link">Acteurs Clés</a>
+          <li><a href="nos-medecins.html" class="footer-link">Nos Médecins</a></li></li></ul></nav>
+      <nav aria-label="Accomplissements"><h3 class="footer-heading">Accomplissements</h3><ul class="footer-links"><li class="footer-link-item"><a href="accomplissements-education.html" class="footer-link">Éducation</a><ul class="footer-sub-links"><li><a href="bibliotheque.html" class="footer-sub-link">Bibliothèque Edgard Petit</a></li></ul></li><li><a href="accomplissements-sante.html" class="footer-link">Santé</a></li><li><a href="accomplissements-humanitaires.html" class="footer-link">Humanitaire</a></li></ul></nav>
+      <nav aria-label="Liens rapides"><h3 class="footer-heading">Liens rapides</h3><ul class="footer-links"><li><a href="index.html" class="footer-link">Accueil</a></li><li><a href="actualites.html" class="footer-link">Actualités</a></li><li><a href="galerie.html" class="footer-link">Galerie</a></li><li><a href="pourquoi-donner.html" class="footer-link">Pourquoi Donner</a></li><li><a href="contact.html" class="footer-link">Contact</a></li></ul></nav>
+      <div><h3 class="footer-heading">Contact</h3><div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>390, Av. John Brown (Bourdon),<br/>Port-au-Prince, HT 6114</span></div><div class="footer-contact-item"><svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:ouhhaiti@gmail.com" class="footer-link">ouhhaiti@gmail.com</a></div></div>
+      <div><h3 class="footer-heading">Soutenir l'OUH</h3><p class="footer-brand-desc">Votre don permet de financer nos programmes de santé, d'éducation et d'aide humanitaire en Haïti.</p><a href="don.html" class="btn btn-secondary" style="width:100%;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Faire un don</a></div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&#169; 2026 Organisation de l'Union Haïtienne (OUH). Tous droits réservés.</p>
+      <div class="footer-legal-links"><a href="contact.html" class="footer-legal-link">Contact</a><a href="admin/login.html" class="footer-legal-link">Administration</a></div>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Retour en haut de la page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* ── Seed articles (fallback si IndexedDB vide) ── */
+const SEED_ARTICLES = [
+  { id:'seed-1', slug:'mission-medicale-carrefour-poy-500-patients', title:"Mission médicale à Carrefour-Poy : plus de 500 patients consultés", category:'sante', publishedAt:'2025-03-15', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Mission médicale OUH à Carrefour-Poy',
+    excerpt:"L'équipe médicale de l'OUH a mené une mission intensive de trois jours dans la région de Carrefour-Poy, offrant des consultations gratuites, des médicaments et des soins préventifs à plus de 500 habitants des communautés les plus vulnérables.",
+    content:`<p>Du 12 au 14 mars 2025, l'équipe médicale de l'Organisation de l'Union Haïtienne (OUH) a déployé ses forces dans la région de Carrefour-Poy, l'une des zones les plus isolées et les plus défavorisées de la périphérie de Port-au-Prince.</p><h2>Chiffres clés de la mission</h2><p>En trois jours d'interventions intensives, les équipes ont pu :</p><ul><li>Réaliser <strong>plus de 500 consultations médicales gratuites</strong></li><li>Distribuer des médicaments antipaludéens, des antibiotiques et des vitamines</li><li>Vacciner <strong>128 enfants</strong> de moins de 5 ans</li><li>Dépister et traiter des cas de malnutrition infantile</li></ul><h2>Un besoin criant</h2><p>La région de Carrefour-Poy est caractérisée par un accès quasi inexistant aux soins de santé primaires. Les habitants doivent parcourir plusieurs heures pour atteindre le centre médical le plus proche. Cette mission a permis de répondre à des besoins urgents longtemps restés sans réponse.</p><p>« Nous avons rencontré des enfants qui n'avaient jamais vu de médecin. Des femmes enceintes sans suivi. Des personnes âgées souffrant de maladies chroniques non traitées depuis des années », témoigne le Dr. Marie-Louise Pierre, coordinatrice médicale de la mission.</p><h2>Perspectives</h2><p>L'OUH prévoit de revenir à Carrefour-Poy dans les prochains mois pour assurer un suivi des cas identifiés et élargir le programme de soins préventifs. Votre soutien est indispensable pour financer ces missions vitales.</p>` },
+  { id:'seed-2', slug:'formation-professionnels-sante-session-intensive', title:"Formation des professionnels de santé : nouvelle session intensive", category:'education', publishedAt:'2025-02-10', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Formation des agents de santé OUH',
+    excerpt:"Dans le cadre de son programme de renforcement des capacités locales, l'OUH a organisé une formation intensive de deux semaines destinée aux agents de santé communautaires.",
+    content:`<p>Du 27 janvier au 7 février 2025, l'OUH a organisé une formation intensive destinée à 32 agents de santé communautaires issus de différentes régions d'Haïti.</p><h2>Programme de formation</h2><p>La formation a couvert plusieurs modules essentiels :</p><ul><li>Diagnostic et traitement des maladies tropicales courantes</li><li>Santé maternelle et infantile</li><li>Prévention et contrôle des infections</li><li>Gestion des urgences médicales de terrain</li><li>Communication en santé publique</li></ul><p>Cette formation s'inscrit dans la vision long terme de l'OUH : construire un réseau d'agents de santé compétents et autonomes, capables d'intervenir efficacement dans les zones les plus reculées d'Haïti.</p>` },
+  { id:'seed-3', slug:'distribution-aide-urgence-inondations-grand-anse', title:"Distribution d'aide d'urgence suite aux inondations du Grand-Anse", category:'humanitaire', publishedAt:'2024-11-28', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Distribution humanitaire OUH Grand-Anse',
+    excerpt:"Suite aux inondations dévastatrices qui ont frappé le département du Grand-Anse, l'OUH a mobilisé ses équipes pour distribuer vivres, médicaments et matériel d'hygiène à plus de 800 familles sinistrées.",
+    content:`<p>En novembre 2024, des pluies torrentielles ont causé des inondations sans précédent dans le département du Grand-Anse, forçant plus de 3 000 familles à quitter leurs domiciles.</p><h2>Réponse d'urgence de l'OUH</h2><p>L'OUH a activé son plan d'urgence en moins de 48 heures, déployant une équipe de 18 volontaires et 4 véhicules de terrain. En 10 jours d'intervention :</p><ul><li><strong>812 familles</strong> ont reçu des kits alimentaires d'urgence</li><li><strong>450 enfants</strong> ont reçu des suppléments nutritionnels</li><li><strong>300 kits d'hygiène</strong> ont été distribués</li><li>Des soins médicaux d'urgence ont été prodigués à 245 personnes</li></ul><p>L'OUH remercie chaleureusement tous ses donateurs qui ont rendu cette intervention possible. Votre générosité sauve des vies.</p>` },
+  { id:'seed-4', slug:'seminaire-scientifique-sante-communautaire-haiti', title:"Séminaire scientifique sur la santé communautaire en Haïti", category:'education', publishedAt:'2024-10-05', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Séminaire scientifique OUH', excerpt:"L'OUH a organisé un séminaire réunissant des experts haïtiens et internationaux autour des enjeux de santé publique et de renforcement des systèmes de santé locaux.", content:'<p>Le 5 octobre 2024, l\'OUH a organisé son séminaire scientifique annuel sur la santé communautaire en Haïti, réunissant plus de 80 professionnels de santé haïtiens et de la diaspora.</p><p>Cet événement a permis le partage des meilleures pratiques, des avancées scientifiques récentes et des stratégies innovantes pour renforcer les systèmes de santé dans les zones rurales d\'Haïti.</p>' },
+  { id:'seed-5', slug:'campagne-vaccination-cholera-artibonite', title:"Campagne de vaccination contre le choléra dans l'Artibonite", category:'sante', publishedAt:'2024-09-20', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Campagne vaccination OUH', excerpt:"En partenariat avec des organisations internationales, l'OUH a mené une campagne de vaccination permettant de vacciner plus de 2 000 personnes contre le choléra.", content:'<p>Face à la recrudescence du choléra dans la vallée de l\'Artibonite, l\'OUH a lancé en septembre 2024 une campagne de vaccination d\'urgence en partenariat avec des organisations sanitaires internationales.</p><p>En deux semaines, plus de <strong>2 000 personnes</strong> ont été vaccinées dans 8 communes, et des actions de sensibilisation sur l\'hygiène et l\'eau potable ont touché plus de 5 000 habitants.</p>' },
+  { id:'seed-6', slug:'assemblee-generale-ouh-2024-bilan-perspectives', title:"Assemblée générale annuelle de l'OUH : bilan 2024 et perspectives", category:'evenements', publishedAt:'2024-08-15', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Assemblée générale OUH 2024', excerpt:"L'OUH a tenu son assemblée générale annuelle pour faire le bilan des activités de l'année et définir les priorités stratégiques pour 2025.", content:'<p>Le 15 août 2024, l\'OUH a tenu son assemblée générale annuelle, réunissant plus de 60 membres, partenaires et donateurs autour d\'un bilan riche et de perspectives ambitieuses pour 2025.</p><p>Les points saillants de cette assemblée ont été la présentation du bilan financier, le rapport d\'activités terrain, l\'élection de nouveaux membres au Conseil d\'Administration et la définition du plan stratégique 2025-2027.</p>' }
+];
+
+const CAT_META = {
+  sante:       { label:'Santé',        cls:'cat-sante',       bg:'rgba(14,116,144,0.92)',   color:'#fff' },
+  education:   { label:'Éducation',    cls:'cat-education',   bg:'rgba(65,105,225,0.9)',  color:'#fff' },
+  humanitaire: { label:'Humanitaire',  cls:'cat-humanitaire', bg:'rgba(22,163,74,0.9)',   color:'#fff' },
+  evenements:  { label:'Événements',   cls:'cat-evenements',  bg:'rgba(99,102,241,0.9)',  color:'#fff' }
+};
+
+function fmtDate(iso) {
+  return new Date(iso).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+}
+
+function getParam(k) { return new URLSearchParams(window.location.search).get(k); }
+
+function setMeta(article) {
+  document.getElementById('page-title').textContent = article.title + ' | OUH';
+  document.getElementById('page-desc').setAttribute('content', article.excerpt || article.title);
+  document.getElementById('og-title').setAttribute('content', article.title);
+  document.getElementById('og-desc').setAttribute('content', article.excerpt || '');
+  if (article.image && !article.image.includes('placeholder')) {
+    const ogImg = /^https?:\/\//.test(article.image) ? article.image : 'https://ouhhaiti.org/' + article.image;
+    document.getElementById('og-image').setAttribute('content', ogImg);
+  }
+}
+
+function renderRelated(allArticles, currentId) {
+  const related = allArticles.filter(a => a.id !== currentId).slice(0, 4);
+  const container = document.getElementById('art-related');
+  if (!related.length) { container.innerHTML = '<p style="font-size:.8rem;color:var(--color-muted);">Aucun autre article.</p>'; return; }
+  container.innerHTML = related.map(a => `
+    <a href="article.html?id=${a.id}" class="art-related-item">
+      <img class="art-related-thumb" src="${a.image || 'assets/images/placeholder.svg'}" alt="${a.alt || a.title}" loading="lazy">
+      <div class="art-related-info">
+        <div class="art-related-ttl">${a.title}</div>
+        <div class="art-related-date">${fmtDate(a.publishedAt || a.createdAt)}</div>
+      </div>
+    </a>`).join('');
+}
+
+(async function init() {
+  const slug = getParam('slug');
+  const id   = getParam('id');
+
+  if (!slug && !id) { showState('notfound'); return; }
+
+  let article = null;
+  let allArticles = SEED_ARTICLES;
+
+  /* Tentative de chargement depuis IndexedDB */
+  try {
+    if (typeof DataStore !== 'undefined') {
+      await DataStore.init();
+      const stored = await DataStore.getAll('articles');
+      const pub = stored.filter(a => a.status === 'published');
+      if (pub.length > 0) allArticles = pub;
+    }
+  } catch (_) { /* utiliser SEED_ARTICLES */ }
+
+  if (id)   article = allArticles.find(a => a.id === id) || null;
+  if (!article && slug) article = allArticles.find(a => a.slug === slug) || null;
+
+  if (!article) { showState('notfound'); return; }
+
+  /* ── Remplissage ── */
+  setMeta(article);
+
+  const cat = CAT_META[article.category] || { label: article.category, bg:'rgba(65,105,225,.9)', color:'#fff' };
+  const badge = document.getElementById('art-cat-badge');
+  badge.textContent = cat.label;
+  badge.style.cssText = `background:${cat.bg};color:${cat.color};`;
+
+  document.getElementById('art-title').textContent = article.title;
+  document.getElementById('breadcrumb-title').textContent = article.title.length > 45 ? article.title.slice(0,45)+'…' : article.title;
+
+  const dateEl = document.getElementById('art-date');
+  const dateStr = fmtDate(article.publishedAt || article.createdAt);
+  dateEl.textContent = dateStr;
+  dateEl.setAttribute('datetime', article.publishedAt || article.createdAt || '');
+
+  const authorWrap = document.getElementById('art-author-wrap');
+  if (article.author) {
+    document.getElementById('art-author').textContent = article.author;
+  } else {
+    authorWrap.style.display = 'none';
+  }
+
+  /* Image */
+  if (article.image) {
+    document.getElementById('art-img').src = article.image;
+    document.getElementById('art-img').alt = article.alt || article.title;
+  }
+
+  /* Contenu */
+  const contentEl = document.getElementById('art-content');
+  if (article.content && article.content.trim()) {
+    contentEl.innerHTML = article.content;
+  } else if (article.excerpt) {
+    contentEl.innerHTML = `<p>${article.excerpt}</p>`;
+    document.getElementById('art-excerpt-note').style.display = 'block';
+  }
+
+  /* Partage */
+  document.getElementById('btn-copy-link').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      const btn = document.getElementById('btn-copy-link');
+      btn.textContent = '✓ Lien copié !';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Copier le lien'; btn.classList.remove('copied'); }, 2500);
+    } catch { /* clipboard non disponible */ }
+  });
+
+  document.getElementById('btn-share-email').href =
+    `mailto:?subject=${encodeURIComponent(article.title)}&body=${encodeURIComponent('Découvrez cet article de l\'OUH : ' + window.location.href)}`;
+
+  /* Articles récents */
+  renderRelated(allArticles, article.id);
+
+  showState('article');
+})();
+
+function showState(state) {
+  document.getElementById('art-hero').style.display     = state === 'article'  ? 'block' : 'none';
+  document.getElementById('art-notfound').style.display = state === 'notfound' ? 'block' : 'none';
+  document.getElementById('art-body').style.display     = state === 'article'  ? 'block' : 'none';
+}
+</script>
+
+<script src="assets/js/storage.js?v=20260603e" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="assets/js/supabase-config.js?v=20260603e" defer></script>
+<script src="assets/js/supabase-data.js?v=20260603e" defer></script>
+<script src="assets/js/main.js?v=20260603e" defer></script>
+</body>
+</html>

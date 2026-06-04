@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Album | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;}
+    .photo-card{position:relative;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--color-border);background:var(--color-light);aspect-ratio:4/3;}
+    .photo-card img{width:100%;height:100%;object-fit:cover;display:block;}
+    .photo-actions{position:absolute;top:.4rem;right:.4rem;display:flex;gap:.3rem;opacity:0;transition:opacity .15s;}
+    .photo-card:hover .photo-actions{opacity:1;}
+    .photo-btn{width:30px;height:30px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.92);box-shadow:0 1px 4px rgba(0,0,0,.2);color:var(--color-dark);}
+    .photo-btn.danger:hover{background:var(--color-error);color:#fff;}
+    .photo-btn.cover:hover{background:var(--color-accent);color:#fff;}
+    .photo-cover-badge{position:absolute;bottom:.4rem;left:.4rem;background:var(--color-accent);color:#fff;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:.15rem .5rem;border-radius:var(--radius-full);}
+    .dropzone{border:2px dashed var(--color-border);border-radius:var(--radius-lg);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .18s;background:var(--color-surface);}
+    .dropzone:hover,.dropzone.drag{border-color:var(--color-accent);background:rgba(65,105,225,.04);}
+    .dropzone svg{color:var(--color-accent);margin-bottom:.75rem;}
+    .upload-row{display:flex;align-items:center;gap:.75rem;font-size:.8rem;padding:.5rem .75rem;border-radius:var(--radius-md);background:var(--color-light);margin-top:.5rem;}
+    .upload-bar{flex:1;height:6px;background:var(--color-border);border-radius:99px;overflow:hidden;}
+    .upload-bar span{display:block;height:100%;background:var(--color-accent);width:0;transition:width .2s;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title" id="album-title">Album</h1>
+        <div class="admin-breadcrumb"><a href="/admin/galerie/liste-galeries.html" style="color:inherit;">Albums</a><span>/</span><span id="bc-title">…</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="/admin/galerie/liste-galeries.html" class="btn btn-ghost btn-sm">← Albums</a>
+        <button class="btn btn-sm" id="btn-edit-album" style="border:1px solid var(--color-border);background:transparent;">Modifier l'album</button>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+      <div id="state-loading" class="admin-card" style="text-align:center;padding:3rem;color:var(--color-muted);">Chargement…</div>
+      <div id="state-notfound" class="admin-card" style="display:none;text-align:center;padding:3rem;"><p style="color:var(--color-error);font-weight:600;">Album introuvable.</p><a href="/admin/galerie/liste-galeries.html" class="btn btn-primary btn-sm" style="margin-top:1rem;">← Retour aux albums</a></div>
+
+      <div id="album-content" style="display:none;">
+        <!-- Zone d'upload -->
+        <div class="admin-card" style="margin-bottom:1.5rem;">
+          <div class="dropzone" id="dropzone">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div style="font-family:var(--font-ui);font-weight:600;color:var(--color-dark);">Cliquez ou glissez vos photos ici</div>
+            <div style="font-size:.78rem;color:var(--color-muted);margin-top:.25rem;">Plusieurs fichiers à la fois · JPG, PNG, WebP · max 5 Mo chacun</div>
+          </div>
+          <input type="file" id="file-picker" accept="image/png,image/jpeg,image/webp,image/gif" multiple style="display:none;" />
+          <div id="upload-status"></div>
+        </div>
+
+        <!-- Grille de photos -->
+        <div class="admin-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+            <h2 class="admin-card-title" style="margin:0;">Photos de l'album <span id="photo-count" style="font-weight:400;color:var(--color-muted);font-size:.9rem;"></span></h2>
+          </div>
+          <div class="photo-grid" id="photo-grid"></div>
+          <div id="photos-empty" style="display:none;text-align:center;padding:2rem;color:var(--color-muted);font-size:.875rem;">Aucune photo dans cet album. Téléversez-en ci-dessus.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal édition album -->
+<div class="modal-overlay" id="modal-edit" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#fff;border-radius:var(--radius-xl);padding:2rem;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,.2);">
+    <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--color-primary);margin-bottom:1.25rem;">Modifier l'album</h2>
+    <div class="admin-form-group"><label class="admin-form-label" for="e-titre">Titre <span class="required">*</span></label><input id="e-titre" type="text" class="admin-form-input" /></div>
+    <div class="admin-form-group"><label class="admin-form-label" for="e-desc">Description</label><textarea id="e-desc" class="admin-form-input" rows="2"></textarea></div>
+    <div class="admin-form-group"><label class="admin-form-label" for="e-annee">Année</label><input id="e-annee" type="number" class="admin-form-input" min="1995" max="2030" /></div>
+    <div class="admin-form-group" style="margin-bottom:1rem;"><label class="admin-form-label" for="e-status">Statut</label><select id="e-status" class="admin-form-input admin-form-select"><option value="published">Publié</option><option value="draft">Masqué</option></select></div>
+    <div style="display:flex;gap:.75rem;justify-content:space-between;align-items:center;">
+      <button type="button" id="btn-delete-album" class="btn btn-sm" style="background:rgba(220,38,38,.08);color:var(--color-error);border:1px solid rgba(220,38,38,.2);">Supprimer l'album</button>
+      <div style="display:flex;gap:.5rem;">
+        <button type="button" id="btn-cancel-edit" class="btn btn-ghost btn-sm">Annuler</button>
+        <button type="button" id="btn-save-edit" class="btn btn-primary btn-sm">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script>
+<script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await AdminUI.init({ page: 'galeries' });
+  await DataStore.init();
+  const albumId = AdminUI.getParam('id');
+  if (!albumId) { show('notfound'); return; }
+
+  const MAX_BYTES = 5 * 1024 * 1024;
+  let album = null, photos = [];
+
+  try { album = await DataStore.getById('albums', albumId); } catch { album = null; }
+  if (!album) { show('notfound'); return; }
+  show('content');
+
+  document.getElementById('album-title').textContent = album.titre || 'Album';
+  document.getElementById('bc-title').textContent = album.titre || 'Album';
+
+  async function loadPhotos() {
+    try { photos = await DataStore.getAlbumPhotos(albumId, false); } catch { photos = []; }
+    renderPhotos();
+  }
+
+  function photoSrc(s){ if(!s) return '/assets/images/placeholder.svg'; if(/^https?:\/\//.test(s)||s.startsWith('/')) return s; if(s.startsWith('assets/')) return '/'+s; return '/assets/images/gallery/'+encodeURIComponent(s); }
+
+  function renderPhotos() {
+    const grid = document.getElementById('photo-grid');
+    document.getElementById('photo-count').textContent = '(' + photos.length + ')';
+    document.getElementById('photos-empty').style.display = photos.length ? 'none' : 'block';
+    grid.innerHTML = photos.map(p => `
+      <div class="photo-card" data-id="${p.id}">
+        <img src="${photoSrc(p.src)}" alt="${(p.alt||'').replace(/"/g,'')}" loading="lazy">
+        ${album.coverUrl === p.src ? '<span class="photo-cover-badge">Couverture</span>' : ''}
+        <div class="photo-actions">
+          <button class="photo-btn cover" data-action="cover" data-id="${p.id}" title="Définir comme couverture">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </button>
+          <button class="photo-btn danger" data-action="delete" data-id="${p.id}" title="Supprimer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+      </div>`).join('');
+  }
+
+  /* ── Upload multiple ── */
+  const picker = document.getElementById('file-picker');
+  const dz = document.getElementById('dropzone');
+  dz.addEventListener('click', () => picker.click());
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
+  picker.addEventListener('change', () => handleFiles(picker.files));
+
+  async function handleFiles(fileList) {
+    const files = [...fileList].filter(f => f.type.startsWith('image/'));
+    if (!files.length) return;
+    const statusBox = document.getElementById('upload-status');
+
+    for (const file of files) {
+      if (file.size > MAX_BYTES) { AdminUI.toast(file.name + ' : trop lourde (max 5 Mo), ignorée.','warning'); continue; }
+      const row = document.createElement('div');
+      row.className = 'upload-row';
+      row.innerHTML = `<span style="flex-shrink:0;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${file.name}</span><div class="upload-bar"><span></span></div><span class="up-pct" style="flex-shrink:0;">…</span>`;
+      statusBox.appendChild(row);
+      const bar = row.querySelector('.upload-bar span');
+      const pct = row.querySelector('.up-pct');
+      bar.style.width = '40%';
+      try {
+        let src;
+        if (window.SUPABASE_READY && DataStore.uploadImage) {
+          src = await DataStore.uploadImage(file, 'galerie/' + albumId);
+        } else {
+          src = await new Promise(res => { const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(file); });
+        }
+        bar.style.width = '75%';
+        const photo = await DataStore.create('galeries', {
+          src, alt: '', caption: '', albumId,
+          annee: album.annee || null, status: 'published'
+        });
+        photos.push(photo);
+        /* première photo = couverture par défaut */
+        if (!album.coverUrl) { album.coverUrl = src; await DataStore.update('albums', albumId, { coverUrl: src }); }
+        bar.style.width = '100%'; pct.textContent = '✓'; pct.style.color = 'var(--color-success)';
+        setTimeout(() => row.remove(), 1200);
+      } catch (err) {
+        bar.style.background = 'var(--color-error)'; pct.textContent = '✗'; pct.style.color = 'var(--color-error)';
+        AdminUI.toast(file.name + ' : ' + (err.message||'échec'), 'error');
+      }
+    }
+    await DataStore.logAction(user?.id, 'gallery.upload', { albumId, count: files.length });
+    renderPhotos();
+    AdminUI.toast('Téléversement terminé.', 'success');
+    picker.value = '';
+  }
+
+  /* ── Actions sur une photo ── */
+  document.getElementById('photo-grid').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-action]'); if (!btn) return;
+    const id = btn.dataset.id;
+    const photo = photos.find(p => p.id === id); if (!photo) return;
+
+    if (btn.dataset.action === 'cover') {
+      try {
+        await DataStore.update('albums', albumId, { coverUrl: photo.src });
+        album.coverUrl = photo.src; renderPhotos();
+        AdminUI.toast('Photo de couverture définie.','success');
+      } catch { AdminUI.toast('Erreur.','error'); }
+    }
+    if (btn.dataset.action === 'delete') {
+      if (!AdminUI.confirm('Supprimer cette photo de l\'album ?')) return;
+      try {
+        await DataStore.delete('galeries', id);
+        photos = photos.filter(p => p.id !== id);
+        if (album.coverUrl === photo.src) {
+          const nc = photos[0]?.src || null;
+          album.coverUrl = nc; await DataStore.update('albums', albumId, { coverUrl: nc });
+        }
+        renderPhotos();
+        AdminUI.toast('Photo supprimée.','success');
+      } catch { AdminUI.toast('Erreur suppression.','error'); }
+    }
+  });
+
+  /* ── Édition / suppression de l'album ── */
+  const modal = document.getElementById('modal-edit');
+  document.getElementById('btn-edit-album').addEventListener('click', () => {
+    document.getElementById('e-titre').value = album.titre || '';
+    document.getElementById('e-desc').value = album.description || '';
+    document.getElementById('e-annee').value = album.annee || '';
+    document.getElementById('e-status').value = album.status || 'published';
+    modal.style.display='flex';
+  });
+  document.getElementById('btn-cancel-edit').addEventListener('click', ()=> modal.style.display='none');
+  modal.addEventListener('click', e=>{ if(e.target===e.currentTarget) modal.style.display='none'; });
+
+  document.getElementById('btn-save-edit').addEventListener('click', async () => {
+    const titre = document.getElementById('e-titre').value.trim();
+    if (!titre) { AdminUI.toast('Le titre est obligatoire.','error'); return; }
+    try {
+      await DataStore.update('albums', albumId, {
+        titre,
+        description: document.getElementById('e-desc').value.trim(),
+        annee: parseInt(document.getElementById('e-annee').value) || null,
+        status: document.getElementById('e-status').value
+      });
+      album.titre = titre;
+      document.getElementById('album-title').textContent = titre;
+      document.getElementById('bc-title').textContent = titre;
+      modal.style.display='none';
+      AdminUI.toast('Album mis à jour.','success');
+    } catch(ex){ AdminUI.toast('Erreur : '+(ex.message||'échec'),'error'); }
+  });
+
+  document.getElementById('btn-delete-album').addEventListener('click', async () => {
+    if (!AdminUI.confirm('Supprimer cet album ET toutes ses photos ? Action irréversible.')) return;
+    try {
+      /* supprimer les photos puis l'album (au cas où la cascade SQL n'est pas active) */
+      for (const p of photos) { await DataStore.delete('galeries', p.id).catch(()=>{}); }
+      await DataStore.delete('albums', albumId);
+      await DataStore.logAction(user?.id, 'album.delete', { titre: album.titre });
+      AdminUI.toast('Album supprimé.','success');
+      setTimeout(()=>{ window.location.href='/admin/galerie/liste-galeries.html'; }, 700);
+    } catch(ex){ AdminUI.toast('Erreur : '+(ex.message||'échec'),'error'); }
+  });
+
+  function show(state){
+    document.getElementById('state-loading').style.display  = state==='loading'  ?'block':'none';
+    document.getElementById('state-notfound').style.display = state==='notfound' ?'block':'none';
+    document.getElementById('album-content').style.display  = state==='content'  ?'block':'none';
+  }
+
+  await loadPhotos();
+});
+</script>
+</body></html>

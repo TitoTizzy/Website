@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journaux | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <style>
+    .action-pill{display:inline-block;padding:.15rem .55rem;border-radius:4px;font-size:.68rem;font-weight:700;font-family:monospace;text-transform:uppercase;}
+    .action-auth{background:rgba(65,105,225,.1);color:#1d4ed8;}
+    .action-blog{background:rgba(16,185,129,.1);color:#065f46;}
+    .action-gallery{background:rgba(245,158,11,.1);color:#92400e;}
+    .action-other{background:rgba(107,114,128,.1);color:#374151;}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Journaux d'activité</h1>
+        <div class="admin-breadcrumb"><span>SuperAdmin</span><span>/</span><span>Journaux</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <button class="btn btn-ghost btn-sm" id="btn-refresh">⟳ Actualiser</button>
+        <button class="btn btn-sm" id="btn-clear" style="background:rgba(220,38,38,.08);color:var(--color-error);border:1px solid rgba(220,38,38,.2);">Vider les logs</button>
+        <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
+      </div>
+    </div>
+    <div class="admin-content">
+
+      <!-- Filtres -->
+      <div class="admin-card" style="margin-bottom:1.5rem;padding:.875rem 1.25rem;">
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;">
+            <span style="font-size:.78rem;font-weight:600;color:var(--color-muted);text-transform:uppercase;letter-spacing:.07em;">Filtrer :</span>
+            <button class="btn btn-sm filter-btn active" data-type="all">Tous</button>
+            <button class="btn btn-sm filter-btn" data-type="auth">Connexions</button>
+            <button class="btn btn-sm filter-btn" data-type="blog">Blog</button>
+            <button class="btn btn-sm filter-btn" data-type="gallery">Galerie</button>
+          </div>
+          <div style="display:flex;gap:.5rem;align-items:center;margin-left:auto;">
+            <label style="font-size:.78rem;color:var(--color-muted);">Afficher</label>
+            <select id="limit-select" class="admin-form-input" style="width:90px;padding:.35rem .6rem;margin:0;">
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+              <option value="200">200</option>
+            </select>
+            <span style="font-size:.78rem;color:var(--color-muted);">entrées</span>
+          </div>
+          <span id="log-count" style="font-size:.78rem;color:var(--color-muted);">0 entrée(s)</span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="admin-card" style="padding:0;">
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="logs-table">
+            <thead>
+              <tr>
+                <th>Date / Heure</th><th>Action</th><th>Utilisateur</th><th>Détails</th>
+              </tr>
+            </thead>
+            <tbody id="logs-tbody">
+              <tr><td colspan="4" style="text-align:center;padding:3rem;color:var(--color-muted);">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260603e"></script>
+<script src="/assets/js/supabase-data.js?v=20260603e"></script><script src="/assets/js/auth.js?v=20260603e"></script>
+<script src="/assets/js/supabase-auth.js?v=20260603e"></script><script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AdminUI.init({ page:'logs', roles:['superadmin'] });
+  await DataStore.init();
+
+  let allLogs = [];
+  let currentType = 'all';
+
+  function actionClass(action) {
+    if (!action) return 'action-other';
+    if (action.startsWith('auth.')) return 'action-auth';
+    if (action.startsWith('blog.')) return 'action-blog';
+    if (action.startsWith('gallery.')) return 'action-gallery';
+    return 'action-other';
+  }
+
+  function formatDateFull(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' +
+           d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+
+  async function loadLogs() {
+    try { allLogs = await DataStore.getLogs({}); } catch { allLogs=[]; }
+    render();
+  }
+
+  function filtered() {
+    const limit = parseInt(document.getElementById('limit-select').value)||50;
+    let list = allLogs;
+    if (currentType !== 'all') list = list.filter(l => (l.action||'').startsWith(currentType+'.'));
+    return list.slice(0, limit);
+  }
+
+  function render() {
+    const list = filtered();
+    document.getElementById('log-count').textContent = list.length + ' entrée(s) affichée(s) sur ' + allLogs.length;
+    const tbody = document.getElementById('logs-tbody');
+    if (!list.length) {
+      tbody.innerHTML = AdminUI.emptyRow(4, allLogs.length ? 'Aucun log correspond aux filtres.' : 'Aucun journal d\'activité enregistré.');
+      return;
+    }
+    tbody.innerHTML = list.map(l => {
+      let details = '';
+      try { const d = typeof l.details==='string' ? JSON.parse(l.details) : (l.details||{}); details = Object.entries(d).map(([k,v])=>`${k}: <strong>${v}</strong>`).join(' · '); } catch{}
+      return `<tr>
+        <td style="font-size:.75rem;color:var(--color-muted);white-space:nowrap;font-family:monospace;">${formatDateFull(l.createdAt)}</td>
+        <td><span class="action-pill ${actionClass(l.action)}">${l.action||'—'}</span></td>
+        <td style="font-size:.8rem;">${l.userId ? l.userId.slice(0,8)+'…' : '—'}</td>
+        <td style="font-size:.78rem;color:var(--color-muted);">${details||'—'}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); currentType=b.dataset.type; render();
+  }));
+
+  document.getElementById('limit-select').addEventListener('change', render);
+  document.getElementById('btn-refresh').addEventListener('click', loadLogs);
+
+  document.getElementById('btn-clear').addEventListener('click', async () => {
+    if (!AdminUI.confirm('Supprimer tous les journaux d\'activité ? Cette action est irréversible.')) return;
+    try {
+      const db = await DataStore.init();
+      await new Promise((res,rej) => {
+        const tx = db.transaction('logs','readwrite');
+        const req = tx.objectStore('logs').clear();
+        req.onsuccess=()=>res(); req.onerror=()=>rej(req.error);
+      });
+      allLogs=[]; render(); AdminUI.toast('Journaux effacés.','success');
+    } catch { AdminUI.toast('Erreur lors de la suppression.','error'); }
+  });
+
+  await loadLogs();
+});
+</script>
+</body></html>
