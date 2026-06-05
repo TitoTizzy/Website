@@ -384,9 +384,7 @@
 
           <form
             class="contact-form"
-            action="mailto:ouhhaiti@gmail.com"
-            method="post"
-            enctype="text/plain"
+            id="contact-form"
             novalidate
           >
             <div class="contact-form-row">
@@ -567,21 +565,22 @@
     el.addEventListener('input', () => clearError(el));
   });
 
-  /* ── Soumission ── */
-  form.addEventListener('submit', function (e) {
+  /* ── Soumission — enregistrement sécurisé dans Supabase ── */
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const prenom  = form.querySelector('#contact-prenom');
     const nom     = form.querySelector('#contact-nom');
     const email   = form.querySelector('#contact-email');
     const message = form.querySelector('#contact-message');
+    const submitBtn = form.querySelector('button[type="submit"]');
     let valid = true;
 
     /* Validation */
     [prenom, nom, email, message].forEach(f => clearError(f));
 
-    if (!prenom.value.trim())  { setError(prenom, 'Veuillez entrer votre prénom.'); valid = false; }
-    if (!nom.value.trim())     { setError(nom,    'Veuillez entrer votre nom.'); valid = false; }
+    if (!prenom.value.trim())  { setError(prenom,  'Veuillez entrer votre prénom.'); valid = false; }
+    if (!nom.value.trim())     { setError(nom,     'Veuillez entrer votre nom.'); valid = false; }
     if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
       setError(email, 'Veuillez entrer une adresse email valide.'); valid = false;
     }
@@ -590,19 +589,44 @@
 
     if (!valid) return;
 
-    /* Envoi via mailto (ouvre le client mail) */
-    const subject = encodeURIComponent('Message depuis le site OUH');
-    const body    = encodeURIComponent(
-      'Prénom : ' + prenom.value.trim() + '\n' +
-      'Nom : '    + nom.value.trim()    + '\n' +
-      'Email : '  + email.value.trim()  + '\n\n' +
-      message.value.trim()
-    );
-    window.location.href = `mailto:ouhhaiti@gmail.com?subject=${subject}&body=${body}`;
+    /* Envoi — état chargement */
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours…';
 
-    /* Feedback visuel */
-    toast('Votre client de messagerie va s\'ouvrir. Envoyez l\'email pour contacter l\'OUH.', 'success');
-    this.reset();
+    try {
+      /* Tenter l'enregistrement dans Supabase */
+      let saved = false;
+      if (window.sb) {
+        const { error } = await window.sb.from('contact_messages').insert({
+          prenom:  prenom.value.trim(),
+          nom:     nom.value.trim(),
+          email:   email.value.trim(),
+          message: message.value.trim()
+        });
+        if (!error) saved = true;
+      }
+
+      if (saved) {
+        toast('Votre message a bien été envoyé. Nous vous répondrons sous 48 h.', 'success');
+        form.reset();
+      } else {
+        /* Repli : mailto si Supabase indisponible */
+        const subject = encodeURIComponent('Message depuis le site OUH');
+        const body    = encodeURIComponent(
+          'Prénom : ' + prenom.value.trim() + '\n' +
+          'Nom : '    + nom.value.trim()    + '\n' +
+          'Email : '  + email.value.trim()  + '\n\n' +
+          message.value.trim()
+        );
+        window.location.href = `mailto:ouhhaiti@gmail.com?subject=${subject}&body=${body}`;
+        toast('Votre client de messagerie va s\'ouvrir. Envoyez l\'email pour nous contacter.', 'info');
+      }
+    } catch (_) {
+      toast('Une erreur est survenue. Veuillez réessayer ou nous écrire directement à ouhhaiti@gmail.com.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Envoyer le message';
+    }
   });
 })();
 </script>

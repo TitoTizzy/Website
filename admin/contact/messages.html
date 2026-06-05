@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages de contact | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
+  <style>
+    .msg-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s;
+      cursor: pointer;
+    }
+    .msg-card:hover { box-shadow: var(--shadow-md); }
+    .msg-card.unread {
+      border-left: 3px solid var(--color-accent);
+      background: rgba(65,105,225,0.03);
+    }
+    .msg-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: .75rem;
+    }
+    .msg-sender {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-dark);
+    }
+    .msg-email {
+      font-family: var(--font-ui);
+      font-size: .8rem;
+      color: var(--color-muted);
+      margin-top: .1rem;
+    }
+    .msg-date {
+      font-family: var(--font-ui);
+      font-size: .75rem;
+      color: var(--color-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .msg-body {
+      font-family: var(--font-body);
+      font-size: .9rem;
+      color: var(--color-dark);
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+    .msg-actions {
+      display: flex;
+      gap: .5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .badge-unread {
+      display: inline-block;
+      background: var(--color-accent);
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: .15rem .55rem;
+      border-radius: var(--radius-full);
+      vertical-align: middle;
+      margin-left: .4rem;
+    }
+    .msg-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Messages de contact <span id="unread-badge" style="display:none;" class="badge-unread"></span></h1>
+        <div class="admin-breadcrumb"><span>SuperAdmin</span><span>/</span><span>Messages</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <button class="btn btn-ghost btn-sm" id="btn-mark-all">✓ Tout marquer comme lu</button>
+        <button class="btn btn-ghost btn-sm" id="btn-refresh">⟳ Actualiser</button>
+        <div class="admin-topbar-user">
+          <div class="admin-topbar-avatar" id="topbar-avatar">SA</div>
+          <span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- Toolbar filtres -->
+      <div class="admin-card" style="margin-bottom:1.5rem;padding:.875rem 1.25rem;">
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <div style="display:flex;gap:.4rem;">
+            <button class="btn btn-sm filter-btn active" data-filter="all">Tous</button>
+            <button class="btn btn-sm filter-btn" data-filter="unread">Non lus</button>
+            <button class="btn btn-sm filter-btn" data-filter="read">Lus</button>
+          </div>
+          <span id="msg-count" style="font-size:.8rem;color:var(--color-muted);margin-left:auto;">0 message(s)</span>
+        </div>
+      </div>
+
+      <!-- Liste messages -->
+      <div id="msg-grid" class="msg-grid">
+        <div style="text-align:center;padding:3rem;color:var(--color-muted);">Chargement…</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/storage.js?v=20260603e"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script>
+<script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="../../assets/js/admin-ui.js?v=20260603e"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AdminUI.init({ page: 'contact', roles: ['superadmin', 'admin_general'] });
+  await DataStore.init();
+
+  let allMessages = [];
+  let currentFilter = 'all';
+
+  function formatDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' }) +
+           ' ' + d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  }
+
+  function esc(s) {
+    return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  async function load() {
+    try {
+      if (!window.sb) { document.getElementById('msg-grid').innerHTML = '<div class="admin-card" style="text-align:center;padding:3rem;color:var(--color-muted);">Connexion Supabase requise pour voir les messages.</div>'; return; }
+      const { data, error } = await window.sb
+        .from('contact_messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      allMessages = data || [];
+    } catch (err) {
+      document.getElementById('msg-grid').innerHTML = `<div class="admin-card" style="text-align:center;padding:3rem;color:var(--color-error);">Erreur : ${err.message}</div>`;
+      return;
+    }
+    render();
+  }
+
+  function filtered() {
+    if (currentFilter === 'unread') return allMessages.filter(m => !m.lu);
+    if (currentFilter === 'read')   return allMessages.filter(m => m.lu);
+    return allMessages;
+  }
+
+  function render() {
+    const list = filtered();
+    const unread = allMessages.filter(m => !m.lu).length;
+
+    document.getElementById('msg-count').textContent = list.length + ' message' + (list.length !== 1 ? 's' : '');
+    const badge = document.getElementById('unread-badge');
+    if (unread > 0) { badge.textContent = unread + ' non lu' + (unread > 1 ? 's' : ''); badge.style.display = ''; }
+    else badge.style.display = 'none';
+
+    const grid = document.getElementById('msg-grid');
+    if (!list.length) {
+      grid.innerHTML = `<div class="admin-card" style="text-align:center;padding:3rem;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(65,105,225,0.4)" stroke-width="1.5" style="margin:0 auto 1rem;display:block;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <p style="font-family:var(--font-display);font-size:1.1rem;color:var(--color-primary);margin-bottom:.5rem;">Aucun message</p>
+        <p style="font-family:var(--font-ui);font-size:.88rem;color:var(--color-muted);">Les messages du formulaire de contact apparaîtront ici.</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map(m => `
+      <div class="msg-card ${m.lu ? '' : 'unread'}" data-id="${m.id}" data-lu="${m.lu}">
+        <div class="msg-header">
+          <div>
+            <div class="msg-sender">${esc(m.prenom)} ${esc(m.nom)} ${!m.lu ? '<span class="badge-unread">Nouveau</span>' : ''}</div>
+            <div class="msg-email">
+              <a href="mailto:${esc(m.email)}" style="color:var(--color-accent);">${esc(m.email)}</a>
+            </div>
+          </div>
+          <div class="msg-date">${formatDate(m.created_at)}</div>
+        </div>
+        <div class="msg-body">${esc(m.message)}</div>
+        <div class="msg-actions">
+          <a href="mailto:${esc(m.email)}?subject=${encodeURIComponent('Re: Message OUH')}" class="btn btn-primary btn-sm">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Répondre par email
+          </a>
+          ${!m.lu ? `<button class="btn btn-ghost btn-sm" data-action="mark-read" data-id="${m.id}">Marquer comme lu</button>` : ''}
+          <button class="btn btn-sm" data-action="delete" data-id="${m.id}" style="background:rgba(220,38,38,.07);color:var(--color-error);border:1px solid rgba(220,38,38,.2);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            Supprimer
+          </button>
+        </div>
+      </div>`).join('');
+  }
+
+  /* Actions sur les messages */
+  document.getElementById('msg-grid').addEventListener('click', async e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const { action, id } = btn.dataset;
+
+    if (action === 'mark-read') {
+      try {
+        await window.sb.from('contact_messages').update({ lu: true }).eq('id', id);
+        const m = allMessages.find(x => x.id === id);
+        if (m) m.lu = true;
+        render();
+        AdminUI.toast('Message marqué comme lu.', 'success');
+      } catch { AdminUI.toast('Erreur.', 'error'); }
+    }
+
+    if (action === 'delete') {
+      if (!AdminUI.confirm('Supprimer ce message ? Cette action est irréversible.')) return;
+      try {
+        await window.sb.from('contact_messages').delete().eq('id', id);
+        allMessages = allMessages.filter(x => x.id !== id);
+        render();
+        AdminUI.toast('Message supprimé.', 'success');
+      } catch { AdminUI.toast('Erreur suppression.', 'error'); }
+    }
+  });
+
+  /* Filtres */
+  document.querySelectorAll('.filter-btn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    currentFilter = b.dataset.filter;
+    render();
+  }));
+
+  /* Tout marquer lu */
+  document.getElementById('btn-mark-all').addEventListener('click', async () => {
+    const unread = allMessages.filter(m => !m.lu).map(m => m.id);
+    if (!unread.length) { AdminUI.toast('Aucun message non lu.', 'info'); return; }
+    try {
+      await window.sb.from('contact_messages').update({ lu: true }).in('id', unread);
+      allMessages.forEach(m => { m.lu = true; });
+      render();
+      AdminUI.toast('Tous les messages marqués comme lus.', 'success');
+    } catch { AdminUI.toast('Erreur.', 'error'); }
+  });
+
+  /* Actualiser */
+  document.getElementById('btn-refresh').addEventListener('click', load);
+
+  await load();
+});
+</script>
+</body>
+</html>
