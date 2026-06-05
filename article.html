@@ -534,8 +534,20 @@ function renderRelated(allArticles, currentId) {
     }
   } catch (_) { /* utiliser SEED_ARTICLES */ }
 
-  if (id)   article = allArticles.find(a => a.id === id) || null;
-  if (!article && slug) article = allArticles.find(a => a.slug === slug) || null;
+  /* Chercher par id (UUID) OU par slug — les deux peuvent arriver dans ?id= */
+  if (id) {
+    article = allArticles.find(a => a.id === id || a.slug === id) || null;
+    /* Repli direct Supabase si pas trouvé dans la liste (slug dans l'URL) */
+    if (!article && typeof DataStore !== 'undefined' && typeof DataStore.getArticleBySlug === 'function') {
+      try { article = await DataStore.getArticleBySlug(id); } catch (_) {}
+    }
+  }
+  if (!article && slug) {
+    article = allArticles.find(a => a.slug === slug) || null;
+    if (!article && typeof DataStore !== 'undefined' && typeof DataStore.getArticleBySlug === 'function') {
+      try { article = await DataStore.getArticleBySlug(slug); } catch (_) {}
+    }
+  }
 
   if (!article) { showState('notfound'); return; }
 
