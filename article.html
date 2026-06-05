@@ -461,20 +461,30 @@
 <div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
-/* ── Seed articles (fallback si IndexedDB vide) ── */
+/* ── Seul vrai article publié (texte exact de ouhhaiti.org) ── */
 const SEED_ARTICLES = [
-  { id:'seed-1', slug:'mission-medicale-carrefour-poy-500-patients', title:"Mission médicale à Carrefour-Poy : plus de 500 patients consultés", category:'sante', publishedAt:'2025-03-15', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Mission médicale OUH à Carrefour-Poy',
-    excerpt:"L'équipe médicale de l'OUH a mené une mission intensive de trois jours dans la région de Carrefour-Poy, offrant des consultations gratuites, des médicaments et des soins préventifs à plus de 500 habitants des communautés les plus vulnérables.",
-    content:`<p>Du 12 au 14 mars 2025, l'équipe médicale de l'Organisation de l'Union Haïtienne (OUH) a déployé ses forces dans la région de Carrefour-Poy, l'une des zones les plus isolées et les plus défavorisées de la périphérie de Port-au-Prince.</p><h2>Chiffres clés de la mission</h2><p>En trois jours d'interventions intensives, les équipes ont pu :</p><ul><li>Réaliser <strong>plus de 500 consultations médicales gratuites</strong></li><li>Distribuer des médicaments antipaludéens, des antibiotiques et des vitamines</li><li>Vacciner <strong>128 enfants</strong> de moins de 5 ans</li><li>Dépister et traiter des cas de malnutrition infantile</li></ul><h2>Un besoin criant</h2><p>La région de Carrefour-Poy est caractérisée par un accès quasi inexistant aux soins de santé primaires. Les habitants doivent parcourir plusieurs heures pour atteindre le centre médical le plus proche. Cette mission a permis de répondre à des besoins urgents longtemps restés sans réponse.</p><p>« Nous avons rencontré des enfants qui n'avaient jamais vu de médecin. Des femmes enceintes sans suivi. Des personnes âgées souffrant de maladies chroniques non traitées depuis des années », témoigne le Dr. Marie-Louise Pierre, coordinatrice médicale de la mission.</p><h2>Perspectives</h2><p>L'OUH prévoit de revenir à Carrefour-Poy dans les prochains mois pour assurer un suivi des cas identifiés et élargir le programme de soins préventifs. Votre soutien est indispensable pour financer ces missions vitales.</p>` },
-  { id:'seed-2', slug:'formation-professionnels-sante-session-intensive', title:"Formation des professionnels de santé : nouvelle session intensive", category:'education', publishedAt:'2025-02-10', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Formation des agents de santé OUH',
-    excerpt:"Dans le cadre de son programme de renforcement des capacités locales, l'OUH a organisé une formation intensive de deux semaines destinée aux agents de santé communautaires.",
-    content:`<p>Du 27 janvier au 7 février 2025, l'OUH a organisé une formation intensive destinée à 32 agents de santé communautaires issus de différentes régions d'Haïti.</p><h2>Programme de formation</h2><p>La formation a couvert plusieurs modules essentiels :</p><ul><li>Diagnostic et traitement des maladies tropicales courantes</li><li>Santé maternelle et infantile</li><li>Prévention et contrôle des infections</li><li>Gestion des urgences médicales de terrain</li><li>Communication en santé publique</li></ul><p>Cette formation s'inscrit dans la vision long terme de l'OUH : construire un réseau d'agents de santé compétents et autonomes, capables d'intervenir efficacement dans les zones les plus reculées d'Haïti.</p>` },
-  { id:'seed-3', slug:'distribution-aide-urgence-inondations-grand-anse', title:"Distribution d'aide d'urgence suite aux inondations du Grand-Anse", category:'humanitaire', publishedAt:'2024-11-28', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Distribution humanitaire OUH Grand-Anse',
-    excerpt:"Suite aux inondations dévastatrices qui ont frappé le département du Grand-Anse, l'OUH a mobilisé ses équipes pour distribuer vivres, médicaments et matériel d'hygiène à plus de 800 familles sinistrées.",
-    content:`<p>En novembre 2024, des pluies torrentielles ont causé des inondations sans précédent dans le département du Grand-Anse, forçant plus de 3 000 familles à quitter leurs domiciles.</p><h2>Réponse d'urgence de l'OUH</h2><p>L'OUH a activé son plan d'urgence en moins de 48 heures, déployant une équipe de 18 volontaires et 4 véhicules de terrain. En 10 jours d'intervention :</p><ul><li><strong>812 familles</strong> ont reçu des kits alimentaires d'urgence</li><li><strong>450 enfants</strong> ont reçu des suppléments nutritionnels</li><li><strong>300 kits d'hygiène</strong> ont été distribués</li><li>Des soins médicaux d'urgence ont été prodigués à 245 personnes</li></ul><p>L'OUH remercie chaleureusement tous ses donateurs qui ont rendu cette intervention possible. Votre générosité sauve des vies.</p>` },
-  { id:'seed-4', slug:'seminaire-scientifique-sante-communautaire-haiti', title:"Séminaire scientifique sur la santé communautaire en Haïti", category:'education', publishedAt:'2024-10-05', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Séminaire scientifique OUH', excerpt:"L'OUH a organisé un séminaire réunissant des experts haïtiens et internationaux autour des enjeux de santé publique et de renforcement des systèmes de santé locaux.", content:'<p>Le 5 octobre 2024, l\'OUH a organisé son séminaire scientifique annuel sur la santé communautaire en Haïti, réunissant plus de 80 professionnels de santé haïtiens et de la diaspora.</p><p>Cet événement a permis le partage des meilleures pratiques, des avancées scientifiques récentes et des stratégies innovantes pour renforcer les systèmes de santé dans les zones rurales d\'Haïti.</p>' },
-  { id:'seed-5', slug:'campagne-vaccination-cholera-artibonite', title:"Campagne de vaccination contre le choléra dans l'Artibonite", category:'sante', publishedAt:'2024-09-20', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Campagne vaccination OUH', excerpt:"En partenariat avec des organisations internationales, l'OUH a mené une campagne de vaccination permettant de vacciner plus de 2 000 personnes contre le choléra.", content:'<p>Face à la recrudescence du choléra dans la vallée de l\'Artibonite, l\'OUH a lancé en septembre 2024 une campagne de vaccination d\'urgence en partenariat avec des organisations sanitaires internationales.</p><p>En deux semaines, plus de <strong>2 000 personnes</strong> ont été vaccinées dans 8 communes, et des actions de sensibilisation sur l\'hygiène et l\'eau potable ont touché plus de 5 000 habitants.</p>' },
-  { id:'seed-6', slug:'assemblee-generale-ouh-2024-bilan-perspectives', title:"Assemblée générale annuelle de l'OUH : bilan 2024 et perspectives", category:'evenements', publishedAt:'2024-08-15', author:'Équipe OUH', image:'assets/images/placeholder.svg', alt:'Assemblée générale OUH 2024', excerpt:"L'OUH a tenu son assemblée générale annuelle pour faire le bilan des activités de l'année et définir les priorités stratégiques pour 2025.", content:'<p>Le 15 août 2024, l\'OUH a tenu son assemblée générale annuelle, réunissant plus de 60 membres, partenaires et donateurs autour d\'un bilan riche et de perspectives ambitieuses pour 2025.</p><p>Les points saillants de cette assemblée ont été la présentation du bilan financier, le rapport d\'activités terrain, l\'élection de nouveaux membres au Conseil d\'Administration et la définition du plan stratégique 2025-2027.</p>' }
+  {
+    id: 'louh-au-service-des-desherites',
+    slug: 'louh-au-service-des-desherites',
+    title: "L'OUH au service des déshérités",
+    category: 'humanitaire',
+    publishedAt: '2024-12-08',
+    author: 'Joël Asher Lévy-Cohen',
+    image: 'assets/images/placeholder.svg',
+    alt: "L'OUH au service des déshérités",
+    excerpt: "De l'art d'aider Haïti — Quand l'humanitaire est une véritable vocation sacerdotale. L'Organisation de l'Union haïtienne (OUH), fondée en 1995, œuvre pour améliorer l'accès aux soins et à l'éducation en Haïti.",
+    content: `<h2>De l'art d'aider Haïti</h2>
+<h3>Quand l'humanitaire est une véritable vocation sacerdotale</h3>
+<blockquote>« Il ne faut jamais attendre une minute pour commencer à changer le monde. » — Anne Frank</blockquote>
+<p>L'Organisation de l'Union haïtienne (OUH) est légalement et juridiquement un organisme à but non lucratif dûment enregistré selon les lois haïtiennes et québécoises. Celle-ci est, en réalité, fondée en 1995 par M. Emmanuel Herly Petit, un Haïtien de la diaspora installé au Québec et au Canada depuis trois décennies.</p>
+<p>Il y a lieu de mentionner que cette idée d'Emmanuel Herly Petit de participer activement et, surtout, positivement à l'insertion de ses Concitoyens les plus démunis date réellement de l'époque où il œuvrait d'antan en Haïti en tant que moniteur au sein de la Croix-Rouge.</p>
+<p>Dans la pratique courante, l'OUH est à vrai dire un organisme d'utilité publique. Elle se veut un « partenaire » stratégique de l'État haïtien dans l'accomplissement de ses missions de souveraineté. À cet effet, l'OUH a conclu, au mois d'octobre 1997, un accord de partenariat avec l'État haïtien en vue de la redynamisation de divers centres de santé jugés dysfonctionnels. Dans le cadre de ladite convention, l'OUH a obtenu du Ministère de la Santé publique la gestion du Centre de santé de Carrefour-Poy.</p>
+<p>Depuis mars 2003, l'OUH bénéficie de la qualité spécifique d'ONG reconnue administrativement par les autorités haïtiennes. Elle a su mobiliser l'expertise des professionnels de la santé du Canada et du Québec pour les mettre au service du Centre de santé de Carrefour-Poy et autres institutions médicales d'Haïti.</p>
+<p>Parmi les professionnels de la santé canadiens qui ont participé au projet « Haïti Santé et Développement » piloté par l'OUH : le Dr Selim Rashed (pédiatre, hôpital Montréal pour enfants), la Dre Yvette Bony (hématologue, hôpital Maisonneuve-Rosemont), le Dr Serge Raphaël (psychiatre, hôpitaux Jean-Talon et Marie-Enfant), le Dr Carlos Vanisschott (gynécologue) et le Dr André Arcelin (généraliste).</p>
+<p>En Haïti, l'OUH est partenaire de Médecins sans Frontières (MSF), le CECI, OXFAM-Québec, l'hôpital de Cité Soleil, l'hôpital Général de Port-au-Prince et l'hôpital Chancerel.</p>
+<p>Entre autres activités, l'OUH distribue l'eau potable dans la région de Carrefour-Poy et participe aux campagnes de sensibilisation sur la tuberculose, le VIH/Sida, la malaria et le tétanos.</p>
+<p>Lors du séisme du <strong>12 janvier 2010</strong>, l'OUH a distribué des fils de suture, des médicaments et des pansements, et a procédé à des chirurgies mineures.</p>`
+  }
 ];
 
 const CAT_META = {
@@ -515,7 +525,9 @@ function renderRelated(allArticles, currentId) {
     </a>`).join('');
 }
 
-(async function init() {
+/* DOMContentLoaded garantit que les scripts defer (DataStore, Supabase)
+   sont déjà exécutés avant que init() ne tourne. */
+document.addEventListener('DOMContentLoaded', async function init() {
   const slug = getParam('slug');
   const id   = getParam('id');
 
@@ -607,7 +619,7 @@ function renderRelated(allArticles, currentId) {
   renderRelated(allArticles, article.id);
 
   showState('article');
-})();
+});
 
 function showState(state) {
   document.getElementById('art-hero').style.display     = state === 'article'  ? 'block' : 'none';
