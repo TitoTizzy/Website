@@ -193,7 +193,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:.4rem;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             Derniers messages de contact
           </h2>
-          <a href="contact/messages.html" class="btn btn-ghost btn-sm">Voir tous →</a>
+          <a href="contact/messages.html" class="btn btn-primary btn-sm">Voir tous les messages →</a>
         </div>
         <div id="messages-preview">
           <p style="font-size:.875rem;color:var(--color-muted);text-align:center;padding:1.5rem 0;">Chargement…</p>
@@ -300,7 +300,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div style="font-size:.8rem;color:var(--color-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:480px;margin-top:.15rem;">${(m.message||'').substring(0,100)}${m.message?.length>100?'…':''}</div>
               </div>
-              <a href="contact/messages.html" class="btn btn-ghost btn-sm" style="flex-shrink:0;font-size:.72rem;">Répondre</a>
+              <div style="display:flex;gap:.4rem;flex-shrink:0;">
+                <a href="contact/messages.html" class="btn btn-ghost btn-sm" style="font-size:.72rem;">Voir →</a>
+                <a href="mailto:${m.email}?subject=${encodeURIComponent('Re: Message OUH')}" class="btn btn-primary btn-sm" style="font-size:.72rem;">Répondre</a>
+              </div>
             </div>`).join('') +
             (msgs.length > 3 ? `<div style="text-align:center;padding:.75rem 0 0;"><a href="contact/messages.html" style="font-family:var(--font-ui);font-size:.82rem;color:var(--color-accent);font-weight:600;">Voir tous les ${msgs.length} messages →</a></div>` : '');
         }
