@@ -143,7 +143,7 @@ const Auth = {
   logout() {
     sessionStorage.removeItem('ouh_token');
     sessionStorage.removeItem('ouh_user');
-    window.location.href = '/admin/login.html';
+    window.location.href = (typeof _ADMIN_BASE !== 'undefined' ? _ADMIN_BASE : '/') + 'admin/login.html';
   },
 
   /* ── Vérifie l'auth (à appeler en haut de chaque page admin) ── */
@@ -152,12 +152,12 @@ const Auth = {
     const { valid, payload } = this.verifyToken(token);
 
     if (!valid) {
-      window.location.href = '/admin/login.html';
+      window.location.href = (typeof _ADMIN_BASE !== 'undefined' ? _ADMIN_BASE : '/') + 'admin/login.html';
       return false;
     }
 
     if (allowedRoles.length > 0 && !allowedRoles.includes(payload.role)) {
-      window.location.href = '/admin/dashboard.html';
+      window.location.href = (typeof _ADMIN_BASE !== 'undefined' ? _ADMIN_BASE : '/') + 'admin/dashboard.html';
       return false;
     }
 

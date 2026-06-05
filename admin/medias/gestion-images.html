@@ -4,7 +4,7 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Images du site | Admin OUH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
   <style>
     .img-page-group { margin-bottom: 2.5rem; }
     .img-page-title {
@@ -49,7 +49,7 @@
         <div class="admin-breadcrumb"><span>Administration</span><span>/</span><span>Images du site</span></div>
       </div>
       <div class="admin-topbar-right">
-        <a href="/index.html" class="btn btn-ghost btn-sm" target="_blank">Voir le site</a>
+        <a href="../../index.html" class="btn btn-ghost btn-sm" target="_blank">Voir le site</a>
         <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
       </div>
     </div>
@@ -58,7 +58,7 @@
       <div class="img-help">
         <strong>Remplacez n'importe quelle photo du site</strong> en cliquant sur « Remplacer » sous l'image voulue, puis en choisissant un fichier (JPG, PNG ou WebP, idéalement &lt; 1&nbsp;Mo).
         Le changement est <strong>immédiat</strong> sur le site public. Le bouton ↺ rétablit la photo d'origine.
-        <br>Les photos de la <a href="/admin/galerie/liste-galeries.html" style="color:var(--color-accent);font-weight:600;">Galerie</a>, des <a href="/admin/blog/liste-articles.html" style="color:var(--color-accent);font-weight:600;">Articles</a> et des <a href="/admin/medecins/liste-medecins.html" style="color:var(--color-accent);font-weight:600;">Médecins</a> se gèrent dans leurs modules dédiés.
+        <br>Les photos de la <a href="../galerie/liste-galeries.html" style="color:var(--color-accent);font-weight:600;">Galerie</a>, des <a href="../blog/liste-articles.html" style="color:var(--color-accent);font-weight:600;">Articles</a> et des <a href="../medecins/liste-medecins.html" style="color:var(--color-accent);font-weight:600;">Médecins</a> se gèrent dans leurs modules dédiés.
       </div>
 
       <div id="img-loading" style="text-align:center;padding:3rem;color:var(--color-muted);">Analyse des pages du site…</div>
@@ -70,13 +70,13 @@
 <!-- input fichier caché, réutilisé pour tous les uploads -->
 <input type="file" id="file-picker" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;" />
 
-<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260603e"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/js/supabase-config.js?v=20260603e"></script>
-<script src="/assets/js/supabase-data.js?v=20260603e"></script>
-<script src="/assets/js/auth.js?v=20260603e"></script>
-<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
-<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script>
+<script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="../../assets/js/admin-ui.js?v=20260603e"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await AdminUI.init({ page: 'medias', roles: ['superadmin', 'admin_general'] });

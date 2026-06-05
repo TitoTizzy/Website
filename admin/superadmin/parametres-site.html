@@ -4,7 +4,7 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Paramètres | Admin OUH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
   <style>
     .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
     @media(max-width:768px){.settings-grid{grid-template-columns:1fr;}}
@@ -21,7 +21,7 @@
         <div class="admin-breadcrumb"><span>SuperAdmin</span><span>/</span><span>Paramètres</span></div>
       </div>
       <div class="admin-topbar-right">
-        <a href="/index.html" class="btn btn-ghost btn-sm" target="_blank">Voir le site</a>
+        <a href="../../index.html" class="btn btn-ghost btn-sm" target="_blank">Voir le site</a>
         <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
       </div>
     </div>
@@ -122,11 +122,11 @@
     </div>
   </div>
 </div>
-<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260603e"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/js/supabase-config.js?v=20260603e"></script>
-<script src="/assets/js/supabase-data.js?v=20260603e"></script><script src="/assets/js/auth.js?v=20260603e"></script>
-<script src="/assets/js/supabase-auth.js?v=20260603e"></script><script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script><script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script><script src="../../assets/js/admin-ui.js?v=20260603e"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   await AdminUI.init({ page:'parametres', roles:['superadmin'] });

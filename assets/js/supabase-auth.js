@@ -89,7 +89,7 @@
       try { await sb.auth.signOut(); } catch (_) {}
       currentProfile = null;
       sessionStorage.removeItem('ouh_profile');
-      window.location.href = '/admin/login.html';
+      window.location.href = (typeof _ADMIN_BASE !== 'undefined' ? _ADMIN_BASE : '/') + 'admin/login.html';
     },
 
     /* ── Garde d'accès : à appeler en haut de chaque page admin ──
@@ -110,7 +110,7 @@
       }
 
       if (allowedRoles.length && !allowedRoles.includes(currentProfile.role)) {
-        window.location.href = '/admin/dashboard.html';
+        window.location.href = (typeof _ADMIN_BASE !== 'undefined' ? _ADMIN_BASE : '/') + 'admin/dashboard.html';
         return false;
       }
       return true;

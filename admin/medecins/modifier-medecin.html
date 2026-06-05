@@ -4,7 +4,7 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modifier médecin | Admin OUH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
   <style>
     .form-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
     @media(max-width:860px){.form-layout{grid-template-columns:1fr;}}
@@ -20,17 +20,17 @@
     <div class="admin-topbar">
       <div class="admin-topbar-left">
         <h1 class="admin-topbar-title" id="topbar-title">Modifier le médecin</h1>
-        <div class="admin-breadcrumb"><a href="/admin/medecins/liste-medecins.html" style="color:inherit;">Médecins</a><span>/</span><span>Modifier</span></div>
+        <div class="admin-breadcrumb"><a href="../medecins/liste-medecins.html" style="color:inherit;">Médecins</a><span>/</span><span>Modifier</span></div>
       </div>
       <div class="admin-topbar-right">
-        <a href="/admin/medecins/liste-medecins.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <a href="../medecins/liste-medecins.html" class="btn btn-ghost btn-sm">← Retour</a>
         <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
       </div>
     </div>
 
     <div class="admin-content">
       <div id="state-loading" class="admin-card" style="text-align:center;padding:3rem;"><p style="color:var(--color-muted);">Chargement…</p></div>
-      <div id="state-notfound" class="admin-card" style="display:none;text-align:center;padding:3rem;"><p style="color:var(--color-error);font-weight:600;">Médecin introuvable.</p><a href="/admin/medecins/liste-medecins.html" class="btn btn-primary btn-sm" style="margin-top:1rem;">← Retour</a></div>
+      <div id="state-notfound" class="admin-card" style="display:none;text-align:center;padding:3rem;"><p style="color:var(--color-error);font-weight:600;">Médecin introuvable.</p><a href="../medecins/liste-medecins.html" class="btn btn-primary btn-sm" style="margin-top:1rem;">← Retour</a></div>
 
       <form id="med-form" novalidate style="display:none;">
         <div class="form-layout">
@@ -120,13 +120,13 @@
   </div>
 </div>
 
-<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260603e"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/js/supabase-config.js?v=20260603e"></script>
-<script src="/assets/js/supabase-data.js?v=20260603e"></script>
-<script src="/assets/js/auth.js?v=20260603e"></script>
-<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
-<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script>
+<script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="../../assets/js/admin-ui.js?v=20260603e"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await AdminUI.init({ page: 'medecins' });
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       await DataStore.logAction(user?.id, 'medecins.update', { id, nom });
       AdminUI.toast('Médecin mis à jour !', 'success');
-      setTimeout(() => { window.location.href = '/admin/medecins/liste-medecins.html'; }, 700);
+      setTimeout(() => { window.location.href = '../medecins/liste-medecins.html'; }, 700);
     } catch(ex) { err.style.display='block'; err.textContent='Erreur : '+(ex.message||'Échec'); saving=false; }
   });
 
@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       await DataStore.delete('medecins', id);
       AdminUI.toast('Médecin supprimé.', 'success');
-      setTimeout(() => { window.location.href = '/admin/medecins/liste-medecins.html'; }, 700);
+      setTimeout(() => { window.location.href = '../medecins/liste-medecins.html'; }, 700);
     } catch { AdminUI.toast('Erreur suppression.', 'error'); }
   });
 

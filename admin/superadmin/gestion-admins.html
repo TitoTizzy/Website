@@ -4,7 +4,7 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestion Admins | Admin OUH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
   <style>
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;}
     .modal-box{background:#fff;border-radius:var(--radius-xl);padding:2rem;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,.2);}
@@ -198,16 +198,16 @@
   </div>
 </div>
 
-<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260603e"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/js/supabase-config.js?v=20260603e"></script>
-<script src="/assets/js/supabase-data.js?v=20260603e"></script><script src="/assets/js/auth.js?v=20260603e"></script>
-<script src="/assets/js/supabase-auth.js?v=20260603e"></script><script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script><script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script><script src="../../assets/js/admin-ui.js?v=20260603e"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   await AdminUI.init({ page:'admins', roles:['superadmin'] });
   await DataStore.init();
-  await DataStore.importFromJSON('admins', '/data/admins.json');
+  await DataStore.importFromJSON('admins', '../../data/admins.json');
 
   let admins = [];
   async function load() {

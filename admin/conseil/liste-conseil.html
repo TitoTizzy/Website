@@ -4,7 +4,7 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Conseil d'administration | Admin OUH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
   <style>
     .mbr-avatar-sm{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72rem;color:#fff;flex-shrink:0;object-fit:cover;}
     .order-btn{background:none;border:1px solid var(--color-border);border-radius:6px;width:28px;height:28px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--color-muted);transition:all .15s;}
@@ -21,8 +21,8 @@
         <div class="admin-breadcrumb"><span>Administration</span><span>/</span><span>Conseil</span></div>
       </div>
       <div class="admin-topbar-right">
-        <a href="/conseil-administration.html" class="btn btn-ghost btn-sm" target="_blank">Voir la page</a>
-        <a href="/admin/conseil/nouveau-conseil.html" class="btn btn-primary btn-sm">+ Ajouter un membre</a>
+        <a href="../../conseil-administration.html" class="btn btn-ghost btn-sm" target="_blank">Voir la page</a>
+        <a href="../conseil/nouveau-conseil.html" class="btn btn-primary btn-sm">+ Ajouter un membre</a>
         <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
       </div>
     </div>
@@ -67,13 +67,13 @@
   </div>
 </div>
 
-<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260603e"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/js/supabase-config.js?v=20260603e"></script>
-<script src="/assets/js/supabase-data.js?v=20260603e"></script>
-<script src="/assets/js/auth.js?v=20260603e"></script>
-<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
-<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script>
+<script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="../../assets/js/admin-ui.js?v=20260603e"></script>
 <script>
 const ROLE_COLORS = { president:'#00007A', vice:'#4169E1', coordo:'#1a3fa8', secretaire:'#1e3a8a', tresoriere:'#B8860B', education:'#C79A2E', juridique:'#1e293b', sante:'#0e7490', membre:'#4169E1' };
 
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const list = filtered();
     document.getElementById('mbr-count').textContent = list.length + ' membre(s)';
     const tbody = document.getElementById('mbr-tbody');
-    if (!list.length) { tbody.innerHTML = AdminUI.emptyRow(5, 'Aucun membre. <a href="/admin/conseil/nouveau-conseil.html" class="btn btn-primary btn-sm" style="margin-left:.5rem;">Ajouter le premier</a>'); return; }
+    if (!list.length) { tbody.innerHTML = AdminUI.emptyRow(5, 'Aucun membre. <a href="../conseil/nouveau-conseil.html" class="btn btn-primary btn-sm" style="margin-left:.5rem;">Ajouter le premier</a>'); return; }
 
     tbody.innerHTML = list.map((m, idx) => `
       <tr>
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <td>${m.active===false ? '<span class="badge badge-gray">Masqué</span>' : '<span class="badge badge-green">Visible</span>'}</td>
         <td>
           <div class="admin-table-actions" style="justify-content:flex-end;">
-            <a href="/admin/conseil/modifier-conseil.html?id=${m.id}" class="admin-action-btn" title="Modifier">
+            <a href="../conseil/modifier-conseil.html?id=${m.id}" class="admin-action-btn" title="Modifier">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             </a>
             <button class="admin-action-btn" data-action="toggle" data-id="${m.id}" data-active="${m.active!==false}" title="${m.active===false?'Afficher':'Masquer'}">

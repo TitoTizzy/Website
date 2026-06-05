@@ -4,7 +4,7 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nouveau membre du conseil | Admin OUH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
   <style>
     .form-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
     @media(max-width:860px){.form-layout{grid-template-columns:1fr;}}
@@ -19,10 +19,10 @@
     <div class="admin-topbar">
       <div class="admin-topbar-left">
         <h1 class="admin-topbar-title">Nouveau membre du conseil</h1>
-        <div class="admin-breadcrumb"><a href="/admin/conseil/liste-conseil.html" style="color:inherit;">Conseil</a><span>/</span><span>Nouveau</span></div>
+        <div class="admin-breadcrumb"><a href="../conseil/liste-conseil.html" style="color:inherit;">Conseil</a><span>/</span><span>Nouveau</span></div>
       </div>
       <div class="admin-topbar-right">
-        <a href="/admin/conseil/liste-conseil.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <a href="../conseil/liste-conseil.html" class="btn btn-ghost btn-sm">← Retour</a>
         <div class="admin-topbar-user"><div class="admin-topbar-avatar" id="topbar-avatar">SA</div><span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span></div>
       </div>
     </div>
@@ -117,13 +117,13 @@
   </div>
 </div>
 
-<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260603e"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/js/supabase-config.js?v=20260603e"></script>
-<script src="/assets/js/supabase-data.js?v=20260603e"></script>
-<script src="/assets/js/auth.js?v=20260603e"></script>
-<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
-<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script>
+<script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="../../assets/js/admin-ui.js?v=20260603e"></script>
 <script>
 const ROLE_COLORS = { president:'#00007A', vice:'#4169E1', coordo:'#1a3fa8', secretaire:'#1e3a8a', tresoriere:'#B8860B', education:'#C79A2E', juridique:'#1e293b', sante:'#0e7490', membre:'#4169E1' };
 
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       await DataStore.logAction(user?.id, 'medecins.create', { conseil: nom });
       AdminUI.toast('Membre ajouté !', 'success');
-      setTimeout(() => { window.location.href = '/admin/conseil/liste-conseil.html'; }, 700);
+      setTimeout(() => { window.location.href = '../conseil/liste-conseil.html'; }, 700);
     } catch(ex) { show('Erreur : ' + (ex.message||'Impossible d\'enregistrer.')); saving = false; }
 
     function show(msg) { err.style.display='block'; err.textContent=msg; }

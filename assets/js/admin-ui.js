@@ -4,6 +4,15 @@
    ============================================================ */
 'use strict';
 
+/* ── Détection du préfixe de base (compatible GitHub Pages et domaine racine) ──
+   Ex : sur titotizzy.github.io/Website/admin/blog/...  → BASE = '/Website/'
+        sur ouhhaiti.org/admin/blog/...                 → BASE = '/'          */
+const _ADMIN_BASE = (() => {
+  const p = window.location.pathname;
+  const i = p.indexOf('/admin/');
+  return i === -1 ? '/' : p.substring(0, i + 1); // ex: '/Website/' ou '/'
+})();
+
 const AdminUI = {
 
   /* ── Icônes SVG ── */
@@ -53,9 +62,10 @@ const AdminUI = {
     const contenu = ['articles','galeries','medecins','conseil','medias'].some(can);
     const superSection = ['admins','parametres','logs'].some(can);
 
+    const B = _ADMIN_BASE; // ex: '/Website/' ou '/'
     return `
       <div class="admin-sidebar-logo">
-        <img src="/assets/images/logo/logo.png" alt="Logo OUH" width="36" height="36" style="object-fit:contain;border-radius:6px;">
+        <img src="${B}assets/images/logo/logo.png" alt="Logo OUH" width="36" height="36" style="object-fit:contain;border-radius:6px;">
         <div><div class="admin-sidebar-logo-text">OUH Admin</div><div class="admin-sidebar-logo-sub">Back-office</div></div>
       </div>
       <div class="admin-user-info">
@@ -66,23 +76,23 @@ const AdminUI = {
       <nav class="admin-nav" aria-label="Navigation administration">
         <div class="admin-nav-section">
           <div class="admin-nav-section-title">Général</div>
-          ${navLink('dashboard', '/admin/dashboard.html', I.dashboard, 'Tableau de bord')}
+          ${navLink('dashboard', B+'admin/dashboard.html', I.dashboard, 'Tableau de bord')}
         </div>
         ${contenu ? `
         <div class="admin-nav-section">
           <div class="admin-nav-section-title">Contenu</div>
-          ${navLink('articles', '/admin/blog/liste-articles.html', I.articles, 'Articles (Blog)')}
-          ${navLink('galeries', '/admin/galerie/liste-galeries.html', I.galeries, 'Galeries')}
-          ${navLink('medecins', '/admin/medecins/liste-medecins.html', I.medecins, 'Médecins')}
-          ${navLink('conseil', '/admin/conseil/liste-conseil.html', I.conseil, "Conseil d'admin.")}
-          ${navLink('medias', '/admin/medias/gestion-images.html', I.medias, 'Images du site')}
+          ${navLink('articles', B+'admin/blog/liste-articles.html', I.articles, 'Articles (Blog)')}
+          ${navLink('galeries', B+'admin/galerie/liste-galeries.html', I.galeries, 'Galeries')}
+          ${navLink('medecins', B+'admin/medecins/liste-medecins.html', I.medecins, 'Médecins')}
+          ${navLink('conseil',  B+'admin/conseil/liste-conseil.html',  I.conseil,  "Conseil d'admin.")}
+          ${navLink('medias',   B+'admin/medias/gestion-images.html',  I.medias,   'Images du site')}
         </div>` : ''}
         ${superSection ? `
         <div class="admin-nav-section">
           <div class="admin-nav-section-title">SuperAdmin</div>
-          ${navLink('admins',     '/admin/superadmin/gestion-admins.html',   I.admins,     'Gestion Admins')}
-          ${navLink('parametres', '/admin/superadmin/parametres-site.html',  I.parametres, 'Paramètres du site')}
-          ${navLink('logs',       '/admin/superadmin/logs.html',             I.logs,       "Journaux d'activité")}
+          ${navLink('admins',     B+'admin/superadmin/gestion-admins.html',  I.admins,     'Gestion Admins')}
+          ${navLink('parametres', B+'admin/superadmin/parametres-site.html', I.parametres, 'Paramètres du site')}
+          ${navLink('logs',       B+'admin/superadmin/logs.html',            I.logs,       "Journaux d'activité")}
         </div>` : ''}
       </nav>
       <div class="admin-sidebar-footer">
@@ -111,7 +121,7 @@ const AdminUI = {
        Le superadmin a '*' donc passe toujours. Un admin dont l'accès
        a été désactivé via le panneau est redirigé vers le tableau de bord. */
     if (user && user.role !== 'superadmin' && !this.canAccessPage(page, user)) {
-      window.location.href = '/admin/dashboard.html';
+      window.location.href = _ADMIN_BASE + 'admin/dashboard.html';
       return user;
     }
 
@@ -155,7 +165,7 @@ const AdminUI = {
     const doLogout = () => {
       try { sessionStorage.setItem('ouh_logout_reason', 'idle'); } catch (_) {}
       if (window.Auth?.logout) window.Auth.logout();
-      else window.location.href = '/admin/login.html';
+      else window.location.href = _ADMIN_BASE + 'admin/login.html';
     };
 
     const reset = () => {

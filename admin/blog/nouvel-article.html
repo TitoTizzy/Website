@@ -6,8 +6,8 @@
   <title>Nouvel article | Admin OUH</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/css/main.css?v=20260603e" />
-  <link rel="stylesheet" href="/assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
   <style>
     .editor-layout { display:grid; grid-template-columns:1fr 280px; gap:1.5rem; align-items:start; }
     @media(max-width:900px){ .editor-layout{grid-template-columns:1fr;} }
@@ -28,12 +28,12 @@
       <div class="admin-topbar-left">
         <h1 class="admin-topbar-title">Nouvel article</h1>
         <div class="admin-breadcrumb">
-          <a href="/admin/blog/liste-articles.html" style="color:inherit;">Articles</a>
+          <a href="../blog/liste-articles.html" style="color:inherit;">Articles</a>
           <span>/</span><span>Nouveau</span>
         </div>
       </div>
       <div class="admin-topbar-right">
-        <a href="/admin/blog/liste-articles.html" class="btn btn-ghost btn-sm">← Retour</a>
+        <a href="../blog/liste-articles.html" class="btn btn-ghost btn-sm">← Retour</a>
         <div class="admin-topbar-user">
           <div class="admin-topbar-avatar" id="topbar-avatar">SA</div>
           <span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span>
@@ -153,14 +153,14 @@
   </div>
 </div>
 
-<script src="/assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260603e"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/js/supabase-config.js?v=20260603e"></script>
-<script src="/assets/js/supabase-data.js?v=20260603e"></script>
-<script src="/assets/js/auth.js?v=20260603e"></script>
-<script src="/assets/js/supabase-auth.js?v=20260603e"></script>
-<script src="/assets/js/blog.js?v=20260603e"></script>
-<script src="/assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-data.js?v=20260603e"></script>
+<script src="../../assets/js/auth.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260603e"></script>
+<script src="../../assets/js/blog.js?v=20260603e"></script>
+<script src="../../assets/js/admin-ui.js?v=20260603e"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await AdminUI.init({ page: 'articles', roles: ['superadmin','admin_general','admin_blog'] });
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       await DataStore.create('articles', articleData);
       await DataStore.logAction(user?.id, 'blog.create', { title });
       AdminUI.toast('Article enregistré !', 'success');
-      setTimeout(() => { window.location.href = '/admin/blog/liste-articles.html'; }, 800);
+      setTimeout(() => { window.location.href = '../blog/liste-articles.html'; }, 800);
     } catch(err) {
       showErr('Erreur : ' + (err.message || 'Impossible d\'enregistrer l\'article.'));
       submitting = false;
