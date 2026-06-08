@@ -237,7 +237,7 @@
       <p style="font-family:var(--font-ui);font-size:1.05rem;line-height:1.8;color:var(--color-text-secondary);margin-bottom:2rem;">
         Les Médecins qui collaborent avec l'OUH sont des piliers essentiels pour notre mission d'amélioration de l'accès aux soins. Ils fournissent des services de santé primaires, des campagnes de prévention et des programmes de sensibilisation à la santé publique dans les zones mal desservies.
       </p>
-      <a href="#medecins" class="btn btn-secondary" style="align-self:flex-start;">Voir nos médecins</a>
+      <button id="medecins-toggle" type="button" class="btn btn-secondary" aria-expanded="false" aria-controls="medecins" style="align-self:flex-start;">Voir nos médecins</button>
     </div>
   </section>
 
@@ -260,7 +260,7 @@
   </section>
 
   <!-- SECTION : NOS MÉDECINS COLLABORATEURS -->
-  <section class="med-section" id="medecins" aria-labelledby="medecins-title">
+  <section class="med-section" id="medecins" aria-labelledby="medecins-title" hidden>
     <div class="container">
       <div class="med-section-intro animate-on-scroll">
         <span class="med-count-badge" id="med-count-badge">
@@ -441,7 +441,34 @@
       });
     }
   }
-  document.addEventListener('DOMContentLoaded', load);
+
+  /* ── Toggle reveal ── */
+  var _loaded = false;
+  document.addEventListener('DOMContentLoaded', function() {
+    var toggle  = document.getElementById('medecins-toggle');
+    var section = document.getElementById('medecins');
+    if (!toggle || !section) return;
+
+    function reveal(withScroll) {
+      section.removeAttribute('hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.textContent = 'Masquer les médecins';
+      if (!_loaded) { _loaded = true; load(); }
+      if (withScroll) setTimeout(function(){ section.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+    }
+    function hide() {
+      section.setAttribute('hidden', '');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = 'Voir nos médecins';
+    }
+
+    /* Auto-reveal when navigated via URL hash (footer link, redirect…) */
+    if (window.location.hash === '#medecins') reveal(false);
+
+    toggle.addEventListener('click', function() {
+      section.hasAttribute('hidden') ? reveal(true) : hide();
+    });
+  });
 })();
 </script>
 </body>
