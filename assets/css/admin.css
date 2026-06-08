@@ -891,3 +891,249 @@ html { font-size: 16px; }
   color: var(--color-primary);
   border: 1px solid var(--color-border);
 }
+
+/* ═══════════════════════════════════════════════
+   RICH TEXT EDITOR — Barre d'outils WYSIWYG
+   ═══════════════════════════════════════════════ */
+.rte-wrapper {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background: var(--color-surface);
+}
+
+.rte-wrapper:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0,63,136,0.1);
+}
+
+.rte-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0.45rem 0.6rem;
+  background: var(--color-light);
+  border-bottom: 1.5px solid var(--color-border);
+  flex-wrap: wrap;
+  row-gap: 3px;
+}
+
+.rte-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 5px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.rte-btn:hover {
+  background: rgba(0,0,122,0.08);
+  color: var(--color-primary);
+}
+
+.rte-btn.active {
+  background: rgba(0,0,122,0.12);
+  color: var(--color-primary);
+}
+
+.rte-btn svg { pointer-events: none; }
+
+.rte-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+  margin: 0 3px;
+  flex-shrink: 0;
+}
+
+.rte-select {
+  padding: 0 0.5rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  background: var(--color-surface);
+  cursor: pointer;
+  outline: none;
+  height: 32px;
+  flex-shrink: 0;
+  min-width: 108px;
+}
+
+.rte-select:focus { border-color: var(--color-primary); }
+
+.rte-editor {
+  min-height: 340px;
+  max-height: 620px;
+  padding: 1rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--color-dark);
+  background: var(--color-surface);
+  outline: none;
+  overflow-y: auto;
+  word-break: break-word;
+}
+
+.rte-editor:empty::before {
+  content: attr(data-placeholder);
+  color: rgba(90,96,128,0.55);
+  pointer-events: none;
+  font-style: italic;
+}
+
+/* Typographie dans l'éditeur — fidèle au rendu public */
+.rte-editor p { margin-bottom: 0.85rem; }
+
+.rte-editor h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 1.75rem 0 0.75rem;
+  line-height: 1.25;
+  border-bottom: 2px solid rgba(0,0,122,0.1);
+  padding-bottom: 0.35rem;
+}
+
+.rte-editor h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin: 1.5rem 0 0.6rem;
+}
+
+.rte-editor ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+.rte-editor ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+.rte-editor li { margin-bottom: 0.35rem; }
+
+.rte-editor blockquote {
+  border-left: 4px solid var(--color-accent);
+  padding: 0.75rem 1.25rem;
+  margin: 1.25rem 0;
+  background: rgba(65,105,225,0.06);
+  border-radius: 0 8px 8px 0;
+  font-family: var(--font-quote);
+  font-style: italic;
+  color: var(--color-primary);
+  font-size: 1rem;
+}
+
+.rte-editor a { color: var(--color-accent); text-decoration: underline; }
+.rte-editor strong { font-weight: 700; }
+.rte-editor em { font-style: italic; }
+.rte-editor u { text-decoration: underline; }
+.rte-editor s { text-decoration: line-through; }
+
+.rte-editor img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 0.75rem 0;
+  display: block;
+}
+
+/* Barre de statut (compteur de mots) */
+.rte-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 0.3rem 0.875rem;
+  background: var(--color-light);
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  color: var(--color-muted);
+}
+
+/* Admin mobile — sidebar en overlay */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+    z-index: 200;
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-main {
+    margin-left: 0;
+  }
+  .admin-topbar {
+    padding: 0 var(--space-4);
+  }
+  .admin-content {
+    padding: var(--space-4);
+  }
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+  /* Bouton hamburger admin */
+  .admin-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: var(--color-light);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    color: var(--color-dark);
+    flex-shrink: 0;
+  }
+  /* Overlay quand sidebar ouverte */
+  .admin-sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 199;
+  }
+  .admin-sidebar-overlay.open { display: block; }
+
+  /* RTE sur mobile */
+  .rte-toolbar { padding: 0.4rem; gap: 1px; row-gap: 2px; }
+  .rte-btn { min-width: 36px; height: 36px; }
+  .rte-editor { min-height: 260px; padding: 0.875rem; font-size: 0.9rem; }
+  .rte-select { min-width: 90px; font-size: 0.72rem; }
+}
+
+@media (max-width: 480px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+  .admin-table-wrap {
+    font-size: 0.8rem;
+  }
+}

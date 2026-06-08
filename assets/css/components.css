@@ -301,7 +301,7 @@
   position: fixed;
   inset: 0;
   top: var(--navbar-height);
-  background: var(--color-surface);
+  background: #1A3A2A;   /* vert forêt */
   z-index: 999;
   padding: var(--space-6);
   overflow-y: auto;
@@ -321,12 +321,12 @@
   font-family: var(--font-ui);
   font-size: var(--text-lg);
   font-weight: 500;
-  color: var(--color-dark);
-  border-bottom: 1px solid var(--color-border);
+  color: rgba(255,255,255,0.92);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
   transition: color var(--transition-fast);
 }
 
-.mobile-nav-link:hover { color: var(--color-primary); }
+.mobile-nav-link:hover { color: #FCD34D; /* or doré */ }
 
 .mobile-nav-submenu {
   padding-left: var(--space-4);
@@ -340,12 +340,12 @@
   padding: var(--space-3) 0;
   font-family: var(--font-ui);
   font-size: var(--text-base);
-  color: var(--color-muted);
-  border-bottom: 1px solid var(--color-border);
+  color: rgba(255,255,255,0.65);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   transition: color var(--transition-fast);
 }
 
-.mobile-nav-sub-link:hover { color: var(--color-primary); }
+.mobile-nav-sub-link:hover { color: #FCD34D; }
 
 .mobile-nav-cta {
   margin-top: var(--space-6);
@@ -1323,10 +1323,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-4) var(--space-8);
-  border: 1px solid rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-light);
   filter: grayscale(100%);
@@ -1497,8 +1494,6 @@
   position: relative;
 }
 
-.about-content {}
-
 .about-year-badge {
   display: inline-flex;
   align-items: center;
@@ -1560,8 +1555,6 @@
   box-shadow: var(--shadow-lg);
   position: relative;  /* requis pour le positionnement de l'image */
 }
-
-.library-content {}
 
 .library-address {
   display: flex;

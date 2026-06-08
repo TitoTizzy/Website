@@ -4,12 +4,12 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modifier article | Admin OUH</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" /><link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260608" />
+  <link rel="stylesheet" href="../../assets/css/admin.css?v=20260608" />
   <style>
     .editor-layout{display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start;}
     @media(max-width:900px){.editor-layout{grid-template-columns:1fr;}}
     .editor-side{background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);padding:1.25rem;box-shadow:var(--shadow-sm);position:sticky;top:80px;margin-bottom:1rem;}
-    .admin-form-textarea{min-height:320px;font-family:monospace;font-size:.85rem;line-height:1.6;}
     .char-count{font-size:.72rem;color:var(--color-muted);text-align:right;margin-top:.25rem;}
     .meta-bar{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.75rem;color:var(--color-muted);padding:.55rem .875rem;background:var(--color-light);border-radius:8px;margin-bottom:1.25rem;}
   </style>
@@ -17,11 +17,18 @@
 <body>
 <div class="admin-layout">
   <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-sidebar-overlay" id="sidebar-overlay"></div>
+
   <div class="admin-main">
     <div class="admin-topbar">
       <div class="admin-topbar-left">
-        <h1 class="admin-topbar-title" id="topbar-title">Modifier l'article</h1>
-        <div class="admin-breadcrumb"><a href="../blog/liste-articles.html" style="color:inherit;">Articles</a><span>/</span><span>Modifier</span></div>
+        <button class="admin-menu-toggle" id="sidebar-toggle" aria-label="Menu" style="display:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+          <h1 class="admin-topbar-title" id="topbar-title">Modifier l'article</h1>
+          <div class="admin-breadcrumb"><a href="../blog/liste-articles.html" style="color:inherit;">Articles</a><span>/</span><span>Modifier</span></div>
+        </div>
       </div>
       <div class="admin-topbar-right">
         <a href="../blog/liste-articles.html" class="btn btn-ghost btn-sm">← Retour</a>
@@ -31,6 +38,7 @@
         </div>
       </div>
     </div>
+
     <div class="admin-content">
       <div id="state-loading" class="admin-card" style="text-align:center;padding:3rem;"><p style="color:var(--color-muted);">Chargement…</p></div>
       <div id="state-notfound" class="admin-card" style="display:none;text-align:center;padding:3rem;"><p style="color:var(--color-error);font-weight:600;">Article introuvable.</p><a href="../blog/liste-articles.html" class="btn btn-primary btn-sm" style="margin-top:1rem;">← Retour</a></div>
@@ -41,6 +49,7 @@
           <span>Créé le <span id="meta-created"></span></span>
           <span>Mis à jour le <span id="meta-updated"></span></span>
         </div>
+
         <div class="editor-layout">
           <div>
             <div class="admin-card" style="margin-bottom:1.5rem;">
@@ -53,12 +62,68 @@
                 <textarea id="f-excerpt" class="admin-form-input" rows="3" style="min-height:75px;resize:vertical;" maxlength="220" required></textarea>
                 <div class="char-count"><span id="excerpt-count">0</span>/220</div>
               </div>
+
               <div class="admin-form-group" style="margin-bottom:0;">
-                <label class="admin-form-label" for="f-content">Contenu <span class="required">*</span> <span style="font-weight:400;font-size:.7rem;color:var(--color-muted);">HTML autorisé</span></label>
-                <textarea id="f-content" class="admin-form-input admin-form-textarea" rows="16" required></textarea>
+                <label class="admin-form-label">Contenu <span class="required">*</span></label>
+
+                <!-- Éditeur Rich Text -->
+                <div class="rte-wrapper" id="rte-wrapper">
+                  <div class="rte-toolbar" id="rte-toolbar">
+                    <select class="rte-select" id="rte-block-sel" title="Type de bloc">
+                      <option value="p">Paragraphe</option>
+                      <option value="h2">Titre H2</option>
+                      <option value="h3">Titre H3</option>
+                    </select>
+                    <div class="rte-sep"></div>
+                    <button type="button" class="rte-btn" data-cmd="bold" title="Gras (Ctrl+B)">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="italic" title="Italique (Ctrl+I)">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="underline" title="Souligné (Ctrl+U)">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><line x1="4" y1="21" x2="20" y2="21"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="strikeThrough" title="Barré">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><path d="M16 6c-.5-1.5-2-2.5-4-2.5-2.5 0-4 1.5-4 3 0 1 .5 1.8 1.3 2.5"/><path d="M8 18c.8.8 2 1.5 4 1.5 2.8 0 4.5-1.5 4.5-3.5 0-1-.4-1.8-1-2.5"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <button type="button" class="rte-btn" data-cmd="insertUnorderedList" title="Liste à puces">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="insertOrderedList" title="Liste numérotée">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4" stroke="currentColor" stroke-width="1.5"/><path d="M4 10h2" stroke="currentColor" stroke-width="1.5"/><path d="M6 14H4c0-1 2-2 2-3s-1-1.5-2-1" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="blockquote" title="Citation">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1zm12 0c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <button type="button" class="rte-btn" data-cmd="createLink" title="Insérer un lien">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="unlink" title="Supprimer le lien">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.84 12.25l1.72-1.71a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M5.17 11.75l-1.71 1.71a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="4" y1="4" x2="20" y2="20"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <button type="button" class="rte-btn" data-cmd="removeFormat" title="Effacer la mise en forme">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/><line x1="13" y1="7" x2="6" y2="21"/></svg>
+                    </button>
+                  </div>
+
+                  <div class="rte-editor" id="rte-body" contenteditable="true"
+                       data-placeholder="Le contenu de l'article s'affiche ici…"></div>
+
+                  <div class="rte-statusbar">
+                    <span id="rte-word-count">0 mot</span>
+                  </div>
+                </div>
+
+                <textarea id="f-content" style="display:none;" required></textarea>
               </div>
             </div>
-            <div class="admin-card">
+
+            <div class="admin-card" style="margin-bottom:1.5rem;">
               <h3 style="font-size:.95rem;font-weight:700;margin-bottom:.875rem;">Image à la une</h3>
               <div class="admin-form-group">
                 <label class="admin-form-label" for="f-image-file">Remplacer la photo (optionnel)</label>
@@ -69,9 +134,10 @@
               </div>
               <div class="admin-form-group" style="margin-bottom:0;"><label class="admin-form-label" for="f-alt">Texte alt</label><input id="f-alt" type="text" class="admin-form-input" /></div>
             </div>
+
             <div class="admin-card">
-              <h3 style="font-size:.95rem;font-weight:700;margin-bottom:.75rem;">Images dans l'article</h3>
-              <p style="font-size:.8rem;color:var(--color-muted);margin-bottom:1rem;line-height:1.6;">Insère l'image à la position du curseur dans le contenu.</p>
+              <h3 style="font-size:.95rem;font-weight:700;margin-bottom:.75rem;">Insérer une image dans le texte</h3>
+              <p style="font-size:.8rem;color:var(--color-muted);margin-bottom:1rem;line-height:1.6;">Placez votre curseur dans le texte puis choisissez une image.</p>
               <label for="f-content-img" class="btn btn-outline btn-sm" style="cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 Insérer une image
@@ -79,18 +145,26 @@
               <input id="f-content-img" type="file" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;" />
             </div>
           </div>
+
           <div>
             <div class="editor-side">
               <h3 style="font-size:.9rem;font-weight:700;margin-bottom:.875rem;">Publication</h3>
-              <div class="admin-form-group"><label class="admin-form-label" for="f-status">Statut</label>
+              <div class="admin-form-group">
+                <label class="admin-form-label" for="f-status">Statut</label>
                 <select id="f-status" class="admin-form-input admin-form-select">
-                  <option value="draft">Brouillon</option><option value="published">Publié</option><option value="archived">Archivé</option>
+                  <option value="draft">Brouillon</option>
+                  <option value="published">Publié</option>
+                  <option value="archived">Archivé</option>
                 </select>
               </div>
-              <div class="admin-form-group" style="margin-bottom:.75rem;"><label class="admin-form-label" for="f-category">Catégorie <span class="required">*</span></label>
+              <div class="admin-form-group" style="margin-bottom:.75rem;">
+                <label class="admin-form-label" for="f-category">Catégorie <span class="required">*</span></label>
                 <select id="f-category" class="admin-form-input admin-form-select" required>
                   <option value="">— Choisir —</option>
-                  <option value="sante">Santé</option><option value="education">Éducation</option><option value="humanitaire">Humanitaire</option><option value="evenements">Événements</option>
+                  <option value="sante">Santé</option>
+                  <option value="education">Éducation</option>
+                  <option value="humanitaire">Humanitaire</option>
+                  <option value="evenements">Événements</option>
                 </select>
               </div>
               <hr style="border:none;border-top:1px solid var(--color-border);margin:.875rem 0;">
@@ -104,14 +178,29 @@
     </div>
   </div>
 </div>
-<script src="../../assets/js/storage.js?v=20260603e"></script>
+
+<script src="../../assets/js/storage.js?v=20260608"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
-<script src="../../assets/js/supabase-data.js?v=20260603e"></script><script src="../../assets/js/auth.js?v=20260603e"></script>
-<script src="../../assets/js/supabase-auth.js?v=20260603e"></script><script src="../../assets/js/blog.js?v=20260603e"></script><script src="../../assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260608"></script>
+<script src="../../assets/js/supabase-data.js?v=20260608"></script>
+<script src="../../assets/js/auth.js?v=20260608"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260608"></script>
+<script src="../../assets/js/blog.js?v=20260608"></script>
+<script src="../../assets/js/admin-ui.js?v=20260608"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await AdminUI.init({ page:'articles', roles:['superadmin','admin_general','admin_blog'] });
+
+  /* ── Sidebar mobile toggle ── */
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebar = document.getElementById('admin-sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (window.innerWidth <= 768 && sidebarToggle) sidebarToggle.style.display = 'flex';
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('open'); });
+    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
+  }
+
   await DataStore.init();
   const id = AdminUI.getParam('id');
   if (!id) { show('notfound'); return; }
@@ -127,61 +216,177 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('meta-updated').textContent = AdminUI.formatDate(article.updatedAt, true);
 
   const v = (el,val) => { const e=document.getElementById(el); if(e) e.value=val||''; };
-  v('f-title',article.title); v('f-excerpt',article.excerpt); v('f-content',article.content);
-  v('f-image',article.image); v('f-alt',article.alt); v('f-status',article.status||'draft'); v('f-category',article.category);
-  document.getElementById('excerpt-count').textContent=(article.excerpt||'').length;
+  v('f-title',article.title);
+  v('f-excerpt',article.excerpt);
+  v('f-image',article.image);
+  v('f-alt',article.alt);
+  v('f-status',article.status||'draft');
+  v('f-category',article.category);
+  document.getElementById('excerpt-count').textContent = (article.excerpt||'').length;
 
-  document.getElementById('f-excerpt').addEventListener('input',e=>{ document.getElementById('excerpt-count').textContent=e.target.value.length; });
+  /* ── Charger le contenu dans le RTE ── */
+  const rteEditor = document.getElementById('rte-body');
+  const textarea  = document.getElementById('f-content');
+  if (rteEditor && article.content) {
+    rteEditor.innerHTML = article.content;
+    textarea.value = article.content;
+  }
 
-  /* Aperçu de l'image actuelle */
+  /* ── Initialiser le RTE ── */
+  (function initRTE() {
+    const toolbar  = document.getElementById('rte-toolbar');
+    const blockSel = document.getElementById('rte-block-sel');
+    const wordCnt  = document.getElementById('rte-word-count');
+    if (!rteEditor || !textarea || !toolbar) return;
+
+    const sync = () => {
+      const html = rteEditor.innerHTML;
+      textarea.value = (html === '<br>' || html.trim() === '') ? '' : html;
+      const words = rteEditor.innerText.trim().replace(/\s+/g,' ').split(' ').filter(Boolean).length;
+      wordCnt.textContent = words + (words <= 1 ? ' mot' : ' mots');
+    };
+
+    /* Synchro initiale du compteur */
+    sync();
+
+    rteEditor.addEventListener('input', sync);
+
+    rteEditor.addEventListener('paste', e => {
+      e.preventDefault();
+      let html = (e.clipboardData||window.clipboardData).getData('text/html');
+      if (html) {
+        html = html
+          .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+          .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+          .replace(/\s*style="[^"]*"/gi, '')
+          .replace(/\s*class="[^"]*"/gi, '');
+        document.execCommand('insertHTML', false, html);
+      } else {
+        document.execCommand('insertText', false, (e.clipboardData||window.clipboardData).getData('text/plain'));
+      }
+      setTimeout(sync, 0);
+    });
+
+    if (blockSel) {
+      blockSel.addEventListener('change', () => {
+        rteEditor.focus();
+        document.execCommand('formatBlock', false, blockSel.value);
+        sync();
+      });
+    }
+
+    toolbar.addEventListener('mousedown', e => {
+      const btn = e.target.closest('.rte-btn[data-cmd]');
+      if (!btn) return;
+      e.preventDefault();
+      rteEditor.focus();
+      const cmd = btn.dataset.cmd;
+      const val = btn.dataset.val;
+      if (cmd === 'createLink') {
+        const url = prompt('URL du lien :', 'https://');
+        if (url) {
+          const sel = window.getSelection();
+          if (!sel || sel.toString() === '') {
+            const txt = prompt('Texte du lien :', url) || url;
+            document.execCommand('insertHTML', false, `<a href="${url}">${txt}</a>`);
+          } else {
+            document.execCommand('createLink', false, url);
+          }
+        }
+      } else if (cmd === 'formatBlock') {
+        document.execCommand('formatBlock', false, val);
+      } else {
+        document.execCommand(cmd, false, val || null);
+      }
+      setTimeout(() => { sync(); updateState(); }, 0);
+    });
+
+    function updateState() {
+      ['bold','italic','underline','strikeThrough','insertUnorderedList','insertOrderedList'].forEach(c => {
+        const b = toolbar.querySelector(`[data-cmd="${c}"]`);
+        if (b) b.classList.toggle('active', !!document.queryCommandState(c));
+      });
+      if (blockSel) {
+        const node = window.getSelection()?.anchorNode;
+        const blk  = node?.parentElement?.closest?.('p,h2,h3,blockquote');
+        blockSel.value = blk ? blk.tagName.toLowerCase() : 'p';
+      }
+    }
+
+    rteEditor.addEventListener('keyup',  updateState);
+    rteEditor.addEventListener('mouseup', updateState);
+    rteEditor.addEventListener('focus',   updateState);
+  })();
+
+  /* Compteur résumé */
+  document.getElementById('f-excerpt').addEventListener('input', e => {
+    document.getElementById('excerpt-count').textContent = e.target.value.length;
+  });
+
+  /* Aperçu image actuelle */
   if (article.image && !article.image.includes('placeholder')) {
     const box = document.getElementById('cover-preview');
     box.style.display='block'; box.querySelector('img').src = article.image;
   }
 
-  /* ── Upload d'images ── */
+  /* ── Upload images ── */
   const MAX_BYTES = 5 * 1024 * 1024;
   async function uploadOr64(file, prefix) {
     if (window.SUPABASE_READY && DataStore.uploadImage) return DataStore.uploadImage(file, prefix);
     return new Promise(res => { const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(file); });
   }
+
   document.getElementById('f-image-file').addEventListener('change', async ev => {
     const file = ev.target.files && ev.target.files[0]; if(!file) return;
     if (file.size > MAX_BYTES) { AdminUI.toast('Image trop lourde (max 5 Mo).','error'); ev.target.value=''; return; }
     AdminUI.toast('Téléversement…','info');
-    try { const url = await uploadOr64(file,'articles');
+    try {
+      const url = await uploadOr64(file,'articles');
       document.getElementById('f-image').value = url;
       const box=document.getElementById('cover-preview'); box.style.display='block'; box.querySelector('img').src=url;
-      AdminUI.toast('Image à la une mise à jour.','success');
+      AdminUI.toast('Image mise à jour.','success');
     } catch(err){ AdminUI.toast('Erreur : '+(err.message||'upload'),'error'); }
   });
+
   document.getElementById('f-content-img').addEventListener('change', async ev => {
     const file = ev.target.files && ev.target.files[0]; if(!file) return;
     if (file.size > MAX_BYTES) { AdminUI.toast('Image trop lourde (max 5 Mo).','error'); ev.target.value=''; return; }
     AdminUI.toast('Téléversement…','info');
-    try { const url = await uploadOr64(file,'articles');
-      const ta=document.getElementById('f-content');
-      const snippet=`\n<img src="${url}" alt="" style="width:100%;border-radius:8px;margin:1rem 0;">\n`;
-      const pos=ta.selectionStart ?? ta.value.length;
-      ta.value = ta.value.slice(0,pos)+snippet+ta.value.slice(pos); ta.focus();
+    try {
+      const url = await uploadOr64(file,'articles');
+      rteEditor.focus();
+      document.execCommand('insertHTML', false, `<img src="${url}" alt="" style="max-width:100%;border-radius:8px;margin:1rem 0;">`);
+      textarea.value = rteEditor.innerHTML;
       AdminUI.toast('Image insérée.','success');
     } catch(err){ AdminUI.toast('Erreur : '+(err.message||'upload'),'error'); }
     ev.target.value='';
   });
 
-  let saving=false;
-  document.getElementById('article-form').addEventListener('submit', async e=>{
+  /* ── Soumission ── */
+  let saving = false;
+  document.getElementById('article-form').addEventListener('submit', async e => {
     e.preventDefault(); if(saving) return; saving=true;
-    const err=document.getElementById('form-error'); err.style.display='none';
-    const g=id=>document.getElementById(id).value.trim();
-    const title=g('f-title'),excerpt=g('f-excerpt'),content=g('f-content'),category=g('f-category');
-    if(!title||!excerpt||!content||!category){ err.style.display='block'; err.textContent='Tous les champs obligatoires doivent être remplis.'; saving=false; return; }
-    const slugify=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim();
-    const status=g('f-status');
+
+    /* Sync RTE → textarea */
+    if (rteEditor) textarea.value = rteEditor.innerHTML;
+
+    const err = document.getElementById('form-error'); err.style.display='none';
+    const g = id => document.getElementById(id).value.trim();
+    const title=g('f-title'), excerpt=g('f-excerpt'), content=g('f-content'), category=g('f-category');
+    if(!title||!excerpt||!content||!category){
+      err.style.display='block'; err.textContent='Tous les champs obligatoires doivent être remplis.';
+      saving=false; return;
+    }
+    const slugify = s => (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim();
+    const status = g('f-status');
     try {
-      await DataStore.update('articles', id, { title,excerpt,content,category,status,
-        slug:slugify(title), image:g('f-image')||'assets/images/placeholder.svg', alt:g('f-alt')||title,
-        publishedAt: status==='published'?(article.publishedAt||new Date().toISOString()):article.publishedAt });
+      await DataStore.update('articles', id, {
+        title, excerpt, content, category, status,
+        slug: slugify(title),
+        image: g('f-image')||'assets/images/placeholder.svg',
+        alt: g('f-alt')||title,
+        publishedAt: status==='published' ? (article.publishedAt||new Date().toISOString()) : article.publishedAt
+      });
       await DataStore.logAction(user?.id,'blog.update',{id,title});
       AdminUI.toast('Article mis à jour !','success');
       setTimeout(()=>{ window.location.href = '../blog/liste-articles.html'; },800);
@@ -190,8 +395,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('btn-delete').addEventListener('click', async()=>{
     if(!AdminUI.confirm(`Supprimer « ${article.title} » définitivement ?`)) return;
-    try{ await DataStore.delete('articles',id); AdminUI.toast('Article supprimé.','success'); setTimeout(()=>{ window.location.href = '../blog/liste-articles.html'; },700); }
-    catch{ AdminUI.toast('Erreur suppression.','error'); }
+    try{
+      await DataStore.delete('articles',id);
+      AdminUI.toast('Article supprimé.','success');
+      setTimeout(()=>{ window.location.href = '../blog/liste-articles.html'; },700);
+    } catch{ AdminUI.toast('Erreur suppression.','error'); }
   });
 
   function show(state){
@@ -201,4 +409,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 </script>
-</body></html>
+</body>
+</html>

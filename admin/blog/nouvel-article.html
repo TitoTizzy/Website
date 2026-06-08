@@ -6,8 +6,8 @@
   <title>Nouvel article | Admin OUH</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../assets/css/main.css?v=20260603e" />
-  <link rel="stylesheet" href="../../assets/css/admin.css?v=20260603e" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260608" />
+  <link rel="stylesheet" href="../../assets/css/admin.css?v=20260608" />
   <style>
     .editor-layout { display:grid; grid-template-columns:1fr 280px; gap:1.5rem; align-items:start; }
     @media(max-width:900px){ .editor-layout{grid-template-columns:1fr;} }
@@ -15,21 +15,26 @@
     .char-count { font-size:.72rem;color:var(--color-muted);text-align:right;margin-top:.25rem; }
     .slug-preview { font-size:.72rem;color:var(--color-muted);margin-top:.3rem; }
     .slug-preview code { background:var(--color-light);padding:.1rem .35rem;border-radius:4px;font-family:monospace; }
-    .admin-form-textarea { min-height:320px; font-family:monospace; font-size:.85rem; line-height:1.6; }
     .section-divider { border:none;border-top:1px solid var(--color-border);margin:1.25rem 0; }
   </style>
 </head>
 <body>
 <div class="admin-layout">
   <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-sidebar-overlay" id="sidebar-overlay"></div>
 
   <div class="admin-main">
     <div class="admin-topbar">
       <div class="admin-topbar-left">
-        <h1 class="admin-topbar-title">Nouvel article</h1>
-        <div class="admin-breadcrumb">
-          <a href="../blog/liste-articles.html" style="color:inherit;">Articles</a>
-          <span>/</span><span>Nouveau</span>
+        <button class="admin-menu-toggle" id="sidebar-toggle" aria-label="Menu" style="display:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+          <h1 class="admin-topbar-title">Nouvel article</h1>
+          <div class="admin-breadcrumb">
+            <a href="../blog/liste-articles.html" style="color:inherit;">Articles</a>
+            <span>/</span><span>Nouveau</span>
+          </div>
         </div>
       </div>
       <div class="admin-topbar-right">
@@ -56,28 +61,88 @@
 
               <div class="admin-form-group">
                 <label class="admin-form-label" for="f-excerpt">Résumé <span class="required">*</span></label>
-                <textarea id="f-excerpt" name="excerpt" class="admin-form-input admin-form-textarea" placeholder="Courte description (160 caractères max)…" rows="3" style="min-height:80px;resize:vertical;" maxlength="220" required></textarea>
+                <textarea id="f-excerpt" name="excerpt" class="admin-form-input" placeholder="Courte description (160 caractères max)…" rows="3" style="min-height:80px;resize:vertical;" maxlength="220" required></textarea>
                 <div class="char-count"><span id="excerpt-count">0</span> / 220 caractères</div>
               </div>
 
               <div class="admin-form-group" style="margin-bottom:0;">
-                <label class="admin-form-label" for="f-content">
+                <label class="admin-form-label">
                   Contenu de l'article <span class="required">*</span>
-                  <span style="font-weight:400;font-size:.72rem;color:var(--color-muted);margin-left:.5rem;">HTML autorisé</span>
                 </label>
-                <textarea id="f-content" name="content" class="admin-form-input admin-form-textarea" placeholder="Rédigez votre article ici. Vous pouvez utiliser du HTML simple : &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;, &lt;strong&gt;, &lt;em&gt;…" rows="18" required></textarea>
+
+                <!-- Éditeur Rich Text -->
+                <div class="rte-wrapper" id="rte-wrapper">
+                  <div class="rte-toolbar" id="rte-toolbar">
+                    <!-- Type de bloc -->
+                    <select class="rte-select" id="rte-block-sel" title="Type de bloc">
+                      <option value="p">Paragraphe</option>
+                      <option value="h2">Titre H2</option>
+                      <option value="h3">Titre H3</option>
+                    </select>
+                    <div class="rte-sep"></div>
+                    <!-- Formatage texte -->
+                    <button type="button" class="rte-btn" data-cmd="bold" title="Gras (Ctrl+B)">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="italic" title="Italique (Ctrl+I)">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="underline" title="Souligné (Ctrl+U)">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><line x1="4" y1="21" x2="20" y2="21"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="strikeThrough" title="Barré">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><path d="M16 6c-.5-1.5-2-2.5-4-2.5-2.5 0-4 1.5-4 3 0 1 .5 1.8 1.3 2.5"/><path d="M8 18c.8.8 2 1.5 4 1.5 2.8 0 4.5-1.5 4.5-3.5 0-1-.4-1.8-1-2.5"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <!-- Listes -->
+                    <button type="button" class="rte-btn" data-cmd="insertUnorderedList" title="Liste à puces">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="insertOrderedList" title="Liste numérotée">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4" stroke="currentColor" stroke-width="1.5"/><path d="M4 10h2" stroke="currentColor" stroke-width="1.5"/><path d="M6 14H4c0-1 2-2 2-3s-1-1.5-2-1" stroke="currentColor" stroke-width="1.5"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <!-- Citation -->
+                    <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="blockquote" title="Citation / Blockquote">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1zm12 0c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <!-- Lien -->
+                    <button type="button" class="rte-btn" data-cmd="createLink" title="Insérer un lien">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </button>
+                    <button type="button" class="rte-btn" data-cmd="unlink" title="Supprimer le lien">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.84 12.25l1.72-1.71a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M5.17 11.75l-1.71 1.71a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="4" y1="4" x2="20" y2="20"/></svg>
+                    </button>
+                    <div class="rte-sep"></div>
+                    <!-- Effacer le format -->
+                    <button type="button" class="rte-btn" data-cmd="removeFormat" title="Effacer la mise en forme">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/><line x1="13" y1="7" x2="6" y2="21"/></svg>
+                    </button>
+                  </div>
+
+                  <div class="rte-editor" id="rte-body" contenteditable="true"
+                       data-placeholder="Rédigez votre article ici… Sélectionnez du texte et utilisez la barre d'outils pour le mettre en forme."></div>
+
+                  <div class="rte-statusbar">
+                    <span id="rte-word-count">0 mot</span>
+                  </div>
+                </div>
+
+                <!-- Textarea caché — synchronisé avec le RTE -->
+                <textarea id="f-content" name="content" style="display:none;" required></textarea>
               </div>
             </div>
 
             <!-- Image à la une -->
-            <div class="admin-card">
+            <div class="admin-card" style="margin-bottom:1.5rem;">
               <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-dark);margin-bottom:1rem;">Image à la une</h3>
               <div class="admin-form-group">
                 <label class="admin-form-label" for="f-image-file">Photo principale</label>
                 <input id="f-image-file" type="file" class="admin-form-input" accept="image/png,image/jpeg,image/webp,image/gif" style="padding:.5rem;cursor:pointer;" />
-                <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Choisissez une image depuis votre ordinateur (max 5&nbsp;Mo).</p>
+                <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Max 5&nbsp;Mo — JPG, PNG, WebP, GIF.</p>
                 <div id="cover-preview" style="margin-top:.75rem;display:none;">
-                  <img style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;" alt="Aperçu de l'image à la une" />
+                  <img style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;" alt="Aperçu" />
                 </div>
                 <input id="f-image" type="hidden" />
               </div>
@@ -89,11 +154,11 @@
 
             <!-- Images dans le contenu -->
             <div class="admin-card">
-              <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-dark);margin-bottom:.75rem;">Images dans l'article</h3>
-              <p style="font-size:.8rem;color:var(--color-muted);margin-bottom:1rem;line-height:1.6;">Téléversez une image : elle sera insérée à l'endroit du curseur dans le contenu ci-dessus. Vous pouvez en ajouter plusieurs.</p>
+              <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--color-dark);margin-bottom:.75rem;">Insérer une image dans le texte</h3>
+              <p style="font-size:.8rem;color:var(--color-muted);margin-bottom:1rem;line-height:1.6;">Placez votre curseur dans le texte puis choisissez une image — elle sera insérée à cet endroit.</p>
               <label for="f-content-img" class="btn btn-outline btn-sm" style="cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                Insérer une image dans le contenu
+                Insérer une image
               </label>
               <input id="f-content-img" type="file" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;" />
             </div>
@@ -138,11 +203,12 @@
 
             <div class="editor-sidebar-card">
               <h3 style="font-family:var(--font-display);font-size:.95rem;font-weight:700;margin-bottom:.75rem;">Conseils de rédaction</h3>
-              <ul style="font-size:.78rem;color:var(--color-muted);line-height:1.7;padding-left:1rem;margin:0;">
-                <li>Titre : soyez précis et informatif</li>
+              <ul style="font-size:.78rem;color:var(--color-muted);line-height:1.8;padding-left:1.1rem;margin:0;list-style:disc;">
+                <li>Titre clair et informatif</li>
                 <li>Résumé : 1-2 phrases percutantes</li>
-                <li>Contenu : utilisez des sous-titres &lt;h2&gt;</li>
-                <li>Images : indiquez toujours un alt text</li>
+                <li>Utilisez H2 pour les sections</li>
+                <li>Ajoutez toujours un alt text aux images</li>
+                <li>Relisez avant de publier</li>
               </ul>
             </div>
           </div>
@@ -153,19 +219,35 @@
   </div>
 </div>
 
-<script src="../../assets/js/storage.js?v=20260603e"></script>
+<script src="../../assets/js/storage.js?v=20260608"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../assets/js/supabase-config.js?v=20260603e"></script>
-<script src="../../assets/js/supabase-data.js?v=20260603e"></script>
-<script src="../../assets/js/auth.js?v=20260603e"></script>
-<script src="../../assets/js/supabase-auth.js?v=20260603e"></script>
-<script src="../../assets/js/blog.js?v=20260603e"></script>
-<script src="../../assets/js/admin-ui.js?v=20260603e"></script>
+<script src="../../assets/js/supabase-config.js?v=20260608"></script>
+<script src="../../assets/js/supabase-data.js?v=20260608"></script>
+<script src="../../assets/js/auth.js?v=20260608"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260608"></script>
+<script src="../../assets/js/blog.js?v=20260608"></script>
+<script src="../../assets/js/admin-ui.js?v=20260608"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await AdminUI.init({ page: 'articles', roles: ['superadmin','admin_general','admin_blog'] });
 
-  /* ── Génération du slug ── */
+  /* ── Sidebar mobile toggle ── */
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebar = document.getElementById('admin-sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (window.innerWidth <= 768 && sidebarToggle) sidebarToggle.style.display = 'flex';
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    });
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+    });
+  }
+
+  /* ── Slug ── */
   const slugify = str => (str || '').toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g,'')
     .replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim();
@@ -180,12 +262,104 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('excerpt-count').textContent = e.target.value.length;
   });
 
-  /* ── Upload d'images (à la une + dans le contenu) ── */
+  /* ── Rich Text Editor ── */
+  (function initRTE() {
+    const editor   = document.getElementById('rte-body');
+    const textarea = document.getElementById('f-content');
+    const toolbar  = document.getElementById('rte-toolbar');
+    const blockSel = document.getElementById('rte-block-sel');
+    const wordCnt  = document.getElementById('rte-word-count');
+    if (!editor || !textarea) return;
+
+    /* Sync éditeur → textarea caché */
+    const sync = () => {
+      const html = editor.innerHTML;
+      textarea.value = (html === '<br>' || html.trim() === '') ? '' : html;
+      /* Compteur de mots */
+      const words = editor.innerText.trim().replace(/\s+/g,' ').split(' ').filter(Boolean).length;
+      wordCnt.textContent = words + (words <= 1 ? ' mot' : ' mots');
+    };
+
+    editor.addEventListener('input', sync);
+
+    /* Collage propre — supprime styles et classes extérieurs */
+    editor.addEventListener('paste', e => {
+      e.preventDefault();
+      let html = (e.clipboardData||window.clipboardData).getData('text/html');
+      if (html) {
+        html = html
+          .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+          .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+          .replace(/\s*style="[^"]*"/gi, '')
+          .replace(/\s*class="[^"]*"/gi, '');
+        document.execCommand('insertHTML', false, html);
+      } else {
+        document.execCommand('insertText', false, (e.clipboardData||window.clipboardData).getData('text/plain'));
+      }
+      setTimeout(sync, 0);
+    });
+
+    /* Sélecteur de type de bloc */
+    if (blockSel) {
+      blockSel.addEventListener('change', () => {
+        editor.focus();
+        document.execCommand('formatBlock', false, blockSel.value);
+        sync();
+      });
+    }
+
+    /* Boutons de la toolbar */
+    toolbar.addEventListener('mousedown', e => {
+      const btn = e.target.closest('.rte-btn[data-cmd]');
+      if (!btn) return;
+      e.preventDefault();
+      editor.focus();
+      const cmd = btn.dataset.cmd;
+      const val = btn.dataset.val;
+
+      if (cmd === 'createLink') {
+        const url = prompt('URL du lien :', 'https://');
+        if (url) {
+          const sel = window.getSelection();
+          if (!sel || sel.toString() === '') {
+            const txt = prompt('Texte du lien :', url) || url;
+            document.execCommand('insertHTML', false, `<a href="${url}">${txt}</a>`);
+          } else {
+            document.execCommand('createLink', false, url);
+          }
+        }
+      } else if (cmd === 'formatBlock') {
+        document.execCommand('formatBlock', false, val);
+      } else {
+        document.execCommand(cmd, false, val || null);
+      }
+      setTimeout(() => { sync(); updateToolbarState(); }, 0);
+    });
+
+    /* État actif des boutons */
+    function updateToolbarState() {
+      ['bold','italic','underline','strikeThrough','insertUnorderedList','insertOrderedList'].forEach(c => {
+        const b = toolbar.querySelector(`[data-cmd="${c}"]`);
+        if (b) b.classList.toggle('active', !!document.queryCommandState(c));
+      });
+      if (blockSel) {
+        const node = window.getSelection()?.anchorNode;
+        const blk  = node?.parentElement?.closest?.('p,h2,h3,blockquote');
+        blockSel.value = blk ? blk.tagName.toLowerCase() : 'p';
+      }
+    }
+
+    editor.addEventListener('keyup',   updateToolbarState);
+    editor.addEventListener('mouseup',  updateToolbarState);
+    editor.addEventListener('focus',    updateToolbarState);
+  })();
+
+  /* ── Upload images ── */
   const MAX_BYTES = 5 * 1024 * 1024;
 
   async function uploadOr64(file, prefix) {
     if (window.SUPABASE_READY && DataStore.uploadImage) return DataStore.uploadImage(file, prefix);
-    return new Promise(res => { const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(file); });
+    return new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(file); });
   }
 
   /* Image à la une */
@@ -203,7 +377,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch(err){ AdminUI.toast('Erreur : '+(err.message||'upload'),'error'); }
   });
 
-  /* Image insérée dans le contenu, à la position du curseur */
+  /* Image insérée dans le contenu (à la position du curseur) */
   document.getElementById('f-content-img').addEventListener('change', async ev => {
     const file = ev.target.files && ev.target.files[0];
     if (!file) return;
@@ -211,14 +385,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     AdminUI.toast('Téléversement…','info');
     try {
       const url = await uploadOr64(file, 'articles');
-      const ta = document.getElementById('f-content');
-      const snippet = `\n<img src="${url}" alt="" style="width:100%;border-radius:8px;margin:1rem 0;">\n`;
-      const pos = ta.selectionStart ?? ta.value.length;
-      ta.value = ta.value.slice(0, pos) + snippet + ta.value.slice(pos);
-      ta.focus();
+      const rteEditor = document.getElementById('rte-body');
+      rteEditor.focus();
+      document.execCommand('insertHTML', false, `<img src="${url}" alt="" style="max-width:100%;border-radius:8px;margin:1rem 0;">`);
+      document.getElementById('f-content').value = rteEditor.innerHTML;
       AdminUI.toast('Image insérée dans le contenu.','success');
     } catch(err){ AdminUI.toast('Erreur : '+(err.message||'upload'),'error'); }
-    ev.target.value='';
+    ev.target.value = '';
   });
 
   /* ── Soumission ── */
@@ -228,9 +401,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (submitting) return;
     submitting = true;
 
+    /* Sync RTE → textarea avant lecture */
+    const rteBody = document.getElementById('rte-body');
+    if (rteBody) document.getElementById('f-content').value = rteBody.innerHTML;
+
     const btn = e.submitter;
     const isPublish = btn?.value === 'publish';
-
     const errBox = document.getElementById('form-error');
     errBox.style.display = 'none';
 
@@ -246,12 +422,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!category) { showErr('Veuillez choisir une catégorie.'); submitting=false; return; }
 
     const status = isPublish ? 'published' : (get('f-status') || 'draft');
-
     const articleData = {
       title, excerpt, content, category, status,
-      slug:   slugify(title),
-      image:  get('f-image') || 'assets/images/placeholder.svg',
-      alt:    get('f-alt')   || title,
+      slug:  slugify(title),
+      image: get('f-image') || 'assets/images/placeholder.svg',
+      alt:   get('f-alt')   || title,
       author: user?.displayName || user?.username || 'Admin',
       authorId: user?.id || '',
       publishedAt: status === 'published' ? new Date().toISOString() : null
