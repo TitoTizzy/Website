@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clics (Analytics) | Admin OUH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260608" />
+  <link rel="stylesheet" href="../../assets/css/admin.css?v=20260608" />
+  <style>
+    /* ── KPI cards ── */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+    .kpi-card{background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;}
+    .kpi-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-muted);margin-bottom:.45rem;}
+    .kpi-value{font-family:var(--font-display);font-size:2.1rem;font-weight:700;color:var(--color-primary);line-height:1;}
+    .kpi-sub{font-size:.72rem;color:var(--color-muted);margin-top:.3rem;}
+
+    /* ── Charts ── */
+    .chart-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+    .chart-card{background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;min-width:0;}
+    .chart-title{font-family:var(--font-ui);font-size:.8rem;font-weight:700;color:var(--color-dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.875rem;}
+    .bar-item{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;}
+    .bar-item-label{font-size:.72rem;color:var(--color-dark);width:130px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:monospace;}
+    .bar-item-track{flex:1;height:7px;background:var(--color-light);border-radius:999px;overflow:hidden;}
+    .bar-item-fill{height:100%;background:var(--color-primary);border-radius:999px;transition:width .5s ease;min-width:2px;}
+    .bar-item-count{font-size:.7rem;font-weight:700;color:var(--color-muted);width:28px;text-align:right;flex-shrink:0;}
+
+    /* ── Setup box ── */
+    .sql-box{background:#fefce8;border:1px solid #fde047;border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:1.5rem;}
+    .sql-box-title{font-weight:700;font-size:.8rem;color:#713f12;margin-bottom:.5rem;}
+    .sql-box pre{font-size:.68rem;background:#fff8e7;border-radius:8px;padding:.75rem;overflow-x:auto;color:#1c1917;line-height:1.6;border:1px solid #fde047;margin-top:.5rem;}
+    .sql-box-toggle{background:none;border:none;font-size:.75rem;color:#92400e;font-weight:600;cursor:pointer;padding:0;text-decoration:underline;}
+
+    /* ── Table ── */
+    .page-pill{display:inline-block;padding:.15rem .45rem;border-radius:4px;font-size:.7rem;font-family:monospace;background:rgba(0,0,122,.08);color:var(--color-primary);}
+    .el-pill{display:inline-block;padding:.12rem .4rem;border-radius:4px;font-size:.7rem;font-family:monospace;background:rgba(65,105,225,.09);color:#3730a3;}
+
+    @media(max-width:1100px){.chart-row{grid-template-columns:1fr 1fr;}.chart-row .chart-card:last-child{grid-column:1/-1;}}
+    @media(max-width:800px){.kpi-grid{grid-template-columns:1fr 1fr;}.chart-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <h1 class="admin-topbar-title">Clics (Analytics)</h1>
+        <div class="admin-breadcrumb"><span>SuperAdmin</span><span>/</span><span>Clics</span></div>
+      </div>
+      <div class="admin-topbar-right">
+        <select id="period-select" class="admin-form-input" style="width:170px;padding:.35rem .6rem;margin:0;font-size:.8rem;">
+          <option value="1">Aujourd'hui</option>
+          <option value="7">7 derniers jours</option>
+          <option value="30" selected>30 derniers jours</option>
+          <option value="90">3 derniers mois</option>
+          <option value="0">Tout afficher</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" id="btn-refresh" title="Actualiser">⟳</button>
+        <div class="admin-topbar-user">
+          <div class="admin-topbar-avatar" id="topbar-avatar">SA</div>
+          <span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- Boîte SQL d'installation -->
+      <div class="sql-box" id="sql-box">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+          <div class="sql-box-title">⚙️ Première utilisation — Créer la table dans Supabase</div>
+          <button class="sql-box-toggle" id="sql-toggle">Afficher le SQL ▾</button>
+        </div>
+        <div id="sql-content" style="display:none;">
+          <p style="font-size:.75rem;color:#713f12;margin:.5rem 0 .25rem;">Copiez ce SQL dans <strong>Supabase → SQL Editor → New query</strong> et exécutez-le une seule fois :</p>
+          <pre>-- Table de suivi des clics visiteurs
+CREATE TABLE IF NOT EXISTS click_events (
+  id         UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
+  page       TEXT,
+  element    TEXT,
+  label      TEXT,
+  href       TEXT,
+  section    TEXT,
+  pos_x      INTEGER,
+  pos_y      INTEGER,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE click_events ENABLE ROW LEVEL SECURITY;
+-- Visiteurs (anonymes) peuvent insérer
+CREATE POLICY "ct_insert" ON click_events FOR INSERT  WITH CHECK (true);
+-- Admins connectés peuvent lire
+CREATE POLICY "ct_select" ON click_events FOR SELECT  USING (auth.role() = 'authenticated');
+-- Admins connectés peuvent supprimer
+CREATE POLICY "ct_delete" ON click_events FOR DELETE  USING (auth.role() = 'authenticated');</pre>
+        </div>
+      </div>
+
+      <!-- KPI cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total clics</div>
+          <div class="kpi-value" id="kpi-total">—</div>
+          <div class="kpi-sub" id="kpi-period-label">sur la période</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Aujourd'hui</div>
+          <div class="kpi-value" id="kpi-today">—</div>
+          <div class="kpi-sub">clics ce jour</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Cette semaine</div>
+          <div class="kpi-value" id="kpi-week">—</div>
+          <div class="kpi-sub">7 derniers jours</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Pages actives</div>
+          <div class="kpi-value" id="kpi-pages">—</div>
+          <div class="kpi-sub">pages touchées</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="chart-title">📄 Pages les plus cliquées</div>
+          <div id="chart-pages"><p style="color:var(--color-muted);font-size:.8rem;text-align:center;padding:1rem 0;">Chargement…</p></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">🖱️ Éléments les plus cliqués</div>
+          <div id="chart-elements"><p style="color:var(--color-muted);font-size:.8rem;text-align:center;padding:1rem 0;">Chargement…</p></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">🏷️ Labels les plus cliqués</div>
+          <div id="chart-labels"><p style="color:var(--color-muted);font-size:.8rem;text-align:center;padding:1rem 0;">Chargement…</p></div>
+        </div>
+      </div>
+
+      <!-- Table des clics récents -->
+      <div class="admin-card" style="padding:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;border-bottom:1px solid var(--color-border);gap:.75rem;flex-wrap:wrap;">
+          <span style="font-weight:700;font-size:.875rem;color:var(--color-dark);">Clics récents <span id="click-count" style="font-size:.75rem;font-weight:400;color:var(--color-muted);"></span></span>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <input id="search-input" type="search" class="admin-form-input" placeholder="Filtrer page, élément, label…" style="width:230px;padding:.35rem .7rem;margin:0;font-size:.78rem;" />
+            <button id="btn-export" class="btn btn-ghost btn-sm">⬇ CSV</button>
+            <button id="btn-purge" class="btn btn-sm" style="background:rgba(220,38,38,.08);color:var(--color-error);border:1px solid rgba(220,38,38,.2);">🗑 Vider</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width:130px;">Date / Heure</th>
+                <th>Page</th>
+                <th>Élément</th>
+                <th>Label</th>
+                <th>Destination</th>
+                <th>Section</th>
+              </tr>
+            </thead>
+            <tbody id="clicks-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--color-muted);">Chargement…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-main -->
+</div><!-- /admin-layout -->
+
+<script src="../../assets/js/storage.js?v=20260608"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/supabase-config.js?v=20260608"></script>
+<script src="../../assets/js/supabase-data.js?v=20260608"></script>
+<script src="../../assets/js/auth.js?v=20260608"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260608"></script>
+<script src="../../assets/js/admin-ui.js?v=20260608"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await AdminUI.init({ page: 'analytics', roles: ['superadmin'] });
+
+  let allClicks = [];
+  const NO_DATA_MSG = '<p style="color:var(--color-muted);font-size:.78rem;text-align:center;padding:1rem 0;">Aucune donnée</p>';
+
+  /* ── Calcul de la date de début selon la période ── */
+  function sinceDate(days) {
+    if (!days || days === '0') return null;
+    const d = new Date();
+    d.setDate(d.getDate() - parseInt(days));
+    d.setHours(0, 0, 0, 0);
+    return d.toISOString();
+  }
+
+  /* ── Chargement des données ── */
+  async function load() {
+    const days  = document.getElementById('period-select').value;
+    const since = sinceDate(days);
+
+    document.getElementById('clicks-tbody').innerHTML =
+      '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--color-muted);">Chargement…</td></tr>';
+
+    try {
+      allClicks = await DataStore.getClickEvents({ dateFrom: since, limit: 2000 });
+    } catch (err) {
+      /* Table inexistante ou erreur Supabase */
+      if ((err.message || '').includes('click_events') || (err.code === '42P01')) {
+        document.getElementById('sql-content').style.display = 'block';
+        document.getElementById('sql-toggle').textContent = 'Masquer le SQL ▴';
+        allClicks = [];
+        document.getElementById('clicks-tbody').innerHTML =
+          AdminUI.emptyRow(6, '⚠️ Table click_events introuvable — créez-la avec le SQL ci-dessus.');
+      } else {
+        AdminUI.toast('Erreur de chargement : ' + (err.message || err), 'error');
+        allClicks = [];
+      }
+    }
+
+    updateKPIs();
+    updateCharts();
+    renderTable();
+  }
+
+  /* ── Mise à jour des KPI ── */
+  function updateKPIs() {
+    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+    const weekStart  = new Date(Date.now() - 7 * 86400000);
+
+    const todayN  = allClicks.filter(c => new Date(c.createdAt) >= todayStart).length;
+    const weekN   = allClicks.filter(c => new Date(c.createdAt) >= weekStart).length;
+    const pagesN  = new Set(allClicks.map(c => c.page)).size;
+
+    document.getElementById('kpi-total').textContent  = allClicks.length.toLocaleString('fr-FR');
+    document.getElementById('kpi-today').textContent  = todayN.toLocaleString('fr-FR');
+    document.getElementById('kpi-week').textContent   = weekN.toLocaleString('fr-FR');
+    document.getElementById('kpi-pages').textContent  = pagesN;
+
+    const period = document.getElementById('period-select');
+    const txt    = period.options[period.selectedIndex].text.toLowerCase();
+    document.getElementById('kpi-period-label').textContent = txt;
+  }
+
+  /* ── Rendu d'un graphique à barres ── */
+  function renderBars(containerId, entries, fillColor) {
+    const container = document.getElementById(containerId);
+    if (!entries.length) { container.innerHTML = NO_DATA_MSG; return; }
+    const max = entries[0][1] || 1;
+    container.innerHTML = entries.slice(0, 10).map(([lbl, cnt]) => `
+      <div class="bar-item">
+        <div class="bar-item-label" title="${(lbl||'').replace(/"/g,'')}">${lbl || '—'}</div>
+        <div class="bar-item-track">
+          <div class="bar-item-fill" style="width:${Math.round(cnt/max*100)}%;${fillColor?'background:'+fillColor:''};"></div>
+        </div>
+        <div class="bar-item-count">${cnt}</div>
+      </div>`).join('');
+  }
+
+  /* ── Mise à jour des 3 graphiques ── */
+  function updateCharts() {
+    const pageCounts = {}, elCounts = {}, lblCounts = {};
+
+    allClicks.forEach(c => {
+      if (c.page)    pageCounts[c.page]    = (pageCounts[c.page]    || 0) + 1;
+      if (c.element) elCounts[c.element]   = (elCounts[c.element]   || 0) + 1;
+      if (c.label)   lblCounts[c.label]    = (lblCounts[c.label]    || 0) + 1;
+    });
+
+    const sort = obj => Object.entries(obj).sort((a,b) => b[1]-a[1]);
+    renderBars('chart-pages',    sort(pageCounts), null);
+    renderBars('chart-elements', sort(elCounts),   '#4169E1');
+    renderBars('chart-labels',   sort(lblCounts),  '#F59E0B');
+  }
+
+  /* ── Rendu du tableau ── */
+  function renderTable() {
+    const q = (document.getElementById('search-input').value || '').toLowerCase().trim();
+    const list = q
+      ? allClicks.filter(c =>
+          (c.page    ||'').toLowerCase().includes(q) ||
+          (c.element ||'').toLowerCase().includes(q) ||
+          (c.label   ||'').toLowerCase().includes(q) ||
+          (c.href    ||'').toLowerCase().includes(q) ||
+          (c.section ||'').toLowerCase().includes(q)
+        )
+      : allClicks;
+
+    document.getElementById('click-count').textContent =
+      '(' + list.length.toLocaleString('fr-FR') + ' entrée' + (list.length>1?'s':'') + ')';
+
+    const tbody = document.getElementById('clicks-tbody');
+    if (!list.length) {
+      tbody.innerHTML = AdminUI.emptyRow(6, q ? 'Aucun résultat pour « '+q+' ».' : 'Aucun clic enregistré.');
+      return;
+    }
+
+    tbody.innerHTML = list.slice(0, 300).map(c => {
+      const dt = c.createdAt ? new Date(c.createdAt).toLocaleString('fr-FR', {
+        day:'2-digit', month:'2-digit', year:'2-digit',
+        hour:'2-digit', minute:'2-digit'
+      }) : '—';
+      const lbl = (c.label||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const dst = c.href ? c.href.replace(/</g,'&lt;') : '—';
+      return `<tr>
+        <td style="font-size:.7rem;color:var(--color-muted);white-space:nowrap;font-family:monospace;">${dt}</td>
+        <td><span class="page-pill">${c.page||'—'}</span></td>
+        <td><span class="el-pill">${(c.element||'—').replace(/</g,'&lt;')}</span></td>
+        <td style="font-size:.75rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${lbl}">${lbl||'—'}</td>
+        <td style="font-size:.72rem;color:var(--color-muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${dst}">${dst}</td>
+        <td style="font-size:.72rem;color:var(--color-muted);">${(c.section||'—').replace(/</g,'&lt;')}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  /* ── Export CSV ── */
+  document.getElementById('btn-export').addEventListener('click', () => {
+    if (!allClicks.length) { AdminUI.toast('Aucune donnée à exporter.', 'warning'); return; }
+    const rows = [['Date','Page','Élément','Label','Destination','Section','X','Y']];
+    allClicks.forEach(c => rows.push([
+      c.createdAt||'', c.page||'', c.element||'',
+      c.label||'', c.href||'', c.section||'',
+      c.posX||'', c.posY||''
+    ]));
+    const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\r\n');
+    const a   = document.createElement('a');
+    a.href    = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'clics-ouh-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    AdminUI.toast('Export CSV téléchargé.', 'success');
+  });
+
+  /* ── Purge ── */
+  document.getElementById('btn-purge').addEventListener('click', async () => {
+    if (!AdminUI.confirm('Supprimer TOUS les clics enregistrés ? Cette action est irréversible.')) return;
+    try {
+      await DataStore.purgeClickEvents();
+      allClicks = [];
+      updateKPIs(); updateCharts(); renderTable();
+      AdminUI.toast('Toutes les données ont été supprimées.', 'success');
+    } catch (err) {
+      AdminUI.toast('Erreur : ' + (err.message || err), 'error');
+    }
+  });
+
+  /* ── Toggle SQL box ── */
+  document.getElementById('sql-toggle').addEventListener('click', () => {
+    const box = document.getElementById('sql-content');
+    const btn = document.getElementById('sql-toggle');
+    const open = box.style.display === 'none';
+    box.style.display = open ? 'block' : 'none';
+    btn.textContent   = open ? 'Masquer le SQL ▴' : 'Afficher le SQL ▾';
+  });
+
+  /* ── Listeners ── */
+  document.getElementById('period-select').addEventListener('change', load);
+  document.getElementById('btn-refresh').addEventListener('click',   load);
+  document.getElementById('search-input').addEventListener('input',  renderTable);
+
+  await load();
+});
+</script>
+</body>
+</html>

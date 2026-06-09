@@ -241,6 +241,27 @@
       return data.publicUrl;
     },
 
+    /* ── Click Events (Analytics visiteurs) ── */
+    async getClickEvents(filters = {}) {
+      let q = sb.from('click_events').select('*').order('created_at', { ascending: false });
+      if (filters.dateFrom) q = q.gte('created_at', filters.dateFrom);
+      if (filters.dateTo)   q = q.lte('created_at', filters.dateTo);
+      if (filters.page)     q = q.eq('page', filters.page);
+      q = q.limit(filters.limit || 2000);
+      const { data, error } = await q;
+      if (error) throw error;
+      return (data || []).map(r => ({
+        id: r.id, page: r.page, element: r.element,
+        label: r.label, href: r.href, section: r.section,
+        posX: r.pos_x, posY: r.pos_y, createdAt: r.created_at
+      }));
+    },
+    async purgeClickEvents() {
+      const { error } = await sb.from('click_events').delete().gt('created_at', '2000-01-01');
+      if (error) throw error;
+      return true;
+    },
+
     /* importFromJSON : no-op côté serveur (les données vivent dans la base). */
     async importFromJSON() { return; }
   };
