@@ -119,6 +119,14 @@ img, video {
   display: block;
 }
 
+/* Toutes les photos du site (data-img-key) s'adaptent
+   à leur conteneur sans débordement ni distorsion */
+img[data-img-key] {
+  object-fit: cover;
+  object-position: center;
+  max-width: 100%;
+}
+
 a {
   color: inherit;
   text-decoration: none;

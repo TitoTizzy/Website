@@ -38,6 +38,13 @@
         } else {
           el.src = imgSrc;
           el.removeAttribute('srcset');
+          /* S'assurer que la photo remplit son conteneur sans déborder */
+          if (!el.style.objectFit) {
+            el.style.objectFit    = 'cover';
+            el.style.objectPosition = el.style.objectPosition || 'center';
+            el.style.width        = el.style.width  || '100%';
+            el.style.height       = el.style.height || '100%';
+          }
         }
       }
 
