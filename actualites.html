@@ -618,13 +618,18 @@ const CAT_META = {
 
 const MOIS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 
+function _parseDate(iso) {
+  if (!iso) return new Date(NaN);
+  /* Supabase renvoie un timestamp complet ; date seule → forcer midi UTC */
+  return new Date(iso.includes('T') ? iso : iso + 'T12:00:00Z');
+}
 function formatDate(iso) {
-  const d = new Date(iso + 'T12:00:00Z');
+  const d = _parseDate(iso);
+  if (isNaN(d)) return '';
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
-
-function getYear(iso)  { return new Date(iso + 'T12:00:00Z').getFullYear(); }
-function getMonth(iso) { return new Date(iso + 'T12:00:00Z').getMonth(); } // 0-indexed
+function getYear(iso)  { return _parseDate(iso).getFullYear(); }
+function getMonth(iso) { return _parseDate(iso).getMonth(); } // 0-indexed
 
 function buildCard(art) {
   const meta = CAT_META[art.category] || { label: art.category, cls: 'cat-humanitaire' };
