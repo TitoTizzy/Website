@@ -168,7 +168,7 @@ function initNavbar() {
         if (submenu) {
           submenu.classList.toggle('open');
           const icon = btn.querySelector('.mobile-toggle-icon');
-          if (icon) icon.textContent = submenu.classList.contains('open') ? '▲' : '▼';
+          if (icon) icon.classList.toggle('open', submenu.classList.contains('open'));
         }
       });
     });
@@ -254,7 +254,7 @@ function initHeroSlider() {
 
   function startAutoPlay() {
     stopAutoPlay();
-    autoPlayInterval = setInterval(next, 5000);
+    autoPlayInterval = setInterval(next, 9000);
   }
 
   function stopAutoPlay() {

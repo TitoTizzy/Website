@@ -76,10 +76,10 @@
 
 @keyframes heartbeat {
   0%   { transform: scale(1);    filter: drop-shadow(0 0  0px rgba(30,80,255,0)); }
-  10%  { transform: scale(1.28); filter: drop-shadow(0 0 28px rgba(80,140,255,0.70)); }
-  20%  { transform: scale(1.06); filter: drop-shadow(0 0  6px rgba(30,80,255,0.20)); }
-  32%  { transform: scale(1.20); filter: drop-shadow(0 0 18px rgba(60,120,255,0.50)); }
-  50%  { transform: scale(1);    filter: drop-shadow(0 0  0px rgba(30,80,255,0)); }
+  12%  { transform: scale(1.13); filter: drop-shadow(0 0 32px rgba(80,140,255,0.55)); }
+  24%  { transform: scale(1.03); filter: drop-shadow(0 0  8px rgba(30,80,255,0.18)); }
+  38%  { transform: scale(1.09); filter: drop-shadow(0 0 20px rgba(60,120,255,0.40)); }
+  58%  { transform: scale(1);    filter: drop-shadow(0 0  0px rgba(30,80,255,0)); }
   100% { transform: scale(1);    filter: drop-shadow(0 0  0px rgba(30,80,255,0)); }
 }
 
@@ -123,6 +123,12 @@
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-12px); }
+}
+
+/* Dérive lente des halos lumineux (héros, CTA) */
+@keyframes glowDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(2.5%, -2%) scale(1.06); }
 }
 
 /* ── Scroll-triggered animation classes ── */

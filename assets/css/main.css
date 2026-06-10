@@ -100,6 +100,7 @@ html {
   font-size: 20px; /* +25 % — lisible sans être trop gros (base d'origine : 16px) */
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -108,9 +109,17 @@ body {
   line-height: 1.7;
   color: var(--color-dark);
   background-color: var(--color-surface);
-  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Les enfants de grilles ne forcent jamais un débordement horizontal */
+.grid > *,
+.grid-2 > *, .grid-3 > *, .grid-4 > *,
+.grid-auto-2 > *, .grid-auto-3 > *, .grid-auto-4 > * {
+  min-width: 0;
 }
 
 img, video {
@@ -569,15 +578,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .loader-logo {
   margin-bottom: 0;
-  animation: heartbeat 1.1s ease-in-out infinite;
+  animation: heartbeat 2.4s ease-in-out infinite;
 }
 
 .loader-logo img {
-  width: 220px !important;
-  height: 220px !important;
-  border-radius: 32px;
+  width: min(72vw, 320px) !important;
+  height: min(72vw, 320px) !important;
+  border-radius: 40px;
   background: rgba(255,255,255,0.06);
-  padding: 12px;
+  padding: 16px;
 }
 
 .loader-bar {
