@@ -732,7 +732,7 @@ function updateCatCounts(articles) {
   if (el) el.textContent = articles.length;
 }
 
-(async function init() {
+document.addEventListener('DOMContentLoaded', async function() {
   let articles = SEED_ARTICLES;
 
   try {
@@ -794,7 +794,7 @@ function updateCatCounts(articles) {
     if (btn.dataset.clear === 'month') { currentMonth = null; }
     refresh();
   });
-})();
+});
 </script>
 
 <script src="assets/js/storage.js?v=20260603e" defer></script>
