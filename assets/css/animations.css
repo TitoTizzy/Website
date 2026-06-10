@@ -248,6 +248,32 @@
   100% { transform: translateX(-50%); }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   RAFFINEMENT 2026 — Révélation au défilement plus fluide
+   (placé ici car animations.css est chargé en dernier :
+   ces règles doivent gagner la cascade)
+   ═══════════════════════════════════════════════════════════ */
+.animate-on-scroll {
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    transform 0.9s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Une fois révélées, les cartes reprennent leur transition de
+   survol (sinon la transition de révélation 0.9s ralentit le hover) */
+.mission-card.animate-on-scroll.animated,
+.article-card.animate-on-scroll.animated,
+.gallery-card.animate-on-scroll.animated,
+.actu-card.animate-on-scroll.animated,
+.stat-item.animate-on-scroll.animated {
+  transition:
+    transform 0.5s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    box-shadow 0.5s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,
