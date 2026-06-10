@@ -676,6 +676,11 @@ function renderGrid(filtered) {
     return;
   }
   grid.innerHTML = filtered.map(buildCard).join('');
+  /* Les cartes injectées en JS ne passent pas par l'IntersectionObserver
+     initial — on les force visibles dès le prochain frame. */
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.animate-on-scroll').forEach(el => el.classList.add('animated'));
+  });
   if (window.OUH && typeof window.OUH.initScrollAnimations === 'function')
     window.OUH.initScrollAnimations();
 }
