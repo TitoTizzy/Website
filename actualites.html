@@ -732,18 +732,8 @@ function updateCatCounts(articles) {
   if (el) el.textContent = articles.length;
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
+(function() {
   let articles = SEED_ARTICLES;
-
-  try {
-    if (typeof DataStore !== 'undefined') {
-      await DataStore.init();
-      const stored = await DataStore.getAll('articles');
-      const published = stored.filter(a => a.status === 'published');
-      if (published.length > 0) articles = published;
-    }
-  } catch (_) { /* repli sur SEED */ }
-
   let currentCat   = 'tous';
   let currentYear  = null;
   let currentMonth = null;
@@ -761,19 +751,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       currentMonth = val === 'all' ? null : parseInt(val);
       refresh();
     });
-    /* Met à jour les boutons catégories actifs */
     document.querySelectorAll('[data-filter-type="cat"]').forEach(b => {
       b.classList.toggle('active', b.dataset.value === currentCat);
     });
   }
 
+  /* Rendu initial avec SEED — immédiat, sans attendre Supabase */
   updateCatCounts(articles);
-  buildYearFilters(articles, currentYear, val => {
-    currentYear  = val === 'all' ? null : parseInt(val);
-    currentMonth = null;
-    refresh();
-  });
-  buildMonthFilters(articles, currentYear, currentMonth, () => {});
   refresh();
 
   /* Filtres catégories */
@@ -794,7 +778,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (btn.dataset.clear === 'month') { currentMonth = null; }
     refresh();
   });
-});
+
+  /* Mise à jour avec les vrais articles Supabase après chargement des scripts defer */
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof DataStore === 'undefined') return;
+    DataStore.init()
+      .then(() => DataStore.getAll('articles'))
+      .then(stored => {
+        const published = stored.filter(a => a.status === 'published');
+        if (published.length > 0) {
+          articles = published;
+          updateCatCounts(articles);
+          refresh();
+        }
+      })
+      .catch(() => {});
+  });
+})();
 </script>
 
 <script src="assets/js/storage.js?v=20260603e" defer></script>
