@@ -385,7 +385,7 @@
         <!-- Contenu principal -->
         <article>
           <div class="art-cover" id="art-cover">
-            <img id="art-img" src="assets/images/placeholder.svg" alt="" loading="eager" />
+            <img id="art-img" src="assets/images/placeholders/humanitaire-hero.webp" alt="" loading="eager" />
           </div>
 
           <div class="art-content" id="art-content"></div>
@@ -474,7 +474,7 @@ const SEED_ARTICLES = [
     category: 'humanitaire',
     publishedAt: '2024-12-08',
     author: 'Joël Asher Lévy-Cohen',
-    image: 'assets/images/placeholder.svg',
+    image: 'assets/images/placeholders/humanitaire-hero.webp',
     alt: "L'OUH au service des déshérités",
     excerpt: "De l'art d'aider Haïti — Quand l'humanitaire est une véritable vocation sacerdotale. L'Organisation de l'Union haïtienne (OUH), fondée en 1995, œuvre pour améliorer l'accès aux soins et à l'éducation en Haïti.",
     content: `<h2>De l'art d'aider Haïti</h2>
@@ -521,7 +521,7 @@ function renderRelated(allArticles, currentId) {
   if (!related.length) { container.innerHTML = '<p style="font-size:.8rem;color:var(--color-muted);">Aucun autre article.</p>'; return; }
   container.innerHTML = related.map(a => `
     <a href="article.html?id=${a.id}" class="art-related-item">
-      <img class="art-related-thumb" src="${a.image || 'assets/images/placeholder.svg'}" alt="${a.alt || a.title}" loading="lazy">
+      <img class="art-related-thumb" src="${a.image || 'assets/images/placeholders/humanitaire-hero.webp'}" alt="${a.alt || a.title}" loading="lazy">
       <div class="art-related-info">
         <div class="art-related-ttl">${a.title}</div>
         <div class="art-related-date">${fmtDate(a.publishedAt || a.createdAt)}</div>

@@ -265,7 +265,7 @@
       <!-- Image modifiable depuis admin › Images du site (clé : homepage-about) -->
       <div class="about-image-wrap animate-on-scroll fade-in-left">
         <img data-img-key="homepage-about"
-             src="assets/images/placeholder.svg"
+             src="assets/images/placeholders/apropos-field.webp"
              alt="L'équipe OUH sur le terrain — Organisation de l'Union Haïtienne"
              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;" />
       </div>
@@ -315,7 +315,7 @@
       <!-- Image modifiable depuis admin › Images du site (clé : homepage-bibliotheque) -->
       <div class="library-image animate-on-scroll fade-in-left">
         <img data-img-key="homepage-bibliotheque"
-             src="assets/images/placeholder.svg"
+             src="assets/images/placeholders/apropos-network.webp"
              alt="Bibliothèque Edgard Petit — OUH, Port-au-Prince"
              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;" />
       </div>
@@ -554,12 +554,18 @@
 
   if (!photos.length) return;
 
+  const gallerySrc = (src) => {
+    if (!src) return 'assets/images/placeholders/apropos-field.webp';
+    if (/^(https?:)?\/\//.test(src) || src.startsWith('assets/')) return src;
+    return `assets/images/gallery/${src}`;
+  };
+
   const buildItem = (p, i) => `
     <a href="galerie.html"
        class="gallery-strip-item"
        aria-label="${p.alt || 'Photo OUH'}">
       <img
-        src="assets/images/placeholder.svg"
+        src="${gallerySrc(p.src)}"
         alt="${p.alt || ''}"
         loading="${i < 6 ? 'eager' : 'lazy'}"
         decoding="async"

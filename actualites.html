@@ -604,7 +604,7 @@ const SEED_ARTICLES = [
     publishedAt: '2024-12-08',
     author: 'Joël Asher Lévy-Cohen',
     excerpt: "De l'art d'aider Haïti — Quand l'humanitaire est une véritable vocation sacerdotale. L'Organisation de l'Union haïtienne (OUH), fondée en 1995, est un organisme à but non lucratif dûment enregistré selon les lois haïtiennes et québécoises.",
-    image: 'assets/images/placeholder.svg',
+    image: 'assets/images/placeholders/humanitaire-hero.webp',
     alt: "L'OUH au service des déshérités"
   }
 ];
@@ -637,7 +637,7 @@ function buildCard(art) {
   return `
     <article class="actu-card animate-on-scroll" role="listitem">
       <a href="${url}" class="actu-card-img-wrap" tabindex="-1" aria-hidden="true">
-        <img src="${art.image || 'assets/images/placeholder.svg'}"
+        <img src="${art.image || 'assets/images/placeholders/humanitaire-hero.webp'}"
              alt="${art.alt || art.title}"
              class="actu-card-img" loading="lazy">
         <span class="actu-card-badge ${meta.cls}">${meta.label}</span>
