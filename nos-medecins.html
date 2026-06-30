@@ -80,7 +80,7 @@
     .med-card {
       background: #fff;
       border-radius: var(--radius-xl);
-      padding: 2rem 1.5rem 1.75rem;
+      padding: 1.35rem 1.35rem 1.65rem;
       text-align: center;
       border: 1px solid rgba(0,0,122,0.07);
       box-shadow: 0 4px 20px rgba(0,0,122,0.06);
@@ -92,13 +92,14 @@
     }
     .med-card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,122,0.12); }
     .med-avatar {
-      width: 72px; height: 72px; border-radius: 50%;
+      width: 154px; height: 154px; border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: #fff;
+      font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #fff;
     }
     .med-photo {
-      width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
-      border: 3px solid rgba(65,105,225,0.18); box-shadow: 0 6px 18px rgba(0,0,122,0.14);
+      width: 154px; height: 154px; border-radius: 18px; object-fit: cover;
+      border: 1px solid rgba(65,105,225,0.18); box-shadow: 0 10px 24px rgba(0,0,122,0.14);
+      background: #eef2fb;
     }
     .med-name {
       font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
@@ -313,11 +314,63 @@
     {id:'med-018',nom:'Dr THOME',      specialite:'Orthopédiste',              initiales:'TO',couleurDebut:'#4169E1',couleurFin:'#60A5FA',ordre:18}
   ];
 
+  const LOCAL_PHOTOS = {
+    'med-001': 'assets/images/medecins/nguyen.jpg',
+    'med-002': 'assets/images/medecins/bilodeau.jpg',
+    'med-003': 'assets/images/medecins/irani.jpg',
+    'med-004': 'assets/images/medecins/demontigny.jpg',
+    'med-005': 'assets/images/medecins/benoit.jpg',
+    'med-006': 'assets/images/medecins/denis.jpg',
+    'med-007': 'assets/images/medecins/dube.jpg',
+    'med-008': 'assets/images/medecins/laflamme.jpg',
+    'med-009': 'assets/images/medecins/alexis.jpg',
+    'med-010': 'assets/images/medecins/dangemans.jpg',
+    'med-011': 'assets/images/medecins/fernandez.jpg',
+    'med-012': 'assets/images/medecins/leduc.jpg',
+    'med-013': 'assets/images/medecins/ranger.jpg',
+    'med-014': 'assets/images/medecins/richard.jpg',
+    'med-015': 'assets/images/medecins/shaigetz.jpg',
+    'med-016': 'assets/images/medecins/sidani.jpg',
+    'med-017': 'assets/images/medecins/therrier.jpg',
+    'med-018': 'assets/images/medecins/thome.jpg',
+    nguyen: 'assets/images/medecins/nguyen.jpg',
+    bilodeau: 'assets/images/medecins/bilodeau.jpg',
+    irani: 'assets/images/medecins/irani.jpg',
+    demontigny: 'assets/images/medecins/demontigny.jpg',
+    benoit: 'assets/images/medecins/benoit.jpg',
+    denis: 'assets/images/medecins/denis.jpg',
+    dube: 'assets/images/medecins/dube.jpg',
+    laflamme: 'assets/images/medecins/laflamme.jpg',
+    alexis: 'assets/images/medecins/alexis.jpg',
+    dangemans: 'assets/images/medecins/dangemans.jpg',
+    fernandez: 'assets/images/medecins/fernandez.jpg',
+    leduc: 'assets/images/medecins/leduc.jpg',
+    ranger: 'assets/images/medecins/ranger.jpg',
+    richard: 'assets/images/medecins/richard.jpg',
+    shaigetz: 'assets/images/medecins/shaigetz.jpg',
+    sidani: 'assets/images/medecins/sidani.jpg',
+    therrier: 'assets/images/medecins/therrier.jpg',
+    thome: 'assets/images/medecins/thome.jpg'
+  };
+
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function normalizeName(s) {
+    return (s || '').trim().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/^(dr|docteur)\.?\s+/, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+  function localPhoto(m) {
+    const key = normalizeName(m.nom);
+    const familyName = key.split(' ').pop();
+    return m.photoUrl || LOCAL_PHOTOS[m.id] || LOCAL_PHOTOS[key] || LOCAL_PHOTOS[familyName] || '';
+  }
 
   function buildCard(m, i) {
-    const avatar = m.photoUrl
-      ? `<img class="med-photo" src="${m.photoUrl}" alt="${esc(m.nom)}" loading="lazy">`
+    const photoUrl = localPhoto(m);
+    const avatar = photoUrl
+      ? `<img class="med-photo" src="${esc(photoUrl)}" alt="${esc(m.nom)}" loading="lazy">`
       : `<div class="med-avatar" style="background:linear-gradient(135deg,${m.couleurDebut||'#4169E1'},${m.couleurFin||'#60A5FA'});" aria-hidden="true">${m.initiales||'??'}</div>`;
     const bio = m.bio ? `<p class="med-bio">${esc(m.bio)}</p>` : '';
     return `<article class="med-card animate-on-scroll" role="listitem" style="animation-delay:${(i*0.05).toFixed(2)}s;">${avatar}<h3 class="med-name">${esc(m.nom)}</h3><span class="med-specialty">${esc(m.specialite)}</span>${bio}</article>`;
