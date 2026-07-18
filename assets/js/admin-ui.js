@@ -28,6 +28,7 @@ const AdminUI = {
     contact:    `<svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
     medias:     `<svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
     analytics:  `<svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="18" y="4" width="4" height="17" rx="1"/></svg>`,
+    conferences:`<svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 10h10"/><path d="M7 7h4"/></svg>`,
     logout:     `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`
   },
 
@@ -44,7 +45,9 @@ const AdminUI = {
     admins:     'admins.*',
     parametres: 'settings.*',
     logs:       'logs.*',
-    analytics:  'logs.*'
+    analytics:  'logs.*',
+    bibliothèque: null,
+    conferences:  null
   },
 
   /* Vérifie si l'utilisateur courant peut voir/accéder à une page admin */
@@ -64,6 +67,7 @@ const AdminUI = {
         : '';
 
     const contenu = ['articles','galeries','medecins','conseil','medias','contact'].some(can);
+    const biblio  = ['conferences'].some(can);
     const superSection = ['admins','parametres','logs','analytics'].some(can);
 
     const B = _ADMIN_BASE; // ex: '/Website/' ou '/'
@@ -91,6 +95,11 @@ const AdminUI = {
           ${navLink('conseil',  B+'admin/conseil/liste-conseil.html',  I.conseil,  "Conseil d'admin.")}
           ${navLink('medias',   B+'admin/medias/gestion-images.html',  I.medias,   'Images du site')}
           ${navLink('contact',  B+'admin/contact/messages.html',       I.contact,  'Messages contact')}
+        </div>` : ''}
+        ${biblio ? `
+        <div class="admin-nav-section">
+          <div class="admin-nav-section-title">Bibliothèque</div>
+          ${navLink('conferences', B+'admin/bibliotheque/conferences.html', I.conferences, 'Conférences')}
         </div>` : ''}
         ${superSection ? `
         <div class="admin-nav-section">

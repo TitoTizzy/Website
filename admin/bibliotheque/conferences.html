@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conférences | Admin OUH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/main.css?v=20260608" />
+  <link rel="stylesheet" href="../../assets/css/admin.css?v=20260608" />
+  <style>
+    /* ── Modal overlay ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 24px 64px rgba(0,0,0,.18);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-muted);
+      padding: .25rem;
+      border-radius: 4px;
+      transition: color .15s;
+    }
+    .modal-close:hover { color: var(--color-dark); }
+
+    /* ── Flyer preview ── */
+    .flyer-preview-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 260px;
+      aspect-ratio: 3/4;
+      border-radius: 10px;
+      overflow: hidden;
+      background: linear-gradient(145deg, #1A3A2A, #0B2218);
+      margin-bottom: 1rem;
+      border: 2px dashed var(--color-border);
+    }
+    .flyer-preview-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+    .flyer-placeholder-msg {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: rgba(255,255,255,.55);
+      font-size: .75rem;
+      font-family: var(--font-ui,'DM Sans',sans-serif);
+      gap: .5rem;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    /* ── Table card thumbnails ── */
+    .flyer-thumb {
+      width: 44px;
+      height: 56px;
+      border-radius: 6px;
+      object-fit: cover;
+      object-position: top;
+      border: 1px solid var(--color-border);
+    }
+    .flyer-thumb-placeholder {
+      width: 44px;
+      height: 56px;
+      border-radius: 6px;
+      background: linear-gradient(145deg, #1A3A2A, #0B2218);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .55rem;
+      color: rgba(255,255,255,.5);
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      border: 1px dashed var(--color-border);
+    }
+
+    /* Upload drop zone */
+    .upload-zone {
+      border: 2px dashed var(--color-border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      background: var(--color-light);
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--color-primary);
+      background: rgba(26,58,42,.04);
+    }
+    .upload-zone input[type="file"] { display: none; }
+    .upload-zone-label {
+      font-size: .82rem;
+      color: var(--color-muted);
+      cursor: pointer;
+      display: block;
+    }
+    .upload-zone-label strong { color: var(--color-primary); }
+    .upload-progress {
+      display: none;
+      margin-top: .75rem;
+      height: 6px;
+      background: var(--color-border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .upload-progress-bar {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: 3px;
+      transition: width .3s;
+    }
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar" id="admin-sidebar"></aside>
+  <div class="admin-sidebar-overlay" id="sidebar-overlay"></div>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button class="admin-menu-toggle" id="sidebar-toggle" aria-label="Menu" style="display:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+          <h1 class="admin-topbar-title">Conférences</h1>
+          <div class="admin-breadcrumb">
+            <a href="../dashboard.html" style="color:inherit;">Dashboard</a>
+            <span>/</span><span>Bibliothèque</span>
+            <span>/</span><span>Conférences</span>
+          </div>
+        </div>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="../../conferences.html" class="btn btn-ghost btn-sm" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Voir la page publique
+        </a>
+        <button class="btn btn-primary btn-sm" id="btn-add">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Ajouter une conférence
+        </button>
+        <div class="admin-topbar-user">
+          <div class="admin-topbar-avatar" id="topbar-avatar">SA</div>
+          <span id="topbar-name" style="font-size:.875rem;font-weight:600;color:var(--color-dark);">Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- Stats bar -->
+      <div style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <div class="admin-card" style="flex:1;min-width:140px;padding:1rem 1.25rem;">
+          <div style="font-size:1.6rem;font-weight:800;color:var(--color-dark);" id="stat-total">—</div>
+          <div style="font-size:.75rem;color:var(--color-muted);margin-top:.2rem;">Conférences</div>
+        </div>
+        <div class="admin-card" style="flex:1;min-width:140px;padding:1rem 1.25rem;">
+          <div style="font-size:1.6rem;font-weight:800;color:#16a34a;" id="stat-with-flyer">—</div>
+          <div style="font-size:.75rem;color:var(--color-muted);margin-top:.2rem;">Avec flyer</div>
+        </div>
+        <div class="admin-card" style="flex:1;min-width:140px;padding:1rem 1.25rem;">
+          <div style="font-size:1.6rem;font-weight:800;color:#dc2626;" id="stat-no-flyer">—</div>
+          <div style="font-size:.75rem;color:var(--color-muted);margin-top:.2rem;">Sans flyer</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="admin-card" style="padding:0;overflow:hidden;">
+        <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+          <h2 style="font-family:var(--font-display);font-size:1rem;font-weight:700;margin:0;">Toutes les conférences</h2>
+          <p style="font-size:.78rem;color:var(--color-muted);margin:0;">Cliquez sur <strong>Modifier</strong> pour uploader un flyer ou mettre à jour les informations.</p>
+        </div>
+        <div id="list-loading" style="padding:3rem;text-align:center;color:var(--color-muted);">Chargement…</div>
+        <div style="overflow-x:auto;">
+          <table class="admin-table" id="conf-table" style="display:none;">
+            <thead>
+              <tr>
+                <th style="width:56px;">#</th>
+                <th style="width:64px;">Flyer</th>
+                <th>Date</th>
+                <th>Titre</th>
+                <th>Conférencier</th>
+                <th>Extrait</th>
+                <th style="width:110px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="conf-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL EDIT / ADD ── -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title">Modifier la conférence</h2>
+      <button class="modal-close" id="modal-close" aria-label="Fermer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Flyer actuel -->
+    <div style="margin-bottom:1.25rem;">
+      <label class="admin-form-label">Flyer actuel</label>
+      <div style="display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;">
+        <div class="flyer-preview-wrap" id="modal-flyer-preview">
+          <div class="flyer-placeholder-msg">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg>
+            Aucun flyer
+          </div>
+        </div>
+        <div style="flex:1;min-width:180px;">
+          <p style="font-size:.78rem;color:var(--color-muted);line-height:1.6;margin-bottom:.75rem;">Uploadez un flyer (image JPG/PNG, recommandé : format portrait 3:4).</p>
+          <!-- Upload zone -->
+          <label class="upload-zone" id="upload-zone">
+            <input type="file" id="flyer-file-input" accept="image/jpeg,image/png,image/webp" />
+            <span class="upload-zone-label">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto .4rem;display:block;color:var(--color-primary);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <strong>Choisir un fichier</strong> ou glisser ici
+            </span>
+            <div class="upload-progress" id="upload-progress">
+              <div class="upload-progress-bar" id="upload-progress-bar" style="width:0%"></div>
+            </div>
+          </label>
+          <div id="upload-status" style="font-size:.75rem;margin-top:.4rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--color-border);margin:1.25rem 0;">
+
+    <!-- Champs -->
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="f-ordre">Ordre d'affichage</label>
+      <input id="f-ordre" type="number" min="1" class="admin-form-input" style="max-width:120px;" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="f-titre">Titre <span class="required">*</span></label>
+      <input id="f-titre" type="text" class="admin-form-input" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="f-date">Date <span class="required">*</span></label>
+      <input id="f-date" type="date" class="admin-form-input" style="max-width:200px;" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="f-conferencier">Conférencier</label>
+      <input id="f-conferencier" type="text" class="admin-form-input" placeholder="Maître Jean Paul Céant…" />
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="f-description">Description (optionnel)</label>
+      <textarea id="f-description" class="admin-form-input" rows="3" style="resize:vertical;"></textarea>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="f-flyer-url">URL du flyer (si déjà uploadé)</label>
+      <input id="f-flyer-url" type="text" class="admin-form-input" placeholder="assets/images/conferences/… ou https://…" />
+      <p style="font-size:.72rem;color:var(--color-muted);margin-top:.25rem;">Rempli automatiquement après upload. Vous pouvez aussi coller une URL directement.</p>
+    </div>
+    <div class="admin-form-group">
+      <label class="admin-form-label" for="f-clip-url">URL de l'extrait vidéo 5 min (optionnel)</label>
+      <input id="f-clip-url" type="text" class="admin-form-input" placeholder="https://…" />
+    </div>
+    <div class="admin-form-group" style="margin-bottom:0;">
+      <label class="admin-form-label" for="f-drive-url">Lien Google Drive (vidéo complète)</label>
+      <input id="f-drive-url" type="text" class="admin-form-input" placeholder="https://drive.google.com/…" />
+    </div>
+
+    <div id="modal-error" style="display:none;margin-top:1rem;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.6rem .875rem;font-size:.8rem;color:#991b1b;"></div>
+
+    <div style="display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem;flex-wrap:wrap;">
+      <button class="btn btn-ghost btn-sm" id="btn-delete-conf" style="margin-right:auto;color:var(--color-error);display:none;">Supprimer</button>
+      <button class="btn btn-outline btn-sm" id="btn-cancel">Annuler</button>
+      <button class="btn btn-primary btn-sm" id="btn-save">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/storage.js?v=20260608"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/supabase-config.js?v=20260608"></script>
+<script src="../../assets/js/supabase-data.js?v=20260608"></script>
+<script src="../../assets/js/auth.js?v=20260608"></script>
+<script src="../../assets/js/supabase-auth.js?v=20260608"></script>
+<script src="../../assets/js/admin-ui.js?v=20260608"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await AdminUI.init({ page: 'bibliotheque', roles: ['superadmin','admin_general'] });
+
+  /* Sidebar mobile */
+  const tog = document.getElementById('sidebar-toggle');
+  const sb  = document.getElementById('admin-sidebar');
+  const ov  = document.getElementById('sidebar-overlay');
+  if (window.innerWidth <= 768 && tog) tog.style.display = 'flex';
+  if (tog) {
+    tog.addEventListener('click',  () => { sb.classList.toggle('open'); ov.classList.toggle('open'); });
+    ov.addEventListener('click',   () => { sb.classList.remove('open'); ov.classList.remove('open'); });
+  }
+
+  /* ── State ── */
+  let confs     = [];
+  let editId    = null; /* null = nouvelle conférence */
+  let currentFlyerUrl = null;
+
+  /* ── Load ── */
+  async function load() {
+    document.getElementById('list-loading').style.display = 'block';
+    document.getElementById('conf-table').style.display   = 'none';
+
+    const { data, error } = await window.sb
+      .from('conferences')
+      .select('*')
+      .order('ordre', { ascending: true });
+
+    document.getElementById('list-loading').style.display = 'none';
+
+    if (error) { AdminUI.toast('Erreur chargement : ' + error.message, 'error'); return; }
+    confs = data || [];
+    renderTable();
+    renderStats();
+  }
+
+  function renderStats() {
+    const withFlyer = confs.filter(c => c.flyer_url).length;
+    document.getElementById('stat-total').textContent     = confs.length;
+    document.getElementById('stat-with-flyer').textContent = withFlyer;
+    document.getElementById('stat-no-flyer').textContent   = confs.length - withFlyer;
+  }
+
+  function formatDateFr(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('conf-tbody');
+    tbody.innerHTML = confs.map(c => {
+      const thumb = c.flyer_url
+        ? `<img src="${escHtml(c.flyer_url)}" class="flyer-thumb" alt="Flyer" loading="lazy">`
+        : `<div class="flyer-thumb-placeholder">N/A</div>`;
+      const clipBadge = c.clip_url
+        ? `<span style="display:inline-block;background:#dcfce7;color:#16a34a;font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:2rem;">✓ Extrait</span>`
+        : `<span style="display:inline-block;background:#f3f4f6;color:#9ca3af;font-size:.65rem;padding:.2rem .6rem;border-radius:2rem;">—</span>`;
+      return `<tr>
+        <td style="color:var(--color-muted);font-weight:600;">${c.ordre}</td>
+        <td>${thumb}</td>
+        <td style="white-space:nowrap;">${formatDateFr(c.date_conference)}</td>
+        <td style="font-weight:600;max-width:240px;">${escHtml(c.titre)}</td>
+        <td style="color:var(--color-muted);font-size:.82rem;">${escHtml(c.conferencier||'')}</td>
+        <td>${clipBadge}</td>
+        <td>
+          <button class="btn btn-outline btn-sm" onclick="openModal('${c.id}')">Modifier</button>
+        </td>
+      </tr>`;
+    }).join('');
+    document.getElementById('conf-table').style.display = 'table';
+  }
+
+  function escHtml(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── Modal open ── */
+  window.openModal = function(id) {
+    editId = id || null;
+    currentFlyerUrl = null;
+    const c = id ? confs.find(x => x.id === id) : null;
+
+    document.getElementById('modal-title').textContent = c ? 'Modifier la conférence' : 'Nouvelle conférence';
+    document.getElementById('btn-delete-conf').style.display = c ? 'inline-flex' : 'none';
+    document.getElementById('modal-error').style.display = 'none';
+    document.getElementById('upload-status').textContent = '';
+    document.getElementById('upload-progress').style.display = 'none';
+    document.getElementById('flyer-file-input').value = '';
+
+    /* Remplir les champs */
+    document.getElementById('f-ordre').value        = c ? c.ordre : (confs.length + 1);
+    document.getElementById('f-titre').value        = c ? (c.titre||'') : '';
+    document.getElementById('f-date').value         = c ? (c.date_conference||'') : '';
+    document.getElementById('f-conferencier').value = c ? (c.conferencier||'') : '';
+    document.getElementById('f-description').value  = c ? (c.description||'') : '';
+    document.getElementById('f-flyer-url').value    = c ? (c.flyer_url||'') : '';
+    document.getElementById('f-clip-url').value     = c ? (c.clip_url||'') : '';
+    document.getElementById('f-drive-url').value    = c ? (c.drive_url||'') : '';
+
+    /* Prévisualisation du flyer */
+    updateFlyerPreview(c ? c.flyer_url : null);
+
+    document.getElementById('modal-backdrop').classList.add('open');
+  };
+
+  document.getElementById('btn-add').addEventListener('click', () => openModal(null));
+
+  /* Close modal */
+  ['modal-close','btn-cancel'].forEach(id => {
+    document.getElementById(id).addEventListener('click', closeModal);
+  });
+  document.getElementById('modal-backdrop').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-backdrop')) closeModal();
+  });
+  function closeModal() {
+    document.getElementById('modal-backdrop').classList.remove('open');
+    editId = null;
+  }
+
+  /* ── Flyer preview ── */
+  function updateFlyerPreview(url) {
+    const preview = document.getElementById('modal-flyer-preview');
+    if (url) {
+      preview.innerHTML = `<img src="${escHtml(url)}" alt="Flyer" style="width:100%;height:100%;object-fit:cover;object-position:top;">`;
+    } else {
+      preview.innerHTML = `<div class="flyer-placeholder-msg">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg>
+        Aucun flyer
+      </div>`;
+    }
+  }
+
+  /* Sync URL field → preview */
+  document.getElementById('f-flyer-url').addEventListener('input', e => {
+    updateFlyerPreview(e.target.value.trim() || null);
+  });
+
+  /* ── Upload flyer ── */
+  const fileInput = document.getElementById('flyer-file-input');
+  const uploadZone = document.getElementById('upload-zone');
+
+  /* Drag & drop */
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleUpload(file);
+  });
+
+  fileInput.addEventListener('change', e => {
+    if (e.target.files[0]) handleUpload(e.target.files[0]);
+  });
+
+  async function handleUpload(file) {
+    if (!file.type.startsWith('image/')) {
+      AdminUI.toast('Seules les images sont acceptées.', 'error'); return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      AdminUI.toast('Image trop lourde (max 8 Mo).', 'error'); return;
+    }
+
+    const statusEl  = document.getElementById('upload-status');
+    const progressEl = document.getElementById('upload-progress');
+    const barEl     = document.getElementById('upload-progress-bar');
+
+    statusEl.style.color = 'var(--color-muted)';
+    statusEl.textContent = 'Upload en cours…';
+    progressEl.style.display = 'block';
+    barEl.style.width = '30%';
+
+    try {
+      const ext  = file.name.split('.').pop();
+      const slug = `flyer-${Date.now()}.${ext}`;
+      const path = `conferences/${slug}`;
+
+      const { data: up, error: upErr } = await window.sb.storage
+        .from('medias')
+        .upload(path, file, { upsert: true, contentType: file.type });
+
+      if (upErr) throw upErr;
+      barEl.style.width = '80%';
+
+      const { data: urlData } = window.sb.storage.from('medias').getPublicUrl(path);
+      const publicUrl = urlData?.publicUrl;
+
+      barEl.style.width = '100%';
+      setTimeout(() => { progressEl.style.display = 'none'; barEl.style.width = '0%'; }, 600);
+
+      document.getElementById('f-flyer-url').value = publicUrl;
+      updateFlyerPreview(publicUrl);
+      currentFlyerUrl = publicUrl;
+
+      statusEl.style.color = '#16a34a';
+      statusEl.textContent = '✓ Flyer uploadé avec succès.';
+      AdminUI.toast('Flyer uploadé !', 'success');
+    } catch(err) {
+      barEl.style.width = '0%';
+      progressEl.style.display = 'none';
+      statusEl.style.color = 'var(--color-error)';
+      statusEl.textContent = 'Erreur : ' + (err.message || 'upload échoué');
+      AdminUI.toast('Erreur upload : ' + (err.message || ''), 'error');
+    }
+  }
+
+  /* ── Save ── */
+  document.getElementById('btn-save').addEventListener('click', async () => {
+    const titre = document.getElementById('f-titre').value.trim();
+    const date  = document.getElementById('f-date').value;
+    const errBox = document.getElementById('modal-error');
+    errBox.style.display = 'none';
+
+    if (!titre) { errBox.style.display='block'; errBox.textContent='Le titre est obligatoire.'; return; }
+    if (!date)  { errBox.style.display='block'; errBox.textContent='La date est obligatoire.'; return; }
+
+    const payload = {
+      ordre:           parseInt(document.getElementById('f-ordre').value) || 0,
+      titre,
+      date_conference: date,
+      conferencier:    document.getElementById('f-conferencier').value.trim() || null,
+      description:     document.getElementById('f-description').value.trim() || null,
+      flyer_url:       document.getElementById('f-flyer-url').value.trim() || null,
+      clip_url:        document.getElementById('f-clip-url').value.trim() || null,
+      drive_url:       document.getElementById('f-drive-url').value.trim() || null,
+    };
+
+    try {
+      if (editId) {
+        const { error } = await window.sb.from('conferences').update(payload).eq('id', editId);
+        if (error) throw error;
+        AdminUI.toast('Conférence mise à jour !', 'success');
+      } else {
+        const { error } = await window.sb.from('conferences').insert(payload);
+        if (error) throw error;
+        AdminUI.toast('Conférence ajoutée !', 'success');
+      }
+      closeModal();
+      await load();
+    } catch(err) {
+      errBox.style.display = 'block';
+      errBox.textContent = 'Erreur : ' + (err.message || 'impossible de sauvegarder.');
+    }
+  });
+
+  /* ── Delete ── */
+  document.getElementById('btn-delete-conf').addEventListener('click', async () => {
+    if (!editId) return;
+    const c = confs.find(x => x.id === editId);
+    if (!AdminUI.confirm(`Supprimer « ${c?.titre} » définitivement ?`)) return;
+    const { error } = await window.sb.from('conferences').delete().eq('id', editId);
+    if (error) { AdminUI.toast('Erreur suppression.', 'error'); return; }
+    AdminUI.toast('Conférence supprimée.', 'success');
+    closeModal();
+    await load();
+  });
+
+  /* ── Init ── */
+  await load();
+});
+</script>
+</body>
+</html>
