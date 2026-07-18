@@ -219,7 +219,8 @@
                 <th>Date</th>
                 <th>Titre</th>
                 <th>Conférencier</th>
-                <th>Extrait</th>
+                <th style="width:120px;">Lien vidéo</th>
+                <th>Extrait 5 min</th>
                 <th style="width:110px;">Actions</th>
               </tr>
             </thead>
@@ -302,9 +303,17 @@
       <label class="admin-form-label" for="f-clip-url">URL de l'extrait vidéo 5 min (optionnel)</label>
       <input id="f-clip-url" type="text" class="admin-form-input" placeholder="https://…" />
     </div>
-    <div class="admin-form-group" style="margin-bottom:0;">
-      <label class="admin-form-label" for="f-drive-url">Lien Google Drive (vidéo complète)</label>
-      <input id="f-drive-url" type="text" class="admin-form-input" placeholder="https://drive.google.com/…" />
+    <div style="background:linear-gradient(135deg,rgba(26,58,42,.06),rgba(26,58,42,.02));border:1.5px solid rgba(26,58,42,.25);border-radius:10px;padding:1rem 1.1rem;margin-top:.5rem;">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1A3A2A" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span style="font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1A3A2A;">Lien du bouton « Voir la conférence »</span>
+      </div>
+      <label class="admin-form-label" for="f-drive-url" style="font-size:.8rem;margin-bottom:.4rem;">URL de la vidéo (Google Drive, YouTube, ou autre)</label>
+      <input id="f-drive-url" type="text" class="admin-form-input" placeholder="https://drive.google.com/file/… ou https://youtube.com/…" />
+      <p style="font-size:.72rem;color:var(--color-muted);margin-top:.35rem;margin-bottom:0;">
+        C'est ce lien qui s'ouvrira quand un visiteur clique sur le bouton
+        <strong style="color:#1A3A2A;">▷ Voir la conférence</strong> sur la page publique.
+      </p>
     </div>
 
     <div id="modal-error" style="display:none;margin-top:1rem;background:#fee2e2;border:1px solid #dc2626;border-radius:8px;padding:.6rem .875rem;font-size:.8rem;color:#991b1b;"></div>
@@ -382,12 +391,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       const clipBadge = c.clip_url
         ? `<span style="display:inline-block;background:#dcfce7;color:#16a34a;font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:2rem;">✓ Extrait</span>`
         : `<span style="display:inline-block;background:#f3f4f6;color:#9ca3af;font-size:.65rem;padding:.2rem .6rem;border-radius:2rem;">—</span>`;
+      const driveCell = c.drive_url
+        ? `<a href="${escHtml(c.drive_url)}" target="_blank" rel="noopener"
+            style="display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;color:#16a34a;font-weight:700;text-decoration:none;background:#dcfce7;padding:.2rem .55rem;border-radius:2rem;max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"
+            title="${escHtml(c.drive_url)}">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Lien défini
+          </a>`
+        : `<button onclick="openModal('${c.id}')" style="border:none;background:none;cursor:pointer;font-size:.72rem;color:#dc2626;font-weight:700;padding:.2rem .55rem;border-radius:2rem;background:#fee2e2;display:inline-flex;align-items:center;gap:.3rem;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter
+          </button>`;
       return `<tr>
         <td style="color:var(--color-muted);font-weight:600;">${c.ordre}</td>
         <td>${thumb}</td>
         <td style="white-space:nowrap;">${formatDateFr(c.date_conference)}</td>
-        <td style="font-weight:600;max-width:240px;">${escHtml(c.titre)}</td>
+        <td style="font-weight:600;max-width:220px;">${escHtml(c.titre)}</td>
         <td style="color:var(--color-muted);font-size:.82rem;">${escHtml(c.conferencier||'')}</td>
+        <td>${driveCell}</td>
         <td>${clipBadge}</td>
         <td>
           <button class="btn btn-outline btn-sm" onclick="openModal('${c.id}')">Modifier</button>
