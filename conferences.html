@@ -635,6 +635,18 @@
 
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
+<!-- ── LIGHTBOX ── -->
+<div id="lb-backdrop" role="dialog" aria-modal="true" aria-label="Flyer en plein écran">
+  <button id="lb-close" aria-label="Fermer">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div id="lb-zoom-level">100%</div>
+  <div id="lb-img-wrap">
+    <img id="lb-img" src="" alt="" draggable="false" />
+  </div>
+  <div id="lb-zoom-hint">Molette pour zoomer · Double-clic pour agrandir · Échap pour fermer</div>
+</div>
+
 <script src="assets/js/storage.js?v=20260608" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="assets/js/supabase-config.js?v=20260608" defer></script>
@@ -973,18 +985,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 })();
 </script>
-
-<!-- ── LIGHTBOX ── -->
-<div id="lb-backdrop" role="dialog" aria-modal="true" aria-label="Flyer en plein écran">
-  <button id="lb-close" aria-label="Fermer">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
-  <div id="lb-zoom-level">100%</div>
-  <div id="lb-img-wrap">
-    <img id="lb-img" src="" alt="" draggable="false" />
-  </div>
-  <div id="lb-zoom-hint">Molette pour zoomer · Double-clic pour agrandir · Échap pour fermer</div>
-</div>
 
 </body>
 </html>
